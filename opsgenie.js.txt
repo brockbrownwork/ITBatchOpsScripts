@@ -382,7 +382,12 @@ async function fillOpsGenieAlert() {
 
     if (group === "DCOE Support") {
         group = "Business Int";
-    } // TODO: fill this for the rest of the names...
+    }
+    if (group === "Enterprise Service Integration") {
+        group = "Enterprise Services Integration";
+    }
+
+ // TODO: fill this for the rest of the names...
 
     let description = `${jobName}; ${status}; autosys`;
 
