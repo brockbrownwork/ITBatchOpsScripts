@@ -2,12 +2,13 @@ from PyPDF2 import PdfReader, PdfWriter
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from io import BytesIO
+from tqdm import tqdm
 
 def add_header_to_pdf(pdf_reader, text):
     packet = BytesIO()
     can = canvas.Canvas(packet, pagesize=letter)
     can.setFont("Helvetica", 12)
-    can.drawString(80, 770, text)  # Offset slightly to the left and down from the top
+    can.drawString(120, 770, text)  # Offset slightly to the left and down from the top
     can.save()
 
     packet.seek(0)
@@ -26,7 +27,7 @@ def add_header_to_pdf(pdf_reader, text):
 def merge_pdfs_with_headers(pdf_files):
     writer = PdfWriter()
 
-    for pdf_file in pdf_files:
+    for pdf_file in tqdm(pdf_files):
         reader = PdfReader(pdf_file)
         header_pdf_writer = add_header_to_pdf(reader, pdf_file)
 
@@ -37,6 +38,7 @@ def merge_pdfs_with_headers(pdf_files):
         writer.write(output_pdf)
 
 # List your PDFs in the order you want them merged
-pdf_files = ["sample-local-pdf.pdf", "Lorem_ipsum.pdf"]  # Replace with your actual file names
+pdf_files = ["workstations.pdf", "carry forward.pdf", "jobs executing.pdf", "abends.pdf", "priority 0 jobs.pdf", "priority 0 jobstreams.pdf", "issues.pdf"]  # Replace with your actual file names
 
 merge_pdfs_with_headers(pdf_files)
+print("...done!")
