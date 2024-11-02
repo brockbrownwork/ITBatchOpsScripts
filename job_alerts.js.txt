@@ -24,6 +24,7 @@ function notify() {
     // Schedule the second beep after 1 second and 2 seconds
     setTimeout(beep, 1000);
     setTimeout(beep, 2000);
+    setTimeout(beep, 1000);
 }
 
 
