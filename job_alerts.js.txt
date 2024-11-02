@@ -1,3 +1,32 @@
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function beep(duration = 200, frequency = 220, volume = 1) {
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    const oscillator = audioCtx.createOscillator();
+    oscillator.type = 'sine';
+    oscillator.frequency.value = frequency;
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.value = volume;
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.start();
+    setTimeout(() => {
+        oscillator.stop();
+    }, duration);
+}
+
+function notify() {
+    // Call beep immediately
+    beep();
+    
+    // Schedule the second beep after 1 second and 2 seconds
+    setTimeout(beep, 1000);
+    setTimeout(beep, 2000);
+}
+
+
 (function() {
     // Create a container for the buttons to ensure proper spacing
     var buttonContainer = document.createElement('div');
@@ -36,10 +65,10 @@
         return button;
     }
 
-    // Create the "Copy jobs" button
+    // Create the "Copy critical jobs" button
     var copyJobsButton = createButton('Copy jobs');
 
-    // Create the "Copy critical jobs" button
+    // Create the "Copy predefined text" button
     var copyPredefinedButton = createButton('Copy critical jobs');
 
     // Append both buttons to the container
@@ -151,7 +180,7 @@
 
         if (currentText !== previousText) {
             if (containsOpen && !wasOpenPreviously) {
-                alert("The visible text has changed and contains the word 'Open'.");  // Alert if the text contains 'Open' after it was not present
+                notify();  // Alert if the text contains 'Open' after it was not present
             }
 
             // Update the state
@@ -160,7 +189,7 @@
         }
     }, 4000);  // Check every 4 seconds
 
-    // Assign the extraction and clipboard copying to the "Copy jobs" button
+    // Assign the extraction and clipboard copying to the "Copy critical jobs" button
     copyJobsButton.addEventListener('click', function() {
         // Define the keywords to extract lines after
         const keywords = ["Open", "Acknowledged"];
