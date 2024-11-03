@@ -16,11 +16,19 @@ jobs = [
     {"name": "edw_infa_SIG_DALLAS_SALES", "start_time": "06:00", "end_time": "06:15"}
 ]
 
+# List of weekdays for scheduling mk_BATCH_END_EMAIL
+WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+
 # Function to display alert with a copy button
 def show_alert(job_name):
     root = Tk()
     root.title("Job Alert")
     root.geometry("300x100")
+    
+    # Ensure the window appears on top
+    root.attributes("-topmost", True)
+    root.lift()
+    root.focus_force()
     
     label = Label(root, text=f"It's time to check on {job_name}!")
     label.pack(pady=10)
@@ -35,24 +43,53 @@ def show_alert(job_name):
     root.mainloop()
 
 # Function to schedule job alerts
-def schedule_job_alert(job_name, alert_time):
+def schedule_job_alert(job_name, alert_time, days=None):
     alert_time_str = alert_time.strftime("%H:%M")
-    schedule.every().day.at(alert_time_str).do(show_alert, job_name=job_name)
+    if days:
+        for day in days:
+            # Get the scheduling method based on day string
+            schedule_method = getattr(schedule.every(), day)
+            schedule_method.at(alert_time_str).do(show_alert, job_name=job_name)
+    else:
+        schedule.every().day.at(alert_time_str).do(show_alert, job_name=job_name)
 
 # Function to process each job and schedule alerts
 def process_jobs(jobs):
+    now = datetime.now()
     for job in jobs:
+        job_name = job["name"]
         # Parsing start and end times
-        start_time = datetime.strptime(job["start_time"], "%H:%M")
-        end_time = datetime.strptime(job["end_time"], "%H:%M")
+        start_time = datetime.strptime(job["start_time"], "%H:%M").time()
+        end_time = datetime.strptime(job["end_time"], "%H:%M").time()
         
-        # Adding 15 minutes delay for both start and end times
-        start_alert_time = start_time + timedelta(minutes=15)
-        end_alert_time = end_time + timedelta(minutes=15)
+        # Compute alert_time_start by adding 15 minutes
+        alert_time_start = datetime.combine(now.date(), start_time) + timedelta(minutes=15)
+        if alert_time_start <= now:
+            # If the alert time has already passed today, schedule for tomorrow
+            alert_time_start += timedelta(days=1)
         
-        # Schedule the alerts
-        schedule_job_alert(job["name"], start_alert_time)
-        schedule_job_alert(job["name"], end_alert_time)
+        # Compute alert_time_end by adding 15 minutes
+        alert_time_end = datetime.combine(now.date(), end_time) + timedelta(minutes=15)
+        # If end_time is earlier than or equal to start_time, it's on the next day
+        if end_time <= start_time:
+            alert_time_end += timedelta(days=1)
+        if alert_time_end <= now:
+            # If the alert time has already passed today, schedule for tomorrow
+            alert_time_end += timedelta(days=1)
+        
+        # Determine scheduling days
+        if job_name == "mk_BATCH_END_EMAIL":
+            # Schedule only on weekdays
+            days_to_schedule = WEEKDAYS
+        else:
+            # Schedule every day
+            days_to_schedule = None
+        
+        # Schedule the start alert
+        schedule_job_alert(job_name, alert_time_start, days=days_to_schedule)
+        
+        # Schedule the end alert
+        schedule_job_alert(job_name, alert_time_end, days=days_to_schedule)
 
 # Initialize job scheduling
 process_jobs(jobs)
