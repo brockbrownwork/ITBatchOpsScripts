@@ -30,7 +30,7 @@ def show_alert(job_name):
     root.lift()
     root.focus_force()
     
-    label = Label(root, text=f"It's time to check on {job_name}!")
+    label = Label(root, text=f"{job_name}")
     label.pack(pady=10)
     
     def copy_to_clipboard():
@@ -93,6 +93,46 @@ def process_jobs(jobs):
 
 # Initialize job scheduling
 process_jobs(jobs)
+
+# =======================
+# New Scheduling Added Below
+# =======================
+
+# Define the days for Final pass prompt
+FINAL_PASS_WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+FINAL_PASS_SUNDAY = ['sunday']
+
+# Define the alert times
+final_pass_time_weekdays = datetime.strptime("03:30", "%H:%M").time()
+final_pass_time_sunday = datetime.strptime("01:30", "%H:%M").time()
+
+# Schedule "Final pass prompt" for Monday to Saturday at 3:30 AM
+schedule_job_alert("Final pass prompt", final_pass_time_weekdays, days=FINAL_PASS_WEEKDAYS)
+
+# Schedule "Final pass prompt" for Sunday at 1:30 AM
+schedule_job_alert("Final pass prompt", final_pass_time_sunday, days=FINAL_PASS_SUNDAY)
+
+# =======================
+# End of Previous New Scheduling
+# =======================
+
+# =======================
+# Additional Scheduling for "Time for turnover"
+# =======================
+
+# Define the alert time for "Time for turnover"
+time_for_turnover_time = datetime.strptime("06:30", "%H:%M").time()
+time_for_jims2mds = datetime.strptime("03:45", "%H:%M").time()
+time_for_jcycle_crcom = datetime.strptime("05:30", "%H:%M").time()
+
+# Schedule "Time for turnover" every day at 6:30 AM
+schedule_job_alert("Time for turnover.", time_for_turnover_time)
+schedule_job_alert("Check on jims2mds", time_for_jims2mds)
+schedule_job_alert("Answer prompt for jcycle_crcom", time_for_jcycle_crcom)
+
+# =======================
+# End of Additional Scheduling
+# =======================
 
 # Main loop to run scheduled tasks
 while True:
