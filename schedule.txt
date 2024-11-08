@@ -1,0 +1,6 @@
+1:30 AM	(Sunday Only) Start Final Pass	Only on Sundays
+2:00 AM	JRCS_CJ_ESTIMATE_IMPORTER_START Execution	Confirm successful completion
+3:30 AM	Start Final Pass	Do not start before this time (except Sundays)
+3:45 AM	JIMS2MDS Execution	Confirm successful completion
+5:30 AM	Confirm jcycle_crcom	Ensure the confirmation is completed
+7:00 AM	Page Out on MAXRUN Alarms	Handle any MAXRUN alarm issues post 7 AM
