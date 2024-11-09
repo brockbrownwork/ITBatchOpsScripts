@@ -104,6 +104,7 @@ FINAL_PASS_SUNDAY = ['sunday']
 
 # Define the alert times
 
+final_pass_time_weekdays = datetime.strptime("03:30", "%H:%M").time()
 final_pass_time_sunday = datetime.strptime("01:30", "%H:%M").time()
 
 # Schedule "Final pass prompt" for Monday to Saturday at 3:30 AM
