@@ -99,8 +99,8 @@ process_jobs(jobs)
 # =======================
 
 # Define the days for Final pass prompt
-FINAL_PASS_WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
-FINAL_PASS_SUNDAY = ['sunday']
+FINAL_PASS_WEEKDAYS = ['sunday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+FINAL_PASS_SUNDAY = ['monday'] # actually monday...
 
 # Define the alert times
 
