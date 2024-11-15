@@ -5,6 +5,7 @@ import numpy as np
 import time
 import sys
 import mss
+from time import sleep
 
 def capture_points():
     mouse = Controller()
@@ -63,6 +64,7 @@ def monitor(rect, original_image):
     try:
         with mss.mss() as sct:
             while True:
+                sleep(10)
                 image = sct.grab(rect)
                 current_image = Image.frombytes('RGB', image.size, image.rgb)
                 # Uncomment to save and view current images
