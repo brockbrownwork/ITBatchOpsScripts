@@ -56,6 +56,41 @@ function beep(duration = 200, frequency = 220, volume = 1) {
     preGain.gain.linearRampToValueAtTime(0, beepEnd);
 }
 
+function findRepeatJobs(text) {
+    const lines = text.split('\n');
+    const jobNames = [];
+    const jobCounts = {};
+    const duplicates = [];
+    const statusKeywords = ['Acknowledged', 'Open'];
+  
+    for (let i = 0; i < lines.length; i++) {
+      if (statusKeywords.includes(lines[i].trim())) {
+        const jobName = lines[i + 1]?.trim();
+        if (jobName) {
+          // Count the occurrences of each job name
+          jobCounts[jobName] = (jobCounts[jobName] || 0) + 1;
+  
+          // If a job appears more than once, add it to duplicates
+          if (jobCounts[jobName] === 2) {
+            duplicates.push(jobName);
+          }
+  
+          // Add unique job names to the array
+          if (!jobNames.includes(jobName)) {
+            jobNames.push(jobName);
+          }
+        }
+      }
+    }
+  
+    // Alert if any duplicates are found
+    if (duplicates.length > 0) {
+      alert('Duplicate job names found: ' + duplicates.join(', '));
+    }
+  
+    return jobNames;
+  }
+
 // Notify function to trigger multiple beeps at specified intervals
 function notify() {
     // Call beep immediately
@@ -219,7 +254,6 @@ function notify() {
     // Interval function to check for "Open" and show notification
     setInterval(() => {
         let currentText = getVisibleTextFromDocument();  // Get the current visible text
-
         // Check if the entire text contains 'Close...' or 'Alert Actions'
         if (currentText.includes("Close...") || currentText.includes("Alert Actions")) {
             console.log("Detected 'Close...' or 'Alert Actions'. Skipping processing.");
@@ -231,6 +265,8 @@ function notify() {
         if (currentText !== previousText) {
             if (containsOpen && !wasOpenPreviously) {
                 notify();  // Alert if the text contains 'Open' after it was not present
+                let jobs = findRepeatJobs(currentText);
+                console.log(jobs);
             }
 
             // Update the state
