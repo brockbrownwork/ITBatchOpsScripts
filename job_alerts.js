@@ -311,3 +311,4 @@ zms_BATCH_END_ZL`;
     });
 })();
 
+beep(); // test the beep
