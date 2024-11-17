@@ -50,10 +50,13 @@ def images_are_similar(img1, img2, threshold=0.99):
     print(f"Image similarity: {similarity * 100:.2f}%")
     return similarity >= threshold
 
-def make_beep():
+def make_beep(short = False):
     try:
         import winsound
-        winsound.Beep(330, 500)
+        if not short:
+            winsound.Beep(330, 500)
+        else:
+            winsound.Beep(330, 100)
     except ImportError:
         # For Linux or MacOS, use 'os' module to make a beep
         print('\a')  # ASCII Bell
@@ -78,6 +81,7 @@ def monitor(rect, original_image):
                 else:
                     if not armed:
                         print("Image restored. Armed again.")
+                        make_beep(short = True)
                         armed = True
                 time.sleep(1)
     except KeyboardInterrupt:
