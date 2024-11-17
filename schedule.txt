@@ -1,5 +1,5 @@
 12:00 AM (Sunday Only)					Start on Sunday Notes
-1:30 AM	(Sunday Only) 					Start Final Pass	Only on Sundays
+1:30 AM	(Sunday Only) 					Start Final Pass
 2:00 AM (Sunday Only)					Continue Sunday notes (raise fences on stuff we need to do the reboots on)
 2:00 AM	JRCS_CJ_ESTIMATE_IMPORTER_START Execution	Confirm successful completion
 2:30 AM / 3:00 AM (Sunday Only)				Continue Sunday notes
