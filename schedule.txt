@@ -5,6 +5,8 @@
 2:30 AM / 3:00 AM (Sunday Only)				Continue Sunday notes
 3:30 AM	Start Final Pass				Do not start before this time (except Sundays)
 3:45 AM	JIMS2MDS Execution				Confirm successful completion
+4:45 AM (Sunday Only)					?
 5:30 AM	Confirm jcycle_crcom				Confirm the prompt
 6:30 AM 3rd shift turnover				Do the 3rd shift turnover
 7:00 AM	Page Out on MAXRUN Alarms			Handle any MAXRUN alarm issues post 7 AM
+7:45 AM Send compops email				Send compops the turnover packet
