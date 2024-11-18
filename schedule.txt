@@ -1,11 +1,11 @@
-12:00 AM (Sunday Only)					Start on Sunday Notes
-1:30 AM	(Sunday Only) 					Start Final Pass
+12:00 AM (Sunday morning only)				Start on Sunday Notes
+1:30 AM	(Monday morning only) 				Start Final Pass
 2:00 AM (Sunday Only)					Continue Sunday notes (raise fences on stuff we need to do the reboots on)
 2:00 AM	JRCS_CJ_ESTIMATE_IMPORTER_START Execution	Confirm successful completion
-2:30 AM / 3:00 AM (Sunday Only)				Continue Sunday notes
+2:30 AM / 3:00 AM (Sunday morning only)				Continue Sunday notes
 3:30 AM	Start Final Pass				Do not start before this time (except Sundays)
 3:45 AM	JIMS2MDS Execution				Confirm successful completion
-4:45 AM (Sunday Only)					?
+4:45 AM (Sunday morning Only)				?
 5:30 AM	Confirm jcycle_crcom				Confirm the prompt
 6:30 AM 3rd shift turnover				Do the 3rd shift turnover
 7:00 AM	Page Out on MAXRUN Alarms			Handle any MAXRUN alarm issues post 7 AM
