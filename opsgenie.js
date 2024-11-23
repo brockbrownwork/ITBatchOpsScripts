@@ -382,16 +382,15 @@ async function fillOpsGenieAlert() {
 
     if (group === "DCOE Support") {
         group = "Business Int";
-    }
-    if (group === "Enterprise Service Integration") {
+    } else if (group === "Enterprise Service Integration") {
         group = "Enterprise Services Integration";
     }
 
     if (status === "Running (RUNNING)") {
         status = "MAXRUNALARM";
-    }
-    if (status === "") {
+    } else if (status === "Failure (FAILURE)") {
         // TODO: put the other thing in here...
+        status = "JOBFAILURE";
     }
 
  // TODO: fill this for the rest of the names...
