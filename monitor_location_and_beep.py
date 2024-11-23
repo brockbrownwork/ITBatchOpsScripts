@@ -59,6 +59,8 @@ def make_beep(short = False):
             winsound.Beep(330, 500)
         else:
             winsound.Beep(330, 100)
+            sleep(0.5)
+            winsound.Beep(330, 100)
     except ImportError:
         # For Linux or MacOS, use 'os' module to make a beep
         print('\a')  # ASCII Bell
