@@ -387,6 +387,10 @@ async function fillOpsGenieAlert() {
         group = "Enterprise Services Integration";
     }
 
+    if (status === "Running (RUNNING)") {
+        status = "MAXRUNALARM";
+    }
+
  // TODO: fill this for the rest of the names...
 
     let description = `${jobName}; ${status}; autosys`;
