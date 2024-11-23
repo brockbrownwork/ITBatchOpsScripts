@@ -1,3 +1,4 @@
+12:00 AM After you get logged in, CHECK CHANGE REQUESTS	https://signetjewelers.atlassian.net/jira/servicedesk/projects/SERVOPS/queues/custom/1542
 12:00 AM (Sunday morning only)				Start on Sunday Notes
 12:00 AM (Monday morning only) 				if the SMDS_SLSINVUPD_W is finished, set the priority of SMDS_SLSINVUPD_D to 10 so that it starts
 1:30 AM	(Monday morning only) 				Start Final Pass (release JPOS_PROCESS_POLL if not at 96%)
