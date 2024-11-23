@@ -389,7 +389,6 @@ async function fillOpsGenieAlert() {
     if (status === "Running (RUNNING)") {
         status = "MAXRUNALARM";
     } else if (status === "Failure (FAILURE)") {
-        // TODO: put the other thing in here...
         status = "JOBFAILURE";
     }
 
