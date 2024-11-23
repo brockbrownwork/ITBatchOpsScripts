@@ -390,6 +390,9 @@ async function fillOpsGenieAlert() {
     if (status === "Running (RUNNING)") {
         status = "MAXRUNALARM";
     }
+    if (status === "") {
+        // TODO: put the other thing in here...
+    }
 
  // TODO: fill this for the rest of the names...
 
