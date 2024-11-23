@@ -55,6 +55,8 @@ def make_beep(short = False):
         import winsound
         if not short:
             winsound.Beep(330, 500)
+            sleep(0.5)
+            winsound.Beep(330, 500)
         else:
             winsound.Beep(330, 100)
     except ImportError:

@@ -1,6 +1,7 @@
 12:00 AM (Sunday morning only)				Start on Sunday Notes
 12:00 AM (Monday morning only) 				if the SMDS_SLSINVUPD_W is finished, set the priority of SMDS_SLSINVUPD_D to 10 so that it starts
 1:30 AM	(Monday morning only) 				Start Final Pass (release JPOS_PROCESS_POLL if not at 96%)
+2:00 AM Check on Pick reports				PLAKIMSBATCH01 → SIMS_NEWPICK → *PICK
 2:00 AM (Sunday Only)					Continue Sunday notes (raise fences on stuff we need to do the reboots on)
 2:00 AM	JRCS_CJ_ESTIMATE_IMPORTER_START Execution	Confirm successful completion
 2:30 AM / 3:00 AM (Sunday morning only)			Continue Sunday notes
