@@ -24,8 +24,7 @@ import sounddevice as sd
 from chord import play_chord
 
 
-fsus4_frequencies = [174.61, 233.08, 261.63]
-fsus4_frequencies = [i * 2 for i in fsus4_frequencies]  # Octave higher
+fsus4_frequencies = [349.22, 466.16, 523.26]
 
 
 # Function to display alert with a copy button
