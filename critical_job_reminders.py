@@ -146,6 +146,9 @@ schedule_job_alert("JRCS_CJ_ESTIMATE_IMPORTER_START", time_for_jrcs_cj_estimate)
 # End of Additional Scheduling
 # =======================
 
+# Test the chord sound out:
+play_chord(fsus4_frequencies, duration=2, fade_duration=0.5)  # Play the chord with fades
+
 # Main loop to run scheduled tasks
 while True:
     schedule.run_pending()
