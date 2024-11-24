@@ -125,11 +125,13 @@ schedule_job_alert("Final pass prompt", final_pass_time_sunday, days=FINAL_PASS_
 time_for_turnover_time = datetime.strptime("06:30", "%H:%M").time()
 time_for_jims2mds = datetime.strptime("03:45", "%H:%M").time()
 time_for_jcycle_crcom = datetime.strptime("05:30", "%H:%M").time()
+time_for_jrcs_cj_estimate = datetime.strptime("02:00", "%H:%M").time()
 
 # Schedule "Time for turnover" every day at 6:30 AM
 schedule_job_alert("Time for turnover.", time_for_turnover_time)
 schedule_job_alert("Check on jims2mds", time_for_jims2mds)
 schedule_job_alert("Answer prompt for jcycle_crcom", time_for_jcycle_crcom)
+schedule_job_alert("JRCS_CJ_ESTIMATE_IMPORTER_START", time_for_jrcs_cj_estimate)
 
 # =======================
 # End of Additional Scheduling
