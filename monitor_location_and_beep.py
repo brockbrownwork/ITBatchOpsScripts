@@ -6,6 +6,17 @@ import time
 import sys
 import mss
 from time import sleep
+from datetime import datetime
+
+def get_current_time():
+    # Get the current time
+    now = datetime.now()
+    # Format the time in 12-hour format with AM/PM, including seconds
+    current_time = now.strftime("%I:%M:%S%p").lower()
+    # Ensure a single-digit hour does not have a leading zero
+    if current_time.startswith('0'):
+        current_time = current_time[1:]
+    return current_time
 
 def capture_points():
     mouse = Controller()
@@ -47,7 +58,10 @@ def images_are_similar(img1, img2, threshold=0.99):
         return False
 
     similarity = np.mean(arr1 == arr2)
-    print(f"Image similarity: {similarity * 100:.2f}%")
+    if round(similarity, 1) != 1:
+        print(f"Image similarity: {similarity * 100:.2f}%")
+    else:
+        print(f"Watching... ({get_current_time()})")
     return similarity >= threshold
 
 def make_beep(short = False):
