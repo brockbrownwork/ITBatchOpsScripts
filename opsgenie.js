@@ -7,19 +7,16 @@
  * @returns {number} - Average time difference in hours, or 0.0 if not enough dates are found.
  */
 function averageTimeDifference(inputString) {
-    // Define the regular expression to match the date pattern (without the 'g' flag)
-    const dateRegex = /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{1,2}, \d{4} \d{1,2}:\d{2}:\d{2} (?:AM|PM)\b/;
+    // Define the regular expression to match the date pattern at the beginning of the line
+    const dateRegex = /^(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{1,2}, \d{4} \d{1,2}:\d{2}:\d{2} (?:AM|PM)/;
 
     // Split the input string into lines
     const lines = inputString.split('\n');
     const dates = [];
 
     for (const line of lines) {
-        // Extract the first 23 characters of the line
-        const lineStart = line.substring(0, 23);
-
-        // Find a matching date string in the first 23 characters
-        const match = lineStart.match(dateRegex);
+        // Match date at the beginning of the line
+        const match = line.match(dateRegex);
         if (match) {
             const dateStr = match[0];
             const parsedDate = new Date(dateStr);
@@ -63,6 +60,7 @@ function averageTimeDifference(inputString) {
 
     return Math.abs(avgTimeDiffHours);
 }
+
 
 
 // Example usage
