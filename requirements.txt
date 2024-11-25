@@ -1,0 +1,12 @@
+keyboard
+mss
+numpy
+Pillow
+PyPDF2
+pyautogui
+pyperclip
+pynput
+reportlab
+schedule
+sounddevice
+tqdm
