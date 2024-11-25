@@ -94,7 +94,7 @@ async function extractReportData() {
             return;
         }
         // detect sleepers
-        timeDifference = Math.round(averageTimeDifference(clipboardText), 2);
+        let timeDifference = Math.round(averageTimeDifference(clipboardText) * 100) / 100;
         if (timeDifference < 1.5) {
             if (!confirm(`Warning: this is a sleeper, ${timeDifference} hours between runs. Do you want to continue?`)) {
                 return;
