@@ -302,7 +302,8 @@ edp_UK_ECOMM_box
 edw_infa_SISSALES_SLIP_W
 mk_BATCH_END_EMAIL
 edw_infa_SIG_DALLAS_SALES
-zms_BATCH_END_ZL`;
+zms_BATCH_END_ZL
+mk_BATCH_END_EMAIL`;
 
     // Assign the clipboard copying to the "Copy predefined text" button
     copyPredefinedButton.addEventListener('click', function() {
