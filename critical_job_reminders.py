@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 import pyperclip
 from tkinter import Tk, Button, Label
 
+print("Reminders console")
+
 # Job data as lists (replace this with your data parsing if automated)
 jobs = [
     {"name": "edw_ODSP_RMS_DATA_EDWP_box", "start_time": "18:00", "end_time": "06:31"},
@@ -38,7 +40,7 @@ def show_alert(job_name):
     root.attributes("-topmost", True)
     root.lift()
     root.focus_force()
-    
+    print(job_name)
     label = Label(root, text=f"{job_name}")
     label.pack(pady=10)
     
