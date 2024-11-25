@@ -1,3 +1,83 @@
+/**
+ * Extracts lines containing dates in the format 'MMM DD, YYYY HH:MM:SS AM/PM',
+ * ignores the first two dates found, calculates the average time difference
+ * between subsequent entries, and returns the average time difference in hours as a float.
+ *
+ * @param {string} inputString - Input string containing multiple lines.
+ * @returns {number} - Average time difference in hours, or 0.0 if not enough dates are found.
+ */
+function averageTimeDifference(inputString) {
+    // Define the regular expression to match the date pattern (without the 'g' flag)
+    const dateRegex = /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{1,2}, \d{4} \d{1,2}:\d{2}:\d{2} (?:AM|PM)\b/;
+
+    // Split the input string into lines
+    const lines = inputString.split('\n');
+    const dates = [];
+
+    for (const line of lines) {
+        // Extract the first 23 characters of the line
+        const lineStart = line.substring(0, 23);
+
+        // Find a matching date string in the first 23 characters
+        const match = lineStart.match(dateRegex);
+        if (match) {
+            const dateStr = match[0];
+            const parsedDate = new Date(dateStr);
+            if (!isNaN(parsedDate)) {
+                dates.push(parsedDate);
+            } else {
+                console.warn(`Failed to parse date '${dateStr}'`);
+            }
+        }
+    }
+
+    // Debug: Print all parsed dates
+    console.log("Parsed Dates:");
+    dates.forEach(date => console.log(date));
+
+    // Ignore the first two dates
+    if (dates.length <= 2) {
+        return 0.0;
+    }
+    const relevantDates = dates.slice(2);
+
+    // Check if we have at least two remaining dates to calculate differences
+    if (relevantDates.length < 2) {
+        return 0.0;
+    }
+
+    // Calculate time differences in seconds
+    const timeDifferences = [];
+    for (let i = 1; i < relevantDates.length; i++) {
+        const diffInMs = relevantDates[i] - relevantDates[i - 1];
+        const diffInSeconds = diffInMs / 1000;
+        timeDifferences.push(diffInSeconds);
+    }
+
+    // Debug: Print all time differences
+    console.log("Time Differences (seconds):", timeDifferences);
+
+    // Calculate the average time difference in hours
+    const sumDifferences = timeDifferences.reduce((acc, val) => acc + val, 0);
+    const avgTimeDiffHours = sumDifferences / timeDifferences.length / 3600;
+
+    return Math.abs(avgTimeDiffHours);
+}
+
+
+// Example usage
+const inputData = `
+Event started on Sep 28, 2023 03:45:12 PM.
+Another event occurred on Oct 01, 2023 10:15:30 AM.
+Yet another event on Oct 05, 2023 08:20:45 PM.
+Follow-up event on Oct 10, 2023 02:50:00 AM.
+Final event on Oct 15, 2023 11:30:30 PM.
+`;
+
+const result = averageTimeDifference(inputData);
+console.log(`Average time difference in hours: ${result.toFixed(2)}`);
+
+
 async function extractReportData() {
     try {
         // Request permission to access the clipboard if not already granted
@@ -12,6 +92,13 @@ async function extractReportData() {
         if (!clipboardText) {
             console.error('Clipboard is empty.');
             return;
+        }
+        // detect sleepers
+        timeDifference = Math.round(averageTimeDifference(clipboardText), 2);
+        if (timeDifference < 1.5) {
+            if (!confirm(`Warning: this is a sleeper, ${timeDifference} hours between runs. Do you want to continue?`)) {
+                return;
+            }
         }
 
         // Split the text into lines
