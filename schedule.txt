@@ -1,3 +1,5 @@
+ALWAYS page out on jobfailures
+
 12:00 AM After you get logged in, CHECK CHANGE REQUESTS	https://signetjewelers.atlassian.net/jira/servicedesk/projects/SERVOPS/queues/custom/1542
 12:00 AM (Sunday morning only)				Start on Sunday Notes (reboots)
 
