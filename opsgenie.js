@@ -475,8 +475,9 @@ async function fillOpsGenieAlert() {
         status = "MAXRUNALARM";
     } else if (status === "Failure (FAILURE)") {
         status = "JOBFAILURE";
+    } else if (status === "Terminated (TERMINATED)") {
+        status = "JOBTERMINATED";
     }
-
  // TODO: fill this for the rest of the names...
 
     let description = `${jobName}; ${status}; autosys`;
