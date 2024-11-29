@@ -266,6 +266,10 @@ function notify() {
             if (containsOpen && !wasOpenPreviously) {
                 notify();  // Alert if the text contains 'Open' after it was not present
                 let jobs = findRepeatJobs(currentText);
+                // Check if there's a PNC job
+                if (currentText.includes("PNC")) {
+                    alert("Warning, one of these is PNC. Is it after a holiday? Mark as successful?");
+                }
                 console.log(jobs);
             }
 
