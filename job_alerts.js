@@ -248,6 +248,7 @@ function notify() {
     // Variables to track the previous state
     let previousText = getVisibleTextFromDocument();  // Initialize with the current visible text
     let wasOpenPreviously = false;  // Track whether "Open" was previously present
+    let pncToggle = false;
 
     console.log(previousText);
 
@@ -267,8 +268,11 @@ function notify() {
                 notify();  // Alert if the text contains 'Open' after it was not present
                 let jobs = findRepeatJobs(currentText);
                 // Check if there's a PNC job
-                if (currentText.includes("PNC")) {
+                if (currentText.includes("PNC") && !pncToggle) {
+                    pncToggle = True;
                     alert("Warning, one of these is PNC. Is it after a holiday? Mark as successful?");
+                } else {
+                    pncToggle = False;
                 }
                 console.log(jobs);
             }
