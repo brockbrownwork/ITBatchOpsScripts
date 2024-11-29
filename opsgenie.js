@@ -136,7 +136,7 @@ async function extractReportData() {
             }
         }
 
-        // account for the wrong info in edp_SIGNET_AWS_IA_SRV_LVL
+        // account for the wrong gruop info in edp_SIGNET_AWS_IA_SRV_LVL
         if (name === "edp_SIGNET_AWS_IA_SRV_LVL") {
             alert("Note: this job is actually supposed to go to Business Intelligence. Automatically corrected.");
             group = "Business Int";
