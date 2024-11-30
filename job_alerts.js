@@ -269,10 +269,10 @@ function notify() {
                 let jobs = findRepeatJobs(currentText);
                 // Check if there's a PNC job
                 if (currentText.includes("PNC") && !pncToggle) {
-                    pncToggle = True;
+                    pncToggle = true;
                     alert("Warning, one of these is PNC. Is it after a holiday? Mark as successful?");
                 } else {
-                    pncToggle = False;
+                    pncToggle = false;
                 }
                 console.log(jobs);
             }
