@@ -145,7 +145,7 @@ schedule_job_alert("Answer prompt for jcycle_crcom", time_for_jcycle_crcom)
 schedule_job_alert("JRCS_CJ_ESTIMATE_IMPORTER_START", time_for_jrcs_cj_estimate)
 
 # Schedule an additional Monday morning alert at 12:30 AM
-additional_sunday_alert_time = datetime.strptime("00:30", "%H:%M").time()
+additional_sunday_alert_time = datetime.strptime("01:30", "%H:%M").time()
 schedule_job_alert("SMDS_SLSINVUPD_W Finished, set SMDS_SLSINVUPD_D priority to 10", additional_sunday_alert_time, days=['monday'])
 
 
