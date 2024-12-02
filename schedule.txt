@@ -3,7 +3,6 @@ ALWAYS page out on jobfailures
 Always have an OIC window open
 Always have TWS abends open
 Start critical job reminders
-When SMDS_SLSINVUPD_W is Finished, set SMDS_SLSINVUPD_D priority to 10
 
 12:00 AM After you get logged in, CHECK CHANGE REQUESTS	https://signetjewelers.atlassian.net/jira/servicedesk/projects/SERVOPS/queues/custom/1542
 12:00 AM (Sunday morning only)				Start on Sunday Notes (reboots)
