@@ -1,6 +1,6 @@
 Make sure to always have a window open for TWS abends
 ALWAYS page out on jobfailures
-Always have an OIC window open
+ALWAYS HAVE AN OIC WINDOW OPEN!!!!!
 Always have TWS abends open
 Start critical job reminders
 

@@ -9,11 +9,8 @@ from time import sleep
 from datetime import datetime
 
 def get_current_time():
-    # Get the current time
     now = datetime.now()
-    # Format the time in 12-hour format with AM/PM, including seconds
     current_time = now.strftime("%I:%M:%S%p").lower()
-    # Ensure a single-digit hour does not have a leading zero
     if current_time.startswith('0'):
         current_time = current_time[1:]
     return current_time
@@ -25,7 +22,7 @@ def capture_points():
     point1 = mouse.position
     print(f"Top-left corner captured at {point1}")
 
-    time.sleep(0.5)  # Prevent immediate second capture if key is held down
+    time.sleep(0.5)
 
     print("Move mouse to the bottom-right corner and press Ctrl+`")
     keyboard.wait('ctrl+`')
@@ -50,21 +47,18 @@ def capture_original_image(rect):
         print("Original image captured and saved as 'original_image.png'.")
         return img
 
-def images_are_similar(img1, img2, threshold=0.99):
-    arr1 = np.array(img1)
-    arr2 = np.array(img2)
+def count_red_pixels(img, r_threshold=255, diff_threshold=20):
+    """
+    Consider a pixel 'red' if:
+    R > r_threshold and R > G + diff_threshold and R > B + diff_threshold
+    """
+    arr = np.array(img)
+    R, G, B = arr[:,:,0], arr[:,:,1], arr[:,:,2]
 
-    if arr1.shape != arr2.shape:
-        return False
+    red_mask = (R > r_threshold) & (R > G + diff_threshold) & (R > B + diff_threshold)
+    return np.sum(red_mask)
 
-    similarity = np.mean(arr1 == arr2)
-    if round(similarity, 1) != 1:
-        print(f"Image similarity: {similarity * 100:.2f}%")
-    else:
-        print(f"Watching... ({get_current_time()})")
-    return similarity >= threshold
-
-def make_beep(short = False):
+def make_beep(short=False):
     try:
         import winsound
         if not short:
@@ -76,31 +70,36 @@ def make_beep(short = False):
             sleep(0.5)
             winsound.Beep(330, 100)
     except ImportError:
-        # For Linux or MacOS, use 'os' module to make a beep
-        print('\a')  # ASCII Bell
+        print('\a')
 
-def monitor(rect, original_image):
+def monitor(rect, original_image, tolerance=1):
+    original_red_count = count_red_pixels(original_image)
+    print(f"Original red pixels count: {original_red_count}")
     armed = True
     print("Monitoring started. Press Ctrl+C to exit.")
+
     try:
         with mss.mss() as sct:
             while True:
                 sleep(10)
                 image = sct.grab(rect)
                 current_image = Image.frombytes('RGB', image.size, image.rgb)
-                # Uncomment to save and view current images
-                # current_image.save('current_image.png')
-                # current_image.show()
-                if not images_are_similar(original_image, current_image):
+
+                current_red_count = count_red_pixels(current_image)
+                print(f"Current red pixels: {current_red_count} ({get_current_time()})")
+
+                # Trigger if even a small increase above the original count is detected
+                if current_red_count > original_red_count + tolerance:
                     if armed:
-                        print("Image changed! Beep!")
+                        print("Red pixel count increased! Beep!")
                         make_beep()
                         armed = False
                 else:
                     if not armed:
-                        print("Image restored. Armed again.")
-                        make_beep(short = True)
+                        print("Red pixel count returned to normal. Armed again.")
+                        make_beep(short=True)
                         armed = True
+
                 time.sleep(1)
     except KeyboardInterrupt:
         print("Monitoring stopped.")
@@ -112,7 +111,8 @@ def main():
     rect = get_rectangle(point1, point2)
     print(f"Monitoring rectangle: {rect}")
     original_image = capture_original_image(rect)
-    monitor(rect, original_image)
+    # Tolerance is set very low now
+    monitor(rect, original_image, tolerance=1)
 
 if __name__ == "__main__":
     main()
