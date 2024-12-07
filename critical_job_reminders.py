@@ -144,7 +144,7 @@ schedule_job_alert("Time for turnover.", time_for_turnover_time)
 schedule_job_alert("Check on jims2mds", time_for_jims2mds)
 schedule_job_alert("Answer prompt for jcycle_crcom", time_for_jcycle_crcom)
 schedule_job_alert("JRCS_CJ_ESTIMATE_IMPORTER_START", time_for_jrcs_cj_estimate)
-schedule_job_alert("Pick reports", time_for_pick_reports)
+schedule_job_alert("Pick reports, PLAKIMSBATCH01 → SIMS_NEWPICK → *PICK", time_for_pick_reports)
 
 # Schedule an additional Monday morning alert at 12:30 AM
 additional_sunday_alert_time = datetime.strptime("01:30", "%H:%M").time()
