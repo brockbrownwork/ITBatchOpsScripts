@@ -63,6 +63,10 @@ echo All specified links have been opened.
 REM Open VSCode in the directory
 code .
 
+REM Connect udrive
+net use U: \\nas01.jewels.local\sterling /user:jewels\%username% /persistent:no
+REM net use H: \\nas01.jewels.local\sterling\home\%username% /user:jewels\%username% /persistent:no
+
 cmd /c python critical_job_reminders.py
 pause
 
