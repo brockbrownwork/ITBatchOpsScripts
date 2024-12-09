@@ -1,4 +1,3 @@
-@echo off
 REM Batch script to open specified URLs one at a time in Google Chrome
 
 REM Open Autosys UI
@@ -49,10 +48,21 @@ REM Open Workday Again (Duplicate Link)
 start chrome.exe "https://www.myworkday.com/signetjewelers/d/home.htmld"
 ping localhost -n 3 >nul
 
+REM Microsoft Teams in Browser
+start chrome.exe "https://teams.microsoft.com/v2/"
+ping localhost -n 3 >nul
+
+REM Microsoft Teams application
+start C:\Users\bbrown\AppData\Local\Microsoft\Teams\Update.exe
+
+REM Outlook
+start C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE
+
 echo All specified links have been opened.
 
+REM Open VSCode in the directory
 code .
 
-python critical_job_reminders.py
-
+cmd /c python critical_job_reminders.py
 pause
+

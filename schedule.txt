@@ -11,8 +11,10 @@ Start critical job reminders
 Saturday morning: There will be no mk_BATCH_EMAIL
 
 (PAY ATTENTION, set a reminder for this...)
-12:00 AM (Monday morning only) 				if the SMDS_SLSINVUPD_W is finished, set the priority of SMDS_SLSINVUPD_D to 10 so that it starts
+12:00 AM (Monday morning only) 				If the SMDS_SLSINVUPD_W is finished, set the priority of SMDS_SLSINVUPD_D to 10 so that it starts
+12:15 AM (Monday morning only)				Confirm the prompt for JRDS_HOLD_POINT alert
 1:30 AM	(Monday morning only) 				Start Final Pass (release JPOS_PROCESS_POLL if not at 96%)
+
 
 2:00 AM Check on Pick reports				PLAKIMSBATCH01 → SIMS_NEWPICK → *PICK
 2:00 AM (Sunday Only)					Continue Sunday notes (raise fences on stuff we need to do the reboots on)
