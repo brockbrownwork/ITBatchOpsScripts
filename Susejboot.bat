@@ -52,6 +52,10 @@ REM Microsoft Teams in Browser
 start chrome.exe "https://teams.microsoft.com/v2/"
 ping localhost -n 3 >nul
 
+REM Change requests
+start chrome.exe "https://signetjewelers.atlassian.net/jira/servicedesk/projects/SERVOPS/queues/custom/1542"
+ping localhost -n 3 >nul
+
 REM Microsoft Teams application
 start C:\Users\bbrown\AppData\Local\Microsoft\Teams\Update.exe
 
