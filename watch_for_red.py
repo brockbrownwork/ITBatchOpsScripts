@@ -7,21 +7,29 @@ import sys
 import mss
 from time import sleep
 from datetime import datetime
-from chord import play_chord
+from chords import play_chord
+import pytesseract
 
 # This script:
 # 1. Allows you to press Ctrl+~ to record the mouse position as the top-left corner of a box.
 # 2. Press Ctrl+~ again to record the mouse position as the bottom-right corner of a box.
-# 3. Every 10 seconds, it will analyze that region of the screen to count how many (255,0,0) red pixels are present.
-# 4. If the count of red pixels increases compared to the previous measurement, it plays a diminished chord.
+# 3. Once the region is defined, it will:
+#    - Show you the image of the first captured region (only once, right after the corners are set).
+#    - Every 10 seconds, it will analyze that region of the screen to count how many (255,0,0) red pixels are present.
+#    - It will use pytesseract to read the text in the region.
+#      If the text contains "UNMATCHED" or "AWSCLT", it will NOT make the sound even if red pixels increased.
+#    - If the red pixel count has increased since the last check AND the text does not contain the above substrings,
+#      it will play a diminished chord.
+#
+# Modification per user request:
+# If the new_count is less than the old_count, set old_count to new_count. This serves as a form of resetting the baseline
+# so that future increases will still trigger the alert.
 
-# Global variables to store corner coordinates
 top_left = None
 bottom_right = None
 mouse = Controller()
-
-# We will track how many times the hotkey has been pressed
 corner_press_count = 0
+image_shown = False  # To ensure we show the captured image only once
 
 def capture_mouse_position():
     global corner_press_count, top_left, bottom_right
@@ -34,10 +42,10 @@ def capture_mouse_position():
         print(f"Bottom-right corner set at {bottom_right}")
     corner_press_count += 1
 
-# Set the hotkey to Ctrl+~
-keyboard.add_hotkey('ctrl+`', capture_mouse_position)  # On most keyboards, ~ is shift+`, so ctrl+` might suffice.
+# Set the hotkey to Ctrl+`
+keyboard.add_hotkey('ctrl+`', capture_mouse_position)
 
-def count_red_pixels(top_left, bottom_right):
+def capture_region(top_left, bottom_right):
     # Ensure coordinates are integers
     x1, y1 = int(top_left[0]), int(top_left[1])
     x2, y2 = int(bottom_right[0]), int(bottom_right[1])
@@ -47,17 +55,18 @@ def count_red_pixels(top_left, bottom_right):
 
     if width <= 0 or height <= 0:
         print("Invalid box dimensions. Make sure bottom-right is actually to the bottom-right of top-left.")
-        return 0
+        return None, None
 
     with mss.mss() as sct:
         region = {"top": y1, "left": x1, "width": width, "height": height}
         sct_img = sct.grab(region)
         img = Image.frombytes("RGB", (sct_img.width, sct_img.height), sct_img.rgb)
         arr = np.array(img)
+    return img, arr
 
+def count_red_pixels(arr):
+    # arr is a numpy array of shape (height, width, 3)
     # Count how many pixels are exactly (255,0,0)
-    # arr is shape (height, width, 3)
-    # We'll create a boolean mask
     red_pixels = np.sum((arr[:,:,0] == 255) & (arr[:,:,1] == 0) & (arr[:,:,2] == 0))
     return red_pixels
 
@@ -70,24 +79,51 @@ print("Press Ctrl+` once to set the top-left corner, then again to set the botto
 
 old_count = None
 
-# Main loop:
 while True:
-    # Wait until both corners are set
     if top_left is not None and bottom_right is not None:
-        # Once both corners are available, start analyzing every 10 seconds
-        new_count = count_red_pixels(top_left, bottom_right)
+        # Capture the region image
+        img, arr = capture_region(top_left, bottom_right)
+        if img is None:
+            # Invalid region, just wait and try again
+            sleep(1)
+            continue
+
+        # Show the image once
+        if not image_shown:
+            img.show()
+            image_shown = True
+
+        # Extract text with pytesseract
+        text = pytesseract.image_to_string(img)
+        text_upper = text.upper().strip()
+
+        new_count = count_red_pixels(arr)
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Red pixel count: {new_count}")
-        
+
         if old_count is not None:
             if new_count > old_count:
-                print("Red pixels increased! Playing diminished chord...")
-                play_diminished_chord()
+                # Check if text contains "UNMATCHED" or "AWSCLT"
+                if "UNMATCHED" in text_upper or "AWSCLT" in text_upper:
+                    print("Text contains 'UNMATCHED' or 'AWSCLT'. Not playing sound.")
+                else:
+                    print("Red pixels increased and text does not contain forbidden words. Playing diminished chord...")
+                    play_diminished_chord()
+                # Update old_count because we've detected a new higher baseline
+                old_count = new_count
             else:
-                print("No increase in red pixels.")
+                # If new_count < old_count, reset old_count to new_count
+                if new_count < old_count:
+                    print("Red pixel count decreased, resetting baseline.")
+                    old_count = new_count
+                else:
+                    # new_count == old_count, no change
+                    print("No increase in red pixels. Baseline remains the same.")
+                    # old_count remains unchanged
+        else:
+            # This is the first measurement
+            old_count = new_count
 
-        old_count = new_count
-        # Wait 10 seconds before next check
         sleep(10)
     else:
-        # If corners not set yet, just wait and check again
+        # If corners not set yet, just wait
         sleep(1)
