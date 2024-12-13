@@ -483,6 +483,9 @@ async function fillOpsGenieAlert() {
         status = "JOBFAILURE";
     } else if (status === "Terminated (TERMINATED)") {
         status = "JOBTERMINATED";
+    } else if (status === "Success (SUCCESS)") {
+        alert("Don't page out on this, it's successful already.");
+        return;
     }
  // TODO: fill this for the rest of the names...
 
