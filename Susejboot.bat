@@ -37,16 +37,8 @@ REM Open Workday
 start microsoft-edge:"https://www.myworkday.com/signetjewelers/d/home.htmld"
 ping localhost -n 3 >nul
 
-REM Open RPA Bot Incidents in Jira
-start microsoft-edge:"https://signetjewelers.atlassian.net/issues/?filter=45835&atlOrigin=eyJpIjoiZjBlOTA0NTg0Y2Q0NDc1YThjMjA0YWU0MmQwNjc5NjUiLCJwIjoiaiJ9"
-ping localhost -n 3 >nul
-
 REM Open Service Catalog - Submit an Issue
 start microsoft-edge:"https://signetjewelers.atlassian.net/servicedesk/customer/portal/1010"
-ping localhost -n 3 >nul
-
-REM Open Workday Again (Duplicate Link)
-start microsoft-edge:"https://www.myworkday.com/signetjewelers/d/home.htmld"
 ping localhost -n 3 >nul
 
 REM Microsoft Teams in Browser
