@@ -486,6 +486,9 @@ async function fillOpsGenieAlert() {
     } else if (status === "Success (SUCCESS)") {
         alert("Heads up, it's successful already. Defaulting status to MAXRUNALARM.");
         status = "MAXRUNALARM";
+    } else if (status === "") {
+        alert("Status not found. Defaulting status to MAXRUNALARM.");
+        status = "MAXRUNALARM";
     }
  // TODO: fill this for the rest of the names...
 
