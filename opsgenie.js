@@ -484,8 +484,8 @@ async function fillOpsGenieAlert() {
     } else if (status === "Terminated (TERMINATED)") {
         status = "JOBTERMINATED";
     } else if (status === "Success (SUCCESS)") {
-        alert("Don't page out on this, it's successful already.");
-        return;
+        alert("Heads up, it's successful already. Defaulting status to MAXRUNALARM.");
+        status = "MAXRUNALARM";
     }
  // TODO: fill this for the rest of the names...
 
