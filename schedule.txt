@@ -12,9 +12,9 @@ Start critical job reminders
 Saturday morning: There will be no mk_BATCH_EMAIL
 
 (PAY ATTENTION, set a reminder for this...)
-12:15 AM (Monday morning only)				Confirm the prompt for JRDS_HOLD_POINT alert
+12:15 AM (Monday morning only)				Confirm the prompt for RDSHOLD (JRDS_HOLD_POINT) alert
 1:30 AM	(Monday morning only) 				Start Final Pass (release JPOS_PROCESS_POLL if not at 96%)
-
+1:30 AM (Monday morning only)				When SMDS_SLSINVUPD_W is finished, set SMDS_SLSINVUPD_D pri to 10
 
 2:00 AM Check on Pick reports				PLAKIMSBATCH01 → SIMS_NEWPICK → *PICK
 2:00 AM (Sunday Only)					Continue Sunday notes (raise fences on stuff we need to do the reboots on)
@@ -28,3 +28,4 @@ Saturday morning: There will be no mk_BATCH_EMAIL
 6:30 AM 3rd shift turnover				Do the 3rd shift turnover
 7:00 AM	Page Out on MAXRUN Alarms			Handle any MAXRUN alarm issues post 7 AM
 7:45 AM Send compops email				Send compops the turnover packet
+7:45 AM Clock your hours				Clock your hours!! ☺
