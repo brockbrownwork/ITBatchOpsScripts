@@ -489,7 +489,10 @@ async function fillOpsGenieAlert() {
     } else if (status === "") {
         alert("Status not found. Defaulting status to MAXRUNALARM.");
         status = "MAXRUNALARM";
+    } else if (status === "Activated (ACTIVATED)") {
+        status = "MUST_START_ALARM";
     }
+    
  // TODO: fill this for the rest of the names...
 
     let description = `${jobName}; ${status}; autosys`;
