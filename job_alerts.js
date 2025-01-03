@@ -67,6 +67,7 @@ function findRepeatJobs(text) {
       if (statusKeywords.includes(lines[i].trim())) {
         const jobName = lines[i + 1]?.trim();
         if (jobName) {
+          // Figure out if the job is a dba archive or a dba backup
           // Count the occurrences of each job name
           jobCounts[jobName] = (jobCounts[jobName] || 0) + 1;
   
