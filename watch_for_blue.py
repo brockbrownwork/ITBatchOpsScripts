@@ -12,8 +12,8 @@ from chord import play_chord
 # This script:
 # 1. Allows you to press Ctrl+~ to record the mouse position as the top-left corner of a box.
 # 2. Press Ctrl+~ again to record the mouse position as the bottom-right corner of a box.
-# 3. Every 10 seconds, it will analyze that region of the screen to count how many (255,0,0) red pixels are present.
-# 4. If the count of red pixels increases compared to the previous measurement, it plays a diminished chord.
+# 3. Every 10 seconds, it will analyze that region of the screen to count how many (255,0,0) blue pixels are present.
+# 4. If the count of blue pixels increases compared to the previous measurement, it plays a diminished chord.
 
 # Global variables to store corner coordinates
 top_left = None
@@ -80,7 +80,7 @@ while True:
     if top_left is not None and bottom_right is not None:
         # Once both corners are available, start analyzing every 10 seconds
         new_count = count_red_pixels(top_left, bottom_right)
-        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Red pixel count: {new_count}")
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] blue pixel count: {new_count}")
         
         if old_count is not None:
             if new_count > old_count:
