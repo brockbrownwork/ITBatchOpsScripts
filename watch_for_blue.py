@@ -67,7 +67,7 @@ def play_diminished_chord():
     play_chord(diminished_frequencies, duration=2, fade_duration=0.5)
 
 def play_minor_7_chord():
-    frequencies = [220.0, 261.6255653005986, 329.6275569128699, 391.99543598174927]
+    frequencies = [220.0, 523.2511306011972, 329.6275569128699, 783.9908719634985] # try a more spaced voicing
     play_chord(frequencies, duration = 2, fade_duration = 0.5)
 
 print("Press Ctrl+` once to set the top-left corner, then again to set the bottom-right corner.")
