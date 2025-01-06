@@ -58,7 +58,7 @@ start "" "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
 echo All specified links have been opened.
 
 REM Open VSCode in the current directory
-start "" "code ."
+code .
 
 REM Connect udrive
 net use U: \\nas01.jewels.local\sterling /user:jewels\%username% /persistent:no
