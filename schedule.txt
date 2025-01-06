@@ -13,7 +13,7 @@ Saturday morning: There will be no mk_BATCH_EMAIL
 
 (PAY ATTENTION, set a reminder for this...)
 12:15 AM (Monday morning only)				Confirm the prompt for RDSHOLD (JRDS_HOLD_POINT) alert
-1:30 AM	(Monday morning only) 				Start Final Pass (release JPOS_PROCESS_POLL if not at 96%)
+1:30 AM	(Monday morning only) 				Start Final Pass (release JPOS_PROCESS_POLL_FINAL_OK if not at 96%)
 1:30 AM (Monday morning only)				When SMDS_SLSINVUPD_W is finished, set SMDS_SLSINVUPD_D pri to 10
 
 2:00 AM Check on Pick reports				PLAKIMSBATCH01 → SIMS_NEWPICK → *PICK
