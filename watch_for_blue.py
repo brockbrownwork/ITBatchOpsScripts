@@ -68,6 +68,7 @@ def play_diminished_chord():
 
 def play_minor_7_chord():
     frequencies = [220.0, 261.6255653005986, 329.6275569128699, 391.99543598174927]
+    frequencies = [f * pow(2,1/12) for f in frequencies]
     play_chord(frequencies, duration = 2, fade_duration = 0.5)
 
 print("Press Ctrl+` once to set the top-left corner, then again to set the bottom-right corner.")
