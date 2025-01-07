@@ -86,6 +86,7 @@ function findRepeatJobs(text) {
   
     // Alert if any duplicates are found
     if (duplicates.length > 0) {
+      notify();
       alert('Duplicate job names found: ' + duplicates.join(', '));
     }
   
