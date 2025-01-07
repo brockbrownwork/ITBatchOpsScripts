@@ -470,7 +470,9 @@ async function fillOpsGenieAlert() {
     console.log("fillOpsGenieAlert called...");
 
     let [jobName, group, status] = await extractReportData();
-    if (jobName.startsWith("Reflexis")) {
+    if (jobName === "Reflexis_LSBS_TO_RDS") {
+        group = "Web and Mobile Solutions";
+    } else if (jobName.startsWith("Reflexis")) {
         group = "Workday-HCM-Payroll-WFM-Support";
     }
     if (group === "DCOE Support") {
