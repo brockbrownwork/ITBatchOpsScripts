@@ -53,6 +53,10 @@ REM Change requests
 start microsoft-edge:"https://signetjewelers.atlassian.net/jira/servicedesk/projects/SERVOPS/queues/custom/1542"
 ping localhost -n 3 >nul
 
+REM Workday
+start microsoft-edge:"https://www.myworkday.com/signetjewelers/d/home.htmld"
+ping localhost -n 3 >nul
+
 REM Microsoft Teams application
 start "" "C:\Users\bbrown\AppData\Local\Microsoft\Teams\Update.exe"
 
