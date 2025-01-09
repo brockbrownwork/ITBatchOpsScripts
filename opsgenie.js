@@ -475,6 +475,9 @@ async function fillOpsGenieAlert() {
     } else if (jobName.startsWith("Reflexis")) {
         group = "Workday-HCM-Payroll-WFM-Support";
     }
+    if (jobName.startsWith("car_") || jobName.startsWith("fin_rtr") || jobName.startsWith("ZFI_")) {
+        alert("Make sure to put this alert in the BatchOps SAP Dev/Integration Chat as well");
+    }
     if (group === "DCOE Support") {
         group = "Business Int";
     } else if (group === "Enterprise Service Integration") {
