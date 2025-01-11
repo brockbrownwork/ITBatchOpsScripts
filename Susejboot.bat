@@ -1,6 +1,6 @@
 REM Batch script to open specified URLs one at a time in Microsoft Edge
 
-@echo off
+REM @echo off
 REM Open Autosys UI
 start microsoft-edge:"https://autosys-ui.auto.cloud.jewels.com/wcc/ui/Launcher.html"
 ping localhost -n 3 >nul
