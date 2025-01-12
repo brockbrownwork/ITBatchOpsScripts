@@ -65,11 +65,11 @@ start "" "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
 
 echo All specified links have been opened.
 
+REM Connect udrive
+net use U: \\nas01.jewels.local\sterling /user:jewels\%username% /persistent:no
+
 REM Open VSCode in the current directory
 code .
-
-REM Connect udrive (why isn't this working...?)
-net use U: \\nas01.jewels.local\sterling /user:jewels\%username% /persistent:no
 
 REM Run Python script
 cmd /c python critical_job_reminders.py
