@@ -475,6 +475,9 @@ async function fillOpsGenieAlert() {
     } else if (jobName.startsWith("Reflexis")) {
         group = "Workday-HCM-Payroll-WFM-Support";
     }
+    if (jobName === "edw_DSS_AM_PROCESS") {
+        status = "MUST_START_ALARM";
+    }
     if (jobName === "ims_dc_WF_AD_PICK_LIST") {
         group = "Distribution - Manager Sch";
     }
