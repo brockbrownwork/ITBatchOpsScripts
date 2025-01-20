@@ -37,7 +37,7 @@ def capture_mouse_position():
 # Set the hotkey to Ctrl+~
 keyboard.add_hotkey('ctrl+`', capture_mouse_position)  # On most keyboards, ~ is shift+`, so ctrl+` might suffice.
 
-def count_red_pixels(top_left, bottom_right):
+def count_blue_pixels(top_left, bottom_right):
     # Ensure coordinates are integers
     x1, y1 = int(top_left[0]), int(top_left[1])
     x2, y2 = int(bottom_right[0]), int(bottom_right[1])
@@ -58,8 +58,9 @@ def count_red_pixels(top_left, bottom_right):
     # Count how many pixels are exactly (255,0,0)
     # arr is shape (height, width, 3)
     # We'll create a boolean mask
-    red_pixels = np.sum((arr[:,:,0] == 0) & (arr[:,:,1] == 90) & (arr[:,:,2] == 176))
-    return red_pixels
+    blue_pixels =  np.sum((arr[:,:,0] == 0) & (arr[:,:,1] == 90) & (arr[:,:,2] == 176))
+    blue_pixels += np.sum((arr[:,:,0] == 0) & (arr[:,:,1] == 90) & (arr[:,:,2] == 170))
+    return blue_pixels
 
 def play_diminished_chord():
     # Example: C diminished chord frequencies: C (261.63 Hz), Eb (311.13 Hz), Gb (369.99 Hz)
@@ -80,7 +81,7 @@ while True:
     # Wait until both corners are set
     if top_left is not None and bottom_right is not None:
         # Once both corners are available, start analyzing every 10 seconds
-        new_count = count_red_pixels(top_left, bottom_right)
+        new_count = count_blue_pixels(top_left, bottom_right)
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] blue pixel count: {new_count}")
         
         if old_count is not None:
