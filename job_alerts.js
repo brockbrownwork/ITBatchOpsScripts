@@ -283,7 +283,7 @@ function notify() {
             wasOpenPreviously = containsOpen;
             previousText = currentText;  // Update previousText to the new visible text
         }
-    }, 4000);  // Check every 4 seconds
+    }, 8000);  // Check every 8 seconds
 
     // Assign the extraction and clipboard copying to the "Copy critical jobs" button
     copyJobsButton.addEventListener('click', function() {
