@@ -58,8 +58,9 @@ def count_blue_pixels(top_left, bottom_right):
     # Count how many pixels are exactly (255,0,0)
     # arr is shape (height, width, 3)
     # We'll create a boolean mask
-    blue_pixels =  np.sum((arr[:,:,0] == 0) & (arr[:,:,1] == 90) & (arr[:,:,2] == 176))
-    blue_pixels += np.sum((arr[:,:,0] == 0) & (arr[:,:,1] == 90) & (arr[:,:,2] == 170))
+    blue_pixels =  np.sum((arr[:,:,0] ==  0) & (arr[:,:,1] == 90) & (arr[:,:,2] == 176))
+    blue_pixels += np.sum((arr[:,:,0] ==  0) & (arr[:,:,1] == 90) & (arr[:,:,2] == 170))
+    blue_pixels += np.sum((arr[:,:,0] == 46) & (arr[:,:,1] == 90) & (arr[:,:,2] == 158))
     return blue_pixels
 
 def play_diminished_chord():
