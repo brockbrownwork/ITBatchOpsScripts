@@ -6,7 +6,7 @@
 // @author       You
 // @match        https://signetjewelers.app.opsgenie.com/alert/list
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-// @grant        none
+// @grant        window.onurlchange
 // ==/UserScript==
 
 (function() {

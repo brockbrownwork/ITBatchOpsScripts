@@ -353,7 +353,7 @@
             });
         })();
 
-        beep(); // test the beep
+        notify(); // test the beep
         }
     });
 })();
