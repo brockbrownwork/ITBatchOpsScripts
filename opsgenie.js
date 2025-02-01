@@ -1,3 +1,16 @@
+// ==UserScript==
+// @name         OpsGenie Alert Generator
+// @namespace    http://opsgenie.com/
+// @version      2025-02-01
+// @description  try to take over the world!
+// @author       You
+// @match        https://signetjewelers.app.opsgenie.com/alert/list
+// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
 /**
  * Extracts lines containing dates in the format 'MMM DD, YYYY HH:MM:SS AM/PM',
  * ignores the first two dates found, calculates the average time difference
@@ -129,7 +142,7 @@ async function extractReportData() {
                     const logParts = logEntry
                         .split('\t')
                         .filter(part => part.trim() !== '' && part.includes('(') && part.includes(')') && part.indexOf('(') === part.lastIndexOf('(') && part.indexOf(')') === part.lastIndexOf(')'));
-                    
+
                     // Check if the last item exists before assigning it to status
                     status = logParts[logParts.length - 1];
                 }
@@ -475,6 +488,9 @@ async function fillOpsGenieAlert() {
     } else if (jobName.startsWith("Reflexis")) {
         group = "Workday-HCM-Payroll-WFM-Support";
     }
+    if (jobName.startsWith("pse")) {
+        group = "On Call - Distribution Escalation Policy";
+    }
     if (jobName === "edw_DSS_AM_PROCESS") {
         status = "MUST_START_ALARM";
     }
@@ -505,7 +521,7 @@ async function fillOpsGenieAlert() {
     } else if (status === "Activated (ACTIVATED)") {
         status = "MUST_START_ALARM";
     }
-    
+
  // TODO: fill this for the rest of the names...
 
     let description = `${jobName}; ${status}; autosys`;
@@ -562,4 +578,20 @@ async function fillOpsGenieAlert() {
     }
 }
 
-addCreateAlertFromReportButton();
+const wait10Seconds = () => {
+    return new Promise(resolve => {
+        setTimeout(resolve, 10000);
+    });
+};
+
+// Alternative usage with .then()
+wait10Seconds().then(() => {
+    console.log("Waited 10 seconds...");
+    addCreateAlertFromReportButton();
+});
+
+
+
+
+
+})();
