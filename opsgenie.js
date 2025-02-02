@@ -148,8 +148,7 @@ async function extractReportData() {
                 }
             }
         }
-
-        // account for the wrong gruop info in edp_SIGNET_AWS_IA_SRV_LVL
+        // account for the wrong group info in edp_SIGNET_AWS_IA_SRV_LVL
         if (name === "edp_SIGNET_AWS_IA_SRV_LVL" && group === "Digital Integration ETL") {
             alert("Note: this job is actually supposed to go to Business Intelligence. Automatically corrected. Please service queue in Jira.");
             group = "Business Int";
@@ -500,6 +499,13 @@ async function fillOpsGenieAlert() {
     if (jobName.startsWith("car_") || jobName.startsWith("fin_rtr") || jobName.startsWith("ZFI_")) {
         alert("Make sure to put this alert in the BatchOps SAP Dev/Integration Chat as well");
     }
+    let groupToOnCall = {
+        "DCOE Support": "On call - business intelligence primary",
+        "Digital Integration ETL": "on call - digital etl",
+        "Enterprise Service Integration": "on call - esi"
+    };
+    group = groupToOnCall[group] ?? group;
+    
     if (group === "DCOE Support") {
         group = "Business Int";
     } else if (group === "Enterprise Service Integration") {
