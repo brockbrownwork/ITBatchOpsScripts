@@ -505,12 +505,6 @@ async function fillOpsGenieAlert() {
         "Enterprise Service Integration": "on call - esi"
     };
     group = groupToOnCall[group] ?? group;
-    
-    if (group === "DCOE Support") {
-        group = "Business Int";
-    } else if (group === "Enterprise Service Integration") {
-        group = "Enterprise Services Integration";
-    }
 
     if (status === "Running (RUNNING)") {
         status = "MAXRUNALARM";
