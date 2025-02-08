@@ -648,7 +648,7 @@ const wait10Seconds = () => {
     });
 };
 
-// Alternative usage with .then()
+// Wait ten seconds for browser elements to fully load then start the script.
 wait10Seconds().then(() => {
     console.log("Waited 10 seconds...");
     addCreateAlertFromReportButton();
