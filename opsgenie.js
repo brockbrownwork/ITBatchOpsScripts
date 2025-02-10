@@ -496,6 +496,10 @@ async function fillOpsGenieAlert() {
     if (jobName === "ims_dc_WF_AD_PICK_LIST") {
         group = "On Call - Distribution Escalation Policy";
     }
+    if (jobName.toUpperCase().includes("VERTEX")) {
+        alert("Job name contains VERTEX, changing group to SAP Tax");
+        group = "SAP Tax";
+    }
     if (jobName.startsWith("car_") || jobName.startsWith("fin_rtr") || jobName.startsWith("ZFI_")) {
         alert("Make sure to put this alert in the BatchOps SAP Dev/Integration Chat as well");
     }
