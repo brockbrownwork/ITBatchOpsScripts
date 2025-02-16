@@ -522,8 +522,8 @@ async function fillOpsGenieAlert() {
         const userChoice = confirm("Click OK for MAX RUN ALARM, Cancel for MUST START ALARM");
         status = userChoice ? "MAXRUNALARM" : "MUST_START_ALARM";
     } else if (status === "") {
-        alert("Status not found. Defaulting status to MAXRUNALARM.");
-        status = "MAXRUNALARM";
+        const userChoice = confirm("Click OK for MAX RUN ALARM, Cancel for MUST START ALARM");
+        status = userChoice ? "MAXRUNALARM" : "MUST_START_ALARM";
     } else if (status === "Activated (ACTIVATED)") {
         status = "MUST_START_ALARM";
     }
