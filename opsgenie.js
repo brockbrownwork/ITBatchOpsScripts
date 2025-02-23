@@ -153,6 +153,10 @@ async function extractReportData() {
             alert("Note: this job is actually supposed to go to Business Intelligence. Automatically corrected. Please service queue in Jira.");
             group = "Business Int";
         }
+        if (group === "Finance Dallas") {
+            alert("This group wants to be called directly, see notes for Dallas Finance, go to Autosys playbook then click the '...' at the bottom, then go to Finance call tab.");
+            return;
+        }
 
         // Log the extracted information
         console.log('Name:', name);
