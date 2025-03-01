@@ -10,7 +10,7 @@ print("Reminders console")
 jobs = [
     {"name": "edw_ODSP_RMS_DATA_EDWP_box", "start_time": "18:00", "end_time": "03:15"},
     {"name": "hr_SCHEDULE_box", "start_time": "20:30", "end_time": "19:45"},
-    {"name": "hr_COMMISSIONS_box", "start_time": "00:59", "end_time": "2:45"},
+    {"name": "hr_COMMISSIONS_box", "start_time": "00:59", "end_time": "02:45"},
     {"name": "hr_com_MV_SALEPLUSw", "start_time": "00:59", "end_time": "02:32"},
     {"name": "edp_UK_ECOMM_box", "start_time": "01:00", "end_time": "01:15"},
     {"name": "edw_infa_SISSALES_SLIP_W", "start_time": "04:00", "end_time": "04:42"},
@@ -74,14 +74,14 @@ def process_jobs(jobs):
         start_time = datetime.strptime(job["start_time"], "%H:%M").time()
         end_time = datetime.strptime(job["end_time"], "%H:%M").time()
         
-        # Compute alert_time_start by adding 15 minutes
-        alert_time_start = datetime.combine(now.date(), start_time) + timedelta(minutes=15)
+        # Compute alert_time_start by adding 5 minutes
+        alert_time_start = datetime.combine(now.date(), start_time) + timedelta(minutes=5)
         if alert_time_start <= now:
             # If the alert time has already passed today, schedule for tomorrow
             alert_time_start += timedelta(days=1)
         
-        # Compute alert_time_end by adding 15 minutes
-        alert_time_end = datetime.combine(now.date(), end_time) + timedelta(minutes=15)
+        # Compute alert_time_end by adding 5 minutes
+        alert_time_end = datetime.combine(now.date(), end_time) + timedelta(minutes=5)
         # If end_time is earlier than or equal to start_time, it's on the next day
         if end_time <= start_time:
             alert_time_end += timedelta(days=1)
