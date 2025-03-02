@@ -551,7 +551,7 @@ async function fillOpsGenieAlert() {
     }
 
     if (status.includes("machine")) {
-        alert("If this is a machine pending:\nping it, then go to enterprise command line to see if it's available in autosys\ntry to launch the autosys agent yourself in the enterprise command line, if that doesn't work");
+        alert("If this is a machine pending:\nping it, then go to enterprise command line to see if it's available in autosys\ntry to launch the autosys agent yourself in the enterprise command line, if that doesn't work try the start script. If that doesn't work, page IT platform operations.");
     }
 
     // Find and click the first button with the text "Create alert"
