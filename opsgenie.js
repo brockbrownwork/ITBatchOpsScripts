@@ -266,7 +266,7 @@ function changeResponders(someText) {
             // Continue typing the next character after a shorter delay
             setTimeout(function() {
                 typeCharacter(index + 1);
-            }, 50); // Reduced from 100 ms to 50 ms
+            }, 50);
         } else {
             // After typing all characters, wait for 2 seconds before simulating pressing Enter
             setTimeout(simulateEnterKey, 2000); // 2000 milliseconds = 2 seconds (unchanged)
@@ -376,7 +376,7 @@ function changeAPIIntegration() {
             // Continue typing the next character after a shorter delay
             setTimeout(function() {
                 typeCharacter(index + 1);
-            }, 50); // Reduced from 100 ms to 50 ms
+            }, 50);
         } else {
             // After typing all characters, simulate pressing Enter
             simulateEnterKey();
@@ -564,7 +564,7 @@ async function fillOpsGenieAlert() {
     }
 
     // Wait 500 milliseconds before clicking the first element with the class "ops-slider"
-    await new Promise(resolve => setTimeout(resolve, 500)); // Reduced from 1000 ms to 500 ms
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const sliderElement = document.querySelector('.ops-slider');
     if (sliderElement) {
@@ -572,7 +572,7 @@ async function fillOpsGenieAlert() {
     }
 
     // Wait an additional 500 milliseconds before setting the textarea values
-    await new Promise(resolve => setTimeout(resolve, 500)); // Reduced from 1000 ms to 500 ms
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     // Find the first modal dialog with class "modal-dialog modal-lg"
     const modal = document.querySelector('.modal-dialog.modal-lg');
@@ -583,17 +583,17 @@ async function fillOpsGenieAlert() {
         const descriptionTextarea = modal.querySelector('textarea[name="description"]');
 
         if (textarea && descriptionTextarea) {
-            // Simulate typing into the first textarea with a reduced delay
+            // Simulate typing into the first textarea with a delay
             await simulateTyping(textarea, description, 10);
 
             // Wait a small delay before typing into the next field
-            await new Promise(resolve => setTimeout(resolve, 250)); // Reduced from 500 ms to 250 ms
+            await new Promise(resolve => setTimeout(resolve, 250));
 
-            // Simulate typing into the second textarea with a reduced delay
-            await simulateTyping(descriptionTextarea, description, 10); // Reduced from 100 ms to 50 ms per keystroke
+            // Simulate typing into the second textarea with a delay
+            await simulateTyping(descriptionTextarea, description, 10);
 
             // After typing into both fields, wait a small delay
-            await new Promise(resolve => setTimeout(resolve, 500)); // Reduced from 1000 ms to 500 ms
+            await new Promise(resolve => setTimeout(resolve, 500));
 
             // Call changeResponders and changeAPIIntegration
             changeResponders(group);
