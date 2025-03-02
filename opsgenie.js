@@ -534,6 +534,11 @@ async function fillOpsGenieAlert() {
 
     let description = `${jobName}; ${status}; autosys`;
 
+    if (jobName.toLowerCase().endsWith("box") && status == "MAXRUNALARM") {
+        alert("Don't page out maxrunalarms on boxes, look at the jobs inside it and investigate.");
+        return;
+    }
+
     if (group == "on call - sap s4_schedule") {
         copyTextToClipboard(description + "\nPlease advise.");
         alert("This is a SAP S4 alert, this needs to be posted on the BatchOps chat. Copied description to clipboard.");
