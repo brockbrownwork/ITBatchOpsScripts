@@ -539,6 +539,11 @@ async function fillOpsGenieAlert() {
         return;
     }
 
+    if (group == "database system - support" || group == "sysops" || jobName.startsWith("dba")) {
+        alert("Don't page out for DBA or SysOps :)\nTell them to page them Monday if it's the weekend, else ask first shift to page out.\n(note: if there's a bunch of these failed, maybe check it out...)");
+        return;
+    }
+
     if (group == "on call - sap s4_schedule") {
         copyTextToClipboard(description + "\nPlease advise.");
         alert("This is a SAP S4 alert, this needs to be posted on the BatchOps chat. Copied description to clipboard.");
