@@ -14,7 +14,7 @@ jobs = [
     {"name": "hr_com_MV_SALEPLUSw", "start_time": "00:59", "end_time": "02:32"},
     {"name": "edp_UK_ECOMM_box", "start_time": "01:00", "end_time": "01:15"},
     {"name": "edw_infa_SISSALES_SLIP_W", "start_time": "04:00", "end_time": "04:42"},
-    {"name": "mk_BATCH_END_EMAIL", "start_time": "05:30", "end_time": "05:31"},
+    {"name": "mk_BATCH_END_EMAIL", "start_time": "07:30", "end_time": "07:31"},
     {"name": "edw_infa_SIG_DALLAS_SALES", "start_time": "06:15", "end_time": "06:45"},
     {"name": "zms_BATCH_END_ZL", "start_time": "04:00", "end_time": "04:01"}
 ]
