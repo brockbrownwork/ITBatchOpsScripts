@@ -117,7 +117,7 @@
             // Alert if any duplicates are found
             if (duplicates.length > 0) {
             notify();
-            alert('Duplicate job names found: ' + duplicates.join(', '));
+            delayedAlert('Duplicate job names found: ' + duplicates.join(', '));
             }
 
             return jobNames;
@@ -210,6 +210,16 @@
                 return visibleText;  // Return the visible text from the entire document
             }
 
+            function delayedAlert() {
+                // Set a timeout of 5000 milliseconds (5 seconds)
+                setTimeout(function() {
+                  // Display an alert after the timeout
+                  alert("This alert appeared after 5 seconds!");
+                }, 5000);
+                
+                console.log("Alert scheduled to appear in 5 seconds...");
+              }
+
             // Function to extract lines after specific keywords
             function extractLinesAfterKeywords(text, keywords) {
                 const lines = text.split('\n');  // Split the text into individual lines
@@ -295,7 +305,7 @@
                 }
                 if (currentText.includes("Error:")) {
                     notify();
-                    alert("An error has been found, you probably have to log in again.");
+                    delayedAlert("An error has been found, you probably have to log in again.");
                     notify();
                 }
 
@@ -308,7 +318,7 @@
                         // Check if there's a PNC job
                         if (currentText.includes("PNC") && !pncToggle) {
                             pncToggle = true;
-                            alert("Warning, one of these is PNC. Is it after a holiday? Mark as successful?");
+                            delayedAlert("Warning, one of these is PNC. Is it after a holiday? Mark as successful?");
                         } else {
                             pncToggle = false;
                         }
