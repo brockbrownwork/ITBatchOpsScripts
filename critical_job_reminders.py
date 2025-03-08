@@ -37,10 +37,11 @@ def csv_to_jobs_dict(filepath):
             # Ensure we have at least 3 fields
             if len(fields) >= 3:
                 job = {
-                    "name": fields[0],
-                    "start_time": fields[1],
-                    "end_time": fields[2]
+                    "name": fields[0].strip("\t").strip(" "),
+                    "start_time": fields[1].strip("\t").strip(" "),
+                    "end_time": fields[2].strip("\t").strip(" ")
                 }
+                print("Job:", job)
                 jobs.append(job)
     
     return jobs
