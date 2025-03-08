@@ -210,14 +210,12 @@
                 return visibleText;  // Return the visible text from the entire document
             }
 
-            function delayedAlert() {
+            function delayedAlert(message) {
                 // Set a timeout of 5000 milliseconds (5 seconds)
                 setTimeout(function() {
-                  // Display an alert after the timeout
-                  alert("This alert appeared after 5 seconds!");
+                  // Display the custom alert message after the timeout
+                  alert(message);
                 }, 5000);
-                
-                console.log("Alert scheduled to appear in 5 seconds...");
               }
 
             // Function to extract lines after specific keywords
