@@ -49,8 +49,6 @@ def csv_to_jobs_dict(filepath):
 
 jobs = csv_to_jobs_dict("critical_jobs_schedule.csv")
 
-print(jobs)
-
 # Job data as lists (replace this with your data parsing if automated)
 jobs = [
     {"name": "edw_ODSP_RMS_DATA_EDWP_box", "start_time": "18:00", "end_time": "03:15"},
