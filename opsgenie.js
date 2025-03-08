@@ -540,7 +540,7 @@ async function fillOpsGenieAlert() {
     }
 
     if (group == "database system - support" || group == "sysops" || jobName.startsWith("dba")) {
-        alert("Don't page out for DBA or SysOps :)\nTell them to page them Monday if it's the weekend, else ask first shift to page out.\n(note: if there's a bunch of these failed, maybe check it out...)");
+        alert("Don't page out for DBA or SysOps :)");
         return;
     }
 
