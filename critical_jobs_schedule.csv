@@ -1,0 +1,10 @@
+name	start_time	end_time
+edw_ODSP_RMS_DATA_EDWP_box	18:00	03:15
+hr_SCHEDULE_box	            20:30	19:45
+hr_COMMISSIONS_box		    00:59	02:45
+hr_com_MV_SALEPLUSw		    00:59	02:32
+edp_UK_ECOMM_box		    01:00	01:15
+edw_infa_SISSALES_SLIP_W	04:00	04:42
+mk_BATCH_END_EMAIL		    07:30	07:31
+edw_infa_SIG_DALLAS_SALES	06:15	06:45
+zms_BATCH_END_ZL		    04:00	04:01

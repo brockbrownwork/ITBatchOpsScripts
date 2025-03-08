@@ -3,8 +3,52 @@ import time
 from datetime import datetime, timedelta
 import pyperclip
 from tkinter import Tk, Button, Label
+import csv
 
 print("Reminders console")
+
+
+
+def csv_to_jobs_dict(filepath):
+    """
+    Converts a tab-delimited file into a list of job dictionaries.
+    Handles multiple consecutive tabs by reducing them to a single tab.
+    
+    Args:
+        filepath (str): Path to the tab-delimited file
+        
+    Returns:
+        list: List of job dictionaries
+    """
+    jobs = []
+    
+    with open(filepath, 'r') as file:
+        # Skip header line
+        header = file.readline().strip()
+        
+        for line in file:
+            # Replace multiple consecutive tabs with a single tab
+            while '\t\t' in line:
+                line = line.replace('\t\t', '\t')
+            
+            # Split by tabs
+            fields = line.strip().split('\t')
+            
+            # Ensure we have at least 3 fields
+            if len(fields) >= 3:
+                job = {
+                    "name": fields[0],
+                    "start_time": fields[1],
+                    "end_time": fields[2]
+                }
+                jobs.append(job)
+    
+    return jobs
+
+
+jobs = csv_to_jobs_dict("critical_jobs_schedule.csv")
+
+print(jobs)
 
 # Job data as lists (replace this with your data parsing if automated)
 jobs = [
@@ -18,6 +62,9 @@ jobs = [
     {"name": "edw_infa_SIG_DALLAS_SALES", "start_time": "06:15", "end_time": "06:45"},
     {"name": "zms_BATCH_END_ZL", "start_time": "04:00", "end_time": "04:01"}
 ]
+
+
+######################
 
 # List of weekdays for scheduling mk_BATCH_END_EMAIL
 WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
