@@ -293,6 +293,11 @@
                     console.log("Detected 'Close...' or 'Alert Actions'. Skipping processing.");
                     return;  // Skip the rest of the processing
                 }
+                if (currentText.includes("Error:")) {
+                    notify();
+                    alert("An error has been found, you probably have to log in again.");
+                    notify();
+                }
 
                 let containsOpen = currentText.includes("Open");
 
