@@ -512,7 +512,8 @@ async function fillOpsGenieAlert() {
         "DCOE Support": "On call - business intelligence primary",
         "Digital Integration ETL": "on call - digital etl",
         "Enterprise Service Integration": "on call - esi",
-        "SAP S4": "on call - sap s4_schedule"
+        "SAP S4": "on call - sap s4_schedule",
+        "Marketing Dallas": "on call - marketing dallas escalation policy"
     };
     group = groupToOnCall[group] ?? group;
 
