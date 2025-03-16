@@ -115,9 +115,9 @@
             }
 
             // Alert if any duplicates are found
-            if (duplicates.length > 0) {
-            notify();
-            delayedAlert('Duplicate job names found: ' + duplicates.join(', '));
+            if (duplicates.length > 0) {\
+                delayedAlert('Duplicate job names found: ' + duplicates.join(', '));
+                notify();
             }
 
             return jobNames;
