@@ -1,0 +1,951 @@
+CACS Collections Package.xls
+
+"Job Doc Help & Templates
+(YELLOW = DO NOT CALL)"							
+TWS SCHEDULE	TWS JOB NAME	"APPLICATION CI
+(For ServiceNow IR)"	"U=User Submitted
+O=On Request"	"CRITICAL
+(Y/N)"	"PAGERDUTY GROUP
+(1st CONTACT)"	"2nd
+CONTACT
+(OBSOLETE)"	"3rd
+CONTACT
+(OBSOLETE)"
+ARCHIVE_SOX_RPTS	ARCHIVE_ORACLE_SOX_REPORTS_CACS			Y	DBA on Call		M. Kubitz
+MOVE_MIG_LOGS     	MOVE_MIGRATION_LOGS			Y	Unix Admin	T. Moeller	D. Reynard
+ORACLE_SOX_RPTS	ORACLE_SOX_REPORTS_CACS			Y	Unix Admin	T. Moeller	D. Reynard
+ORACLE_SOX_UNAUT	JCACS_DETECT_AND_KILL_UNAUTHORIZED_SOX			Y	DBA on Call		M. Kubitz
+PROD_CODE_LIBCHGS	PROD_CODE_LIB_CHGS			N	Unix Admin	T. Moeller	D. Reynard
+SBOX_CPU_USG_CHT	JBOX_WKLY_CPU_USAGE_CHART			N	Unix Admin	T. Moeller	D. Reynard
+SCACS_AFTER_DAILY	JCACS_FTPZTRPTS			N		M. Eisert	
+SCACS_AFTER_DAILY	JCACS_ZTAI			Y		M. Eisert	
+SCACS_AFTER_DAILY	JCACS_ZTSL			Y		M. Eisert	
+SCACS_AFTER_DAILY	JCOL_LIFE_CYCLE_LTR030	Adobe Livecycle		N	IT CC Support (itccsupport@jewels.com)     	 	
+SCACS_AFTER_DAILY	JCOL_LIFE_CYCLE_LTR050	Adobe Livecycle		N	IT CC Support (itccsupport@jewels.com)     	 	
+SCACS_AFTER_DAILY	JCOL_LTR030			N		M. Eisert	M. Eisert
+SCACS_AGLOADFTP	JCACS_AGLOADFTP			Y		M. Eisert	
+SCACS_AREASCRUB	JCACS_CACSAREASCRUB			N		M. Eisert	
+SCACS_BMREXT	JCACS_CACSBMRPEXT			N		M. Eisert	
+SCACS_BUREAULINK	JCACS_BKUPBLINKA			Y		M. Eisert	
+SCACS_BUREAULINK	JCACS_BKUPBLINKB			Y		M. Eisert	
+SCACS_BUREAULINK	JCACS_FTPBLINKRPTS			N		M. Eisert	
+SCACS_BUREAULINK	JCACS_XBBLDALT			Y		M. Eisert	M. Randall
+SCACS_BUREAULINK	JCACS_XBDELALT			Y		M. Eisert	M. Randall
+SCACS_BUREAULINK	JCACS_XBDP			Y		M. Eisert	
+SCACS_BUREAULINK	JCACS_XBDR			Y		M. Eisert	
+SCACS_BUREAULINK	JCACS_XBDS			Y		M. Eisert	
+SCACS_BUREAULINK	JCACS_XBPH			Y		M. Eisert	
+SCACS_BUREAULINK	JCACS_XBPRINT			Y		M. Eisert	
+SCACS_BUREAULINK	JCACS_XBUR			Y		M. Eisert	
+SCACS_CACS_PURGE	JCACS_CACSEXTDEL			Y		M. Eisert	
+SCACS_CACS_PURGE	JCACS_ZTWU			Y		M. Eisert	
+SCACS_CACS_PURGE	JCACS_ZTWU_REPORTS			Y		M. Eisert	
+SCACS_CACS036	JCOL_CACS036			Y		M. Eisert	
+SCACS_CACSCCHEXT	JCACS_CACSCCHEXT			N		M. Eisert	
+SCACS_CACSHISTEX	JCACS_CACSHISTEXT			N		M. Eisert	
+SCACS_CDEHSTLD_D	JCACS_CDE_CALL_HISTORY_LOAD	Computer Assisted Collection System 		Y		M. Eisert	M. Randall
+SCACS_CERTRPT_O	JCACS_NOBLE_CERT_RPT_FTP		O	N		M. Eisert	
+SCACS_COLACTIVIT	JCACS_ACCSCM060			Y		M. Eisert	
+SCACS_COLSCHDRPT	JCACS_COLSCHDRPT			Y		M. Eisert	
+SCACS_DAILY_A	JCACS_BKUPCACSDATA			Y		M. Eisert	
+SCACS_DAILY_A	JCACS_END_CACS			Y		M. Eisert	
+SCACS_DAILY_A	JCACS_FTPCACSCRO			Y		M. Eisert	
+SCACS_DAILY_A	JCACS_STOPPGMS			Y		M. Eisert	
+SCACS_DAILY_A	JCACS_Z3PI			Y		M. Eisert	
+SCACS_DAILY_A	JCACS_ZTDS			Y		M. Eisert	
+SCACS_DAILY_A	JCACSDB_SHUTDOWN			Y	DBA on Call		M. Kubitz
+SCACS_DAILY_A	JCACSDB_STARTUP			Y	DBA on Call		M. Kubitz
+SCACS_DAILY_A2	JCACS_BKUPCACSDATA			Y		M. Eisert	
+SCACS_DAILY_A2	JCACS_FTPCACSCRO			Y		M. Eisert	
+SCACS_DAILY_A2	JCACS_STOPPGMS			Y		M. Eisert	
+SCACS_DAILY_A2	JCACS_Z3PI			Y		M. Eisert	
+SCACS_DAILY_A2	JCACS_ZTDS			Y		M. Eisert	
+SCACS_DAILY_A2	JCACSDB_SHUTDOWN			Y	DBA on Call		M. Kubitz
+SCACS_DAILY_A2	JCACSDB_STARTUP			Y	DBA on Call		M. Kubitz
+SCACS_DAILY_B	JCACS_BATCHRESET			Y		M. Eisert	
+SCACS_DAILY_B	JCACS_CDSUPDPREVW			Y		M. Eisert	M. Randall
+SCACS_DAILY_B	JCACS_DLTCACSDATA			Y		M. Eisert	
+SCACS_DAILY_B	JCACS_LDP327EXT			Y		M. Eisert	
+SCACS_DAILY_B	JCACS_LOADFILES			Y		M. Eisert	
+SCACS_DAILY_B	JCACS_NCMSGUPD			Y		M. Eisert	
+SCACS_DAILY_B	JCACS_Z3PA			Y		M. Eisert	
+SCACS_DAILY_B	JCACS_ZTAT			Y		M. Eisert	
+SCACS_DAILY_B	JCACS_ZTCL			Y		M. Eisert	
+SCACS_DAILY_B	JCACS_ZTDU1			Y		M. Eisert	
+SCACS_DAILY_B	JCACS_ZTTM	Computer Assisted Collection System 		Y		M. Eisert	M. Randall
+SCACS_DAILY_C	JCACS_DIALER			Y		M. Eisert	
+SCACS_DAILY_C	JCACS_Z3PU			Y		M. Eisert	
+SCACS_DAILY_C	JCACS_ZTCP			Y		M. Eisert	
+SCACS_DAILY_C	JCACS_ZTDL			Y		M. Eisert	
+SCACS_DAILY_C	JCACS_ZTDU2			Y		M. Eisert	
+SCACS_DAILY_D	JCACS_DIALERFTP			Y		M. Eisert	
+SCACS_DAILY_D	JCACS_FTPCACSCRB			Y		M. Eisert	
+SCACS_DAILY_D	JCACS_LETTER			Y		M. Eisert	
+SCACS_DAILY_D	JCACS_START_CACS			Y		M. Eisert	
+SCACS_DAILY_D	JCACS_Z3PD			Y		M. Eisert	
+SCACS_DAILY_D	JCACS_ZT3O			Y		M. Eisert	
+SCACS_DAILY_D	JCACS_ZTDP			Y		M. Eisert	
+SCACS_DAILY_D	JCACS_ZTDR			Y		M. Eisert	
+SCACS_DAILY_D	JCACS_ZTUS			Y		M. Eisert	
+SCACS_DAYLITE_SV	JCACS_ZPWRLDLD			Y		M. Eisert	
+SCACS_DELSCRUPD 	JCACS_DELINQSCRUPDT			N		M. Eisert	
+SCACS_DIAMSL2_PM	JCACS_DIALMSGUPLD	Computer Assisted Collection System 		Y		M. Eisert	
+SCACS_DIAMSL2_SA	JCACS_DIALMSGUPLD	Computer Assisted Collection System 		Y		M. Eisert	
+SCACS_DIAMSLD_AM	JCACS_DIALMSGUPLD_AM			Y		M. Eisert	
+SCACS_DIAMSLD_PM	JCACS_DIALMSGUPLD			Y		M. Eisert	
+SCACS_FTP3030S	JCACS_FTP3030S		O	N		M. Eisert	
+SCACS_LDADWLST	JCACS_LDADWLST			Y		M. Eisert	
+SCACS_LDADWLST	JCACS_LDADWLST_AM			Y		M. Eisert	
+SCACS_LDADWLST_S	JCACS_LDADWLST			Y		M. Eisert	
+SCACS_LDADWLST_S	JCACS_LDADWLST_AM			Y		M. Eisert	
+SCACS_LDPHNDTA_D	JCACS_LOAD_TCPA_PHONE_DATA	Computer Assisted Collection System 		N		M. Eisert	M. Eisert
+SCACS_PURGECLEAN	JCACS_CLEANUP			N		M. Eisert	
+SCACS_PURGECLEAN	JCACS_NOTIFY			N		M. Eisert	
+SCACS_PURGECLEAN	JCACS_VMSPURGE			N		M. Eisert	
+SCACS_PURGEOLD	JCACS_PURGEOLD			N	Unix Admin	T. Moeller	D. Reynard
+SCACS_XBMR	JCACS_XBMR			Y		M. Eisert	
+SCOL_AUDIT_LOG	JCOLLCT_AUDIT_LOGGING			N	Email IT Enterprise Services	D. Reynard	T. Moeller
+SCOL_CACNPIRPT_O	JCOL_CACS_NPI_RPT_O		O	N		M. Eisert	
+SCOL_CDEBATCH_D	JCOL_CDE_BATCH	Computer Assisted Collection System 		Y		M. Eisert	M. Randall
+SCOL_CDECACSND_D	JCOL_CDE_CACS_SEND	Computer Assisted Collection System 		Y		M. Eisert	M. Randall
+SCOL_CDECTLPRG_Y	JCOL_CDE_CACS_CTRL_REC_PRG	Computer Assisted Collection System 		Y		M. Eisert	M. Randall
+SCOL_CDESTATRP_D	JCOL_CDE_STATS_RPT	Computer Assisted Collection System 		Y		M. Eisert	P. Shao
+SCOL_DECRYPT	JCOL_COL401			N	L. Bykowski		M. Eisert
+SCOL_DECRYPT	JCOL_COL403			N	L. Bykowski		M. Eisert
+SCOL_ENCRYPT	JCOL_COL402			N	L. Bykowski		M. Eisert
+SCOL_ENCRYPT	JCOL_COL404			N	L. Bykowski		M. Eisert
+SCOL_ENCRYPT	JCOL_COL405			N	L. Bykowski		M. Eisert
+SCOL_ENCRYPT	JCOL_COL406			N	L. Bykowski		M. Eisert
+SCOL_LETTERS	JCOL_LIFE_CYCLE_LTR010	Adobe Livecycle		N	IT CC Support (itccsupport@jewels.com)     		
+SCOL_LETTERS	JCOL_LTR010			N		M. Eisert	
+SCOL_LETTERS_DLY	JCOL_LIFE_CYCLE_LTR020	Adobe Livecycle		N	IT CC Support (itccsupport@jewels.com)     		
+SCOL_LETTERS_DLY	JCOL_LIFE_CYCLE_LTR050	Adobe Livecycle		N	IT CC Support (itccsupport@jewels.com)     		
+SCOL_LETTERS_DLY	JCOL_LTR020			N		M. Eisert	
+SCOL_LETTERS_DLY	JCOL_LTR050			N	IT SCM Support	M. Eisert	
+SCOL_MEDCOTVND_D	JCOL_MEDIA_COT_VENDOR	Computer Assisted Collection System 		N	E. Kenepp	R. Baird	C. Kapferer
+SCOL_ORA_CLEAN_W	JCOL_COL_ORACLE_CLEAN			N	DBA on Call		M. Kubitz
+SCOL_PRGCTLON_D	JCOL_RESET_TO_N_SEND	Computer Assisted Collection System 				M. Eisert	M. Randall
+SCOL_PRGCTLON_D	JCOL_RESET_TO_Y_SEND	Computer Assisted Collection System 				M. Eisert	M. Randall
+SCOL_PROGERRPT_O	JCOL_PROGRAM_ER_RPT_O		O	N		M. Eisert	M. Eisert
+SCOL_RSET322PW_M	JCOL_RESET_P322UST_PWD	Computer Assisted Collection System 		Y		M. Eisert	M. Eisert
+SCOL_RSTCACSSAC_O	JCOL_RESET_LOCKED_CACS_USER_O		O	N		M. Eisert	M. Eisert
+SCOL_RSTR322PW_O	JCOL_RESTORE_P322_PWD	Computer Assisted Collection System 	O	Y		M. Eisert	M. Eisert
+SCOL_SELACTPER	JCOL_SELECT_ACTIVE_PERMS	Computer Assisted Collection System 		N		M. Eisert	
+SCOL_SKIPTRACE_D	JCOL_PROCESS_SKIP_TRACE	Computer Assisted Collection System 		Y		M. Eisert	M. Eisert
+SCOL_SOXAUDSTP_D	JCOL_SOX_DAILY_AUDITSTEP			N	Email IT Enterprise Services	If abend occurs on a weekend, leave Voicemail for Oncall DBA	
+SCOL_VERCACSDB_D	JCOL_VERIFY_CACSDB	Computer Assisted Collection System 		N	M. Eisert	M. Eisert	M. Randall
+SPOS_DLY_TRADEIN	JCOL_LIFE_CYCLE_LTR040	Adobe Livecycle		Y	IT CC Support (itccsupport@jewels.com)     		
+SPOS_DLY_TRADEIN	JCOL_LTR040			N		M. Eisert	M. Eisert
+SSFS_MONITOR	JSFS_MONITOR			Y	Unix Admin	T. Moeller	D. Reynard
+SSFS_MONITOR2	JSFS_MONITOR2			Y	Unix Admin	T. Moeller	D. Reynard
+SSISDRCK	JDIRCHEK			Y	Unix Admin	T. Moeller	D. Reynard
+SUTL_IGNITE_MNR	JCOLLECT_IGNITE_MNR			N	Unix Admin	T. Moeller	D. Reynard
+	JCACS_FPO_EXTRACT			Y		M. Eisert	
+	JCACS_PTPFRMCACS			Y		M. Eisert	
+~~~
+CASH System.xls
+TWS SCHEDULE	TWS JOB NAME	"APPLICATION CI
+(For ServiceNow IR)"	"U=User Submitted
+O=On Request"	"CRITICAL
+(Y/N)"	"PAGERDUTY GROUP
+(1st CONTACT)"	"2nd
+CONTACT
+(OBSOLETE)"	"3rd
+CONTACT
+(OBSOLETE)"
+CASH_ASSOC_STMTS	CASH_ASSOC_STMTS			Y	R. Sun	S. Landes	T. Duncan
+CASH_CALC_ESP	CASH_CALC_ESP			Y	R. Sun	S. Landes	T. Duncan
+CASH_CALC_ESP	CASH_CALC_LB			Y	R. Sun	S. Landes	T. Duncan
+CASH_CALC_ESP	CASH_CALC_UWP			Y	R. Sun	S. Landes	T. Duncan
+CASH_CALC_ESP	JLAW_CASH_CALCULATE_JRP_DATA	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+CASH_CALC_QUOTA	CASH_CALC_COMM 			Y	R. Sun	S. Landes	T. Duncan
+CASH_CALC_QUOTA	CASH_CALC_INCENTIVE			Y	R. Sun	S. Landes	T. Duncan
+CASH_CALC_QUOTA	CASH_CALC_QUOTA			Y	R. Sun	S. Landes	T. Duncan
+CASH_CASHDATE	CASH_CASHDATE			Y	R. Sun	S. Landes	T. Duncan
+CASH_FTP_PRR3F	CASH_FTP_PRR3F			Y	R. Sun	S. Landes	T. Duncan
+CASH_FTPACCRU	CASH_FTPACCRU			Y	R. Sun	S. Landes	T. Duncan
+CASH_FTPASSOC	CASH_FTPASSOC			Y	R. Sun	S. Landes	T. Duncan
+CASH_FTPCTLOC	CASH_FTPCTLOC			Y	R. Sun	S. Landes	T. Duncan
+CASH_FTPESP	CASH_FTPESP			Y	R. Sun	S. Landes	T. Duncan
+CASH_FTPHPSIS	CASH_FTPHPSIS			Y	R. Sun	S. Landes	T. Duncan
+CASH_FTPLOCAC	CASH_FTPLOCAC			Y	R. Sun	S. Landes	T. Duncan
+CASH_FTPSHRPT	CASH_FTPSHRPT			Y	R. Sun	S. Landes	T. Duncan
+CASH_FTPTRAN	CASH_FTPTRAN			Y	R. Sun	S. Landes	T. Duncan
+CASH_GLFEED	CASH_GLFEED			Y 	R. Sun	S. Landes	T. Duncan
+CASH_HIST_LOAD	CASH_HIST_LOAD			Y	R. Sun	S. Landes	T. Duncan
+CASH_HIST_LOAD	CASH_UPD_CNTRL			Y	R. Sun	S. Landes	T. Duncan
+CASH_LOAD_EMPDAT	CASH_LOAD_EMP_DATA			Y	R. Sun	S. Landes	T. Duncan
+CASH_LOADSALES	CASH_FTP_DAILY			Y	R. Sun	S. Landes	T. Duncan
+CASH_LOADSALES	CASH_LOAD_SALES			Y	R. Sun	S. Landes	T. Duncan
+CASH_LOCLOAD	CASH_LOCLOAD			Y	R. Sun	S. Landes	T. Duncan
+CASH_MTHLY_RPTS	CASH_ACCRUALS			Y	R. Sun	S. Landes	T. Duncan
+CASH_MTHLY_RPTS	CASH_PRR003F			Y	R. Sun	S. Landes	T. Duncan
+CASH_MTHLY_RPTS	CASH_TRAN_SUM			Y 	R. Sun	S. Landes	T. Duncan
+CASH_PAY_FEED	CASH_PAY_FEED			Y	R. Sun	S. Landes	T. Duncan
+CASH_QUOTA_DATA	CASH_EMP_SALE			Y	R. Sun	S. Landes	T. Duncan
+CASH_QUOTA_DATA	CASH_QUOTA 			Y	R. Sun	S. Landes	T. Duncan
+CASH_QUOTA_DATA	CASH_STR_SAL			Y 	R. Sun	S. Landes	T. Duncan
+CASH_SKU_LOAD	CASH_FTPSKU_LOAD			Y	R. Sun	S. Landes	T. Duncan
+CASH_SKU_LOAD	CASH_SKULOAD			Y	R. Sun	S. Landes	T. Duncan
+CASH_SOLAREXT	JLAW_SIS_EXT_2CASH			Y	R. Sun	S. Landes	T. Duncan
+CASHSEC	CASHSEC			N	R. Sun	S. Landes	T. Duncan
+ORACLE_SOX_RPTS 	ORACLE_SOX_REPORTS_CASH			Y 	J. Mellinger	M. Kubitz	
+ORACLE_SOX_RPTS2 	ORACLE_SOX_REPORTS_CASH			Y 	J. Mellinger	M. Kubitz	
+ORACLE_SOX_RPTS3	ORACLE_SOX_REPORTS_CASH			Y	J. Mellinger	M. Kubitz	
+SLAW_CJRCALINC_M	JLAW_CASH_JR_CALC_COMM	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRCALINC_M	JLAW_CASH_JR_CALC_QUOTA	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRCALINC_M	JLAW_CASH_JR_INCENT_SUMMARY	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRFTPINC_M	JLAW_CASH_JR_FTP_INCENTIVE_FILES	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRGENGL_M	JLAW_CASH_JR_GENERATE_GL	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRLDINCE_M	JLAW_CASH_JR_LOAD_BAT	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRLDINCE_M	JLAW_CASH_JR_LOAD_ESP	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRLDINCE_M	JLAW_CASH_JR_LOAD_JRP	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRLDINCE_M	JLAW_CASH_JR_LOAD_UWP	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRLDSTR_M	JLAW_CASH_JR_LD_EMP_SALES	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRLDSTR_M	JLAW_CASH_JR_LD_STORE_QUOTA	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRLDSTR_M	JLAW_CASH_JR_LD_STORE_SALES	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CJRSEPAYR_M	JLAW_CASH_JR_SET_PAYOUT_RATE_MTB	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CJRSISEXT_M	JLAW_CASH_JR_SIS_EXTRACT	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CSH_CONTP_O    	JLAW_CASH_CONTEST_PAY_FEEDS	CASH Incentive System	O	N	R. Sun	S. Landes	T. Duncan
+SLAW_CSH_HRHIST	JLAW_CASH_HRHIST 			Y	R. Sun	S. Landes	T. Duncan
+SLAW_CSH_WARTY_M	JLAW_CASH_ARCHIVE_WARRANTY_SALES	CASH Incentive System		Y	R. Sun	S. Landes	T. Duncan
+SLAW_CSHBIWKMV_M	JLAW_CASH_BIWK_REFRESH_SALES_MV	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHCALCOM_W	JLAW_CASH_WK_CALC_RORP_COMM	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHCALCOM_W	JLAW_CASH_WK_CALC_SALES_COMM	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHCALCOM_W	JLAW_CASH_WK_CALC_WARRANTY_COMM	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHCALQTA_M	JLAW_CASH_MTH_CALC_QUOTA	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHCOMSUM_W	JLAW_CASH_WK_SALES_SUMMARY	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHCOMSUM_W	JLAW_CASH_WK_WARRANTY_SUMMARY	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHCOPYGL_M	JLAW_CASH_MTH_CP_GL_BPP_TO_MFT_OUTBD	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	
+SLAW_CSHCOPYGL_M	JLAW_CASH_MTH_CP_GL_EAR_TO_MFT_OUTBD	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	
+SLAW_CSHCOPYGL_M	JLAW_CASH_MTH_CP_GL_ESP_TO_MFT_OUTBD	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	
+SLAW_CSHCOPYGL_M	JLAW_CASH_MTH_CP_GL_FPP_TO_MFT_OUTBD	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	
+SLAW_CSHCOPYGL_M	JLAW_CASH_MTH_CP_GL_JRP_TO_MFT_OUTBD	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	
+SLAW_CSHCOPYGL_M	JLAW_CASH_MTH_CP_GL_QTA_TO_MFT_OUTBD	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	
+SLAW_CSHCOPYGL_M	JLAW_CASH_MTH_CP_GL_UWP_TO_MFT_OUTBD	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	
+SLAW_CSHCTLUPD_M	JLAW_CASH_MTH_UPDATE_CNTRL	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHFTPMRT_M	JLAW_CASH_MTH_FTP_PRR003_MTH	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHFTPMRT_M	JLAW_CASH_MTH_FTP_TRAN_SUM_MTH	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHFTPMRT_M	JLAW_CASH_MTH_PRR003_REPORT	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHFTPMRT_M	JLAW_CASH_MTH_TRAN_SUM_REPORT	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHFTPRPT_W	JLAW_CASH_WK_FTP_PRR003_WK	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHFTPRPT_W	JLAW_CASH_WK_FTP_TRAN_SUM_WK	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHHISTLD_W	JLAW_CASH_WK_HIST_LOAD_PIERCING	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHHISTLD_W	JLAW_CASH_WK_HIST_LOAD_RORP	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHHISTLD_W	JLAW_CASH_WK_HIST_LOAD_WARRANTY	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHPAYFED_W	JLAW_CASH_WK_PAY_FEEDS	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHPIESAL_W	JLAW_CASH_WK_CALC_PIERCING_COMM	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHPIESAL_W	JLAW_CASH_WK_PIERCING_SUMMARY	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHROPADJ_M	JLAW_CASH_MTH_ADD_QUOTA_RORP	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHRORPDE_W	JLAW_CASH_WK_RORP_DETERMINATION	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHSEPAYR_M	JLAW_CASH_MTB_SET_PAYOUT_RATE	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHUPDCTL_W	JLAW_CASH_WK_UPDATE_CNTRL	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHWKRPTS_W	JLAW_CASH_WK_PRR003_REPORT	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSHWKRPTS_W	JLAW_CASH_WK_TRAN_SUM_REPORT	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_EMPTOHIST_M	JLAW_CASH_MTH_UPDATE_EMP_HIST	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_RET_CAL_UPD	JLAW_CASH_RET_DATES_YR_UPD			Y	R. Sun	S. Landes	T. Duncan
+SLAW_WAGTLRATE_D	JLAW_CASH_LOAD_WAGE_TOOL_RATE	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	
+SLAW_WAGTLRATE_D	JLAW_WAGE_TOOL_CP_RATE_FILE_TO_CASH	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	
+SLAW_WRNTYSALE_D	JLAW_WARRENTY_SALES	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com		
+	JLAW_CASH_CALC_COMM_MTB	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+	JLAW_CASH_CALC_QUOTA_MTB	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+~~~
+Clienteling - ORI.xls
+TWS SCHEDULE	TWS JOB NAME	"APPLICATION CI
+(For ServiceNow IR)"	"U=User Submitted
+O=On Request"	"CRITICAL
+(Y/N)"	"PAGERDUTY GROUP
+(1st CONTACT)"	"2nd
+CONTACT
+(OBSOLETE)"	"3rd
+CONTACT
+(OBSOLETE)"
+SECM_365EMSYNC_D	JECM_PROD_OMNI_O365_BADEMAILS_E	Clienteling	 	N	Clienteling Support	D. Henry	A. Kasum
+SECM_365MLSYNC_E	JECM_PROD_OMNI_O365_EMAILSYNC_E	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_365PURTOK_D	JECM_PROD_OMNI_O365_PURGETOKENS	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_ANLYSREPL_D	JECM_PROD_OMNI_SFDCREPL_ANLYTCS_CK_O	Clienteling		N	Clienteling Support		
+SECM_ANLYSREPL_D	JECM_PROD_OMNI_SFDCREPL_ANLYTCS_LD_O	Clienteling		N	Clienteling Support		
+SECM_BIRDEYE_D	JECM_PROD_OMNI_RESPON_STG2_CK	Clienteling	 	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_BIRDEYE_D	JECM_PROD_OMNI_RESPON_STG2_CK	Clienteling	 	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_BIRDEYE_D	JECM_PROD_OMNI_RESPON_STG2_LD	Clienteling	 	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_BIRDEYE_D	JECM_PROD_OMNI_STG2_SFTP_BRDEYE_LD	Clienteling	 	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_CALLLOG	JECM_PROD_CALL_LOG_CK	Clienteling		N	Clienteling Support		
+SECM_CALLLOG	JECM_PROD_CALL_LOG_LD	Clienteling		N	Clienteling Support		
+SECM_CDP_ALERT_W	JECM_PROD_CDP_CUSTOMER_COUNTS_CK	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDP_ALERT_W	JECM_PROD_CDP_CUSTOMER_COUNTS_LD	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDP_ALERT_W	JECM_PROD_CDP_SALES_MESO_COUNTS_CK	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDP_ALERT_W	JECM_PROD_CDP_SALES_MESO_COUNTS_LD	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDP_ALERT_W	JECM_PROD_CDP_SIGNET_SALES_COUNTS_CK	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDP_ALERT_W	JECM_PROD_CDP_SIGNET_SALES_COUNTS_LD	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDP_BW	JECM_PROD_CDP_EDW_TO_STG0_SALES_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_BW	JECM_PROD_CDP_EDW_TO_STG0_SALES_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_BW	JECM_PROD_CDP_MTA_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_BW	JECM_PROD_CDP_MTA_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_BW	JECM_PROD_CDP_SALES_STG0_TO_FF_CK	Clienteling		Y	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_BW	JECM_PROD_CDP_SALES_STG0_TO_FF_LD	Clienteling		Y	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_EMKRT_W	JECM_PROD_CDP_EMRKTP_FF_TO_STG1_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_EMKRT_W	JECM_PROD_CDP_EMRKTP_FF_TO_STG1_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_FR_AG_W	JECM_PROD_CDP_CONTACT_HIST_DELTA_DEL_CK	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDP_FR_AG_W	JECM_PROD_CDP_CONTACT_HIST_DELTA_DEL_LD	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDP_FR_AG_W	JECM_PROD_CDP_CUSTOMER_TYPE_CK	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDP_FR_AG_W	JECM_PROD_CDP_CUSTOMER_TYPE_LD	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDP_M	JECM_PROD_CDP_PRODUCT_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_M	JECM_PROD_CDP_PRODUCT_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_M	JECM_PROD_CDP_STORES_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_M	JECM_PROD_CDP_STORES_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDP_W	JECM_PROD_CDP_CONTACT_HIST_DELTA_CK	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_CONTACT_HIST_DELTA_DELETE_CK	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_CONTACT_HIST_DELTA_DELETE_LD	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_CONTACT_HIST_DELTA_LD	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_EDW_TO_STG0_SALES_CK	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_EDW_TO_STG0_SALES_LD	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_PRODUCT_CK	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_PRODUCT_LD	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_SALES_STG0_TO_FF_CK	Clienteling		Y	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_SALES_STG0_TO_FF_LD	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_STORES_CK	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDP_W	JECM_PROD_CDP_STORES_LD	Clienteling		N	Clienteling Support		H. Reddy
+SECM_CDPCUALTS_W	JECM_PROD_CDP_ENRICH_CUST_COUNTS_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPCUALTS_W	JECM_PROD_CDP_ENRICH_CUST_COUNTS_LD	Clienteling		N	Clienteling Support	A. Kasum	
+SECM_CDPLD_D	JECM_PROD_CDP_AGILITY_GET_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AGILITY_GET_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AGILITY_PUT_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AGILITY_PUT_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AGILITY_TO_STG1_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AGILITY_TO_STG1_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AKRON_ECOM_DELTA_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AKRON_ECOM_DELTA_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AKRON_ECOM_OTL_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AKRON_ECOM_OTL_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AKRON_POS_DELTA_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AKRON_POS_DELTA_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AKRON_POS_OTL_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_AKRON_POS_OTL_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_CLIENTELING_DELTA_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_CLIENTELING_DELTA_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_CLIENTELING_OTL_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_CLIENTELING_OTL_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_DALLAS_ECOM_DELTA_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_DALLAS_ECOM_DELTA_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_STG1_TO_AGILITY_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_STG1_TO_AGILITY_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_XSTORE_DELTA_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_XSTORE_DELTA_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_XSTORE_OTL_CK	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_XSTORE_OTL_LD	Clienteling		N	Clienteling Support	H. Reddy	A. Kasum
+SECM_CMPOVDUE_M	JECM_PROD_SFWF_RESPONSYS_CMP_OVRDUE	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_CMPOVDUE_M	JECM_PROD_SFWF_RESPONSYS_CMP_OVRDUE_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_CREDIT_D	JECM_PROD_OMN_CREDIT_CK	Clienteling		N	Clienteling Support	D. Henry	A. Sampathkumar
+SECM_CREDIT_D	JECM_PROD_OMN_CREDIT_LD	Clienteling		N	Clienteling Support	D. Henry	A. Sampathkumar
+SECM_CUSTLD_D	JECM_PRD_OMNI_SFDC_STG2_MERGE_REQ	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PRD_OMNI_SFDC_STG2_MERGE_REQ_CK	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_CONTACT_PERM_OPTOUT	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_CONTACT_PERM_OPTOUT_CK	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_CUST_STG0_TO_STG1	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_CUST_STG0_TO_STG1_CK	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_CUST_STG1_TO_STG2	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_CUST_STG1_TO_STG2_CK	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_CUST_STG2HDFS_TO_SFDC	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_CUST_STG2HDFS_TO_SFDC_CK	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_GUEST_MERGE_REQUEST	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_GUEST_MERGE_REQUEST_CK	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_MERGE_GUEST_METRICS	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_MERGE_GUEST_METRICS_CK	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_OPTOUT_BADEMAIL	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_POS_STG0_CUST_DELTA_CK_O	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_POS_STG0_CUST_DELTA_LD_O	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_SIS_STG0_CUST_DELTA_CK_O	Clienteling		N	Clienteling Support		
+SECM_CUSTLD_D	JECM_PROD_OMNI_SIS_STG0_CUST_DELTA_LD_O	Clienteling		N	Clienteling Support		
+SECM_CUSTXREF_D	JECM_PRD_OMNI_EMRKT_XREF_DELTA	Clienteling		N	Clienteling Support	D. Henry	
+SECM_CUSTXREF_D	JECM_PRD_OMNI_EMRKT_XREF_DELTA_CK	Clienteling		N	Clienteling Support	D. Henry	
+SECM_CXPLD_D	JECM_PROD_OMNI_AKRON_POS_REPL_LD	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_CXPLD_D	JECM_PROD_OMNI_AKRON_REPL_CK	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_CXPLD_D	JECM_PROD_OMNI_CXP_STORE_ORG	Clienteling		N	Clienteling Support	D. Henry	A. Sampathkumar
+SECM_CXPLD_D	JECM_PROD_OMNI_MEDALLIA_IMPORT_CK	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_CXPLD_D	JECM_PROD_OMNI_MEDALLIA_IMPORT_LD	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_CXPLD_D	JECM_PROD_OMNI_STG0_TO_STG2HDFS_CK	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_CXPLD_D	JECM_PROD_OMNI_STG0_TO_STG2HDFS_LD	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_CXPLD_D	JECM_PROD_OMNI_STG2HDFS_SFTP_CK	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_CXPLD_D	JECM_PROD_OMNI_STG2HDFS_SFTP_LD	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_CXPLD_D	JECM_PROD_OMNI_XSTORE_REPL_CK	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_CXPLD_D	JECM_PROD_OMNI_XSTORE_REPL_LD	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_DCDP_PLCC_D	JECM_PROD_CDP_PLCC_DELTA_CK	Clienteling		N	Clienteling Support		H. Reddy
+SECM_DCDP_PLCC_D	JECM_PROD_CDP_PLCC_DELTA_LD	Clienteling		N	Clienteling Support		H. Reddy
+SECM_DEDUPGCID_D	JECM_PROD_OMNI_SFWF_DEDUPE_GCID	Clienteling		N	Clienteling Support	D. Henry	A. Sampathkumar
+SECM_DEDUPGCID_D	JECM_PROD_OMNI_SFWF_DEDUPE_GCID_CK	Clienteling		N	Clienteling Support	D. Henry	A. Sampathkumar
+SECM_IMSPROD_D	JECM_PROD_OMNI_IMS_STG0_PROD_DELTA_LD_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_INSPECTLD_D	JECM_PROD_OMNI_SFDC_FF_INSPECTIONS_CK_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_INSPECTLD_D	JECM_PROD_OMNI_SFDC_FF_INSPECTIONS_LD_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_INSPEMAIL_D	JECM_PROD_OMNI_INSPECTION_EMAILS_P1	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_INSPEMAIL_D	JECM_PROD_OMNI_INSPECTION_EMAILS_P1_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_INSPEMAIL_D	JECM_PROD_OMNI_INSPECTION_EMAILS_P2	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_INSPEMAIL_D	JECM_PROD_OMNI_INSPECTION_EMAILS_P2_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_INSPEMAIL_D	JECM_PROD_SFWF_RESPONSYS_CMP	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_INSPEMAIL_D	JECM_PROD_SFWF_RESPONSYS_CMP_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_ITMPLNLD_D	JECM_PROD_OMNI_ITEMPLAN_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_ITMPLNLD_D	JECM_PROD_OMNI_ITEMPLAN_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_ITMPLNLD_D	JECM_PROD_OMNI_ITEMPLAN_SFDC_STG2_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_ITMPLNLD_D	JECM_PROD_OMNI_ITEMPLAN_SFDC_STG2_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_JBOXLD_D	JECM_PROD_OMNI_JEWELRYBOX_SFDC_STG2_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_JBOXLD_D	JECM_PROD_OMNI_JEWELRYBOX_SFDC_STG2_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_JCAFFL_DL_D	JECM_PROD_OMNI_JCAFFL_DEL_HDFS_SFDC_CK_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_JCAFFL_DL_D	JECM_PROD_OMNI_JCAFFL_DEL_HDFS_SFDC_LD_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_JCAFFL_DL_D	JECM_PROD_OMNI_JCAFFL_DEL_STG0_STG1_CK_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_JCAFFL_DL_D	JECM_PROD_OMNI_JCAFFL_DEL_STG0_STG1_LD_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_JCAFFL_DL_D	JECM_PROD_OMNI_JCAFFL_DEL_STG1_STG2_CK_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_JCAFFL_DL_D	JECM_PROD_OMNI_JCAFFL_DEL_STG1_STG2_LD_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_JCAFFL_DL_D	JECM_PROD_OMNI_JCAFFL_DEL_STG2_HDFS_CK_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_JCAFFL_DL_D	JECM_PROD_OMNI_JCAFFL_DEL_STG2_HDFS_LD_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_MRKTP_D	JECM_PROD_OMNI_MRKTP_LEGACY_STG0_CK	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_MRKTP_D	JECM_PROD_OMNI_MRKTP_LEGACY_STG0_LD	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_MRKTP_D	JECM_PROD_OMNI_STG0_STG2HDFS_CK	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_MRKTP_D	JECM_PROD_OMNI_STG0_STG2HDFS_LD	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_MRKTP_D	JECM_PROD_OMNI_STG2_HDFS_SFDC_CK	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_MRKTP_D	JECM_PROD_OMNI_STG2_HDFS_SFDC_LD	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_MTALD_D	JECM_PROD_OMNI_MTA_CTP_CK	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_MTALD_D	JECM_PROD_OMNI_MTA_CTP_LD	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_MTALD_D	JECM_PROD_OMNI_MTA_TRAN_CK	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_MTALD_D	JECM_PROD_OMNI_MTA_TRAN_LD	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_MTALD_W	JECM_PROD_OMNI_MTA_CTP_SFTP_LR_CK	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_MTALD_W	JECM_PROD_OMNI_MTA_CTP_SFTP_LR_LD	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_MTALD_W	JECM_PROD_OMNI_MTA_TRAN_SFTP_ME_CK	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_MTALD_W	JECM_PROD_OMNI_MTA_TRAN_SFTP_ME_LD	Clienteling		N	Clienteling Support	D. Henry	A. Kasum
+SECM_OMNHIERDT_D	JECM_PRD_OMNI_HIER_STG2_HDFS_TO_SFDC_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNHIERDT_D	JECM_PRD_OMNI_HIER_STG2_TO_SFDC_CK	Clienteling		N	Clienteling Support		
+SECM_OMNHIERDT_D	JECM_PRD_OMNI_HIERACHY_LEGACY_TO_STG0	Clienteling		N	Clienteling Support		
+SECM_OMNHIERDT_D	JECM_PRD_OMNI_HIERACHY_LEGACY_TO_STG0_CK	Clienteling		N	Clienteling Support		
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_HIERARCHY_LEGACY_TO_STG0_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_HIERARCHY_STG0_TO_STG1	Clienteling		N	Clienteling Support		
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_HIERARCHY_STG0_TO_STG1_CK	Clienteling		N	Clienteling Support		
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_HIERARCHY_STG1_TO_STG2	Clienteling		N	Clienteling Support		
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_HIERARCHY_STG1_TO_STG2_CK	Clienteling		N	Clienteling Support		
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_HIERARCHY_STG2_HDFS_TO_SFDC	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_HIERARCHY_STG2_TO_HDFS	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_HIERARCHY_STG2_TO_HDFS_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_HIERARCHY_STG2_TO_SF	Clienteling		N	Clienteling Support		
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_SFWF_ROLEUPDATION	Clienteling		N	Clienteling Support		
+SECM_OMNHIERDT_D	JECM_PROD_OMNI_SFWF_ROLEUPDATION_CK	Clienteling		N	Clienteling Support		
+SECM_OMNI_AMGB_D	JECM_PROD_OMNI_SFWF_AUTOMRG_BATCH	Clienteling		N	Clienteling Support		
+SECM_OMNI_AMGB_D	JECM_PROD_OMNI_SFWF_AUTOMRG_BATCH_CK	Clienteling		N	Clienteling Support		
+SECM_OMNI_AMGB_P	JECM_PROD_OMNI_SFWF_AUTOMRG_BATCH	Clienteling		N	Clienteling Support		
+SECM_OMNI_AMGB_P	JECM_PROD_OMNI_SFWF_AUTOMRG_BATCH_CK	Clienteling		N	Clienteling Support		
+SECM_OMNI_AUTO_D	JECM_PROD_OMNI_SFWF_AUTOMRG	Clienteling		N	Clienteling Support		
+SECM_OMNI_AUTO_D	JECM_PROD_OMNI_SFWF_AUTOMRG_CK	Clienteling		N	Clienteling Support		
+SECM_OMNI_AUTO_P	JECM_PROD_OMNI_SFWF_AUTOMRG	Clienteling		N	Clienteling Support		
+SECM_OMNI_AUTO_P	JECM_PROD_OMNI_SFWF_AUTOMRG_CK	Clienteling		N	Clienteling Support		
+SECM_OMNIAMGB_D1	JECM_PROD_OMNI_SFWF_AUTOMRG_BATCH	Clienteling		N	Clienteling Support		
+SECM_OMNIAMGB_D1	JECM_PROD_OMNI_SFWF_AUTOMRG_BATCH_CK	Clienteling		N	Clienteling Support		
+SECM_OMNIAMGB_P1	JECM_PROD_OMNI_SFWF_AUTOMRG_BATCH	Clienteling		N	Clienteling Support		
+SECM_OMNIAMGB_P1	JECM_PROD_OMNI_SFWF_AUTOMRG_BATCH_CK	Clienteling		N	Clienteling Support		
+SECM_OMNIAUTO_D1	JECM_PROD_OMNI_SFWF_AUTOMRG	Clienteling		N	Clienteling Support		
+SECM_OMNIAUTO_D1	JECM_PROD_OMNI_SFWF_AUTOMRG_CK	Clienteling		N	Clienteling Support		
+SECM_OMNIAUTO_P1	JECM_PROD_OMNI_SFWF_AUTOMRG	Clienteling		N	Clienteling Support		
+SECM_OMNIAUTO_P1	JECM_PROD_OMNI_SFWF_AUTOMRG_CK	Clienteling		N	Clienteling Support		
+SECM_OMNIDVCYC_O	JECM_DEV_OMNI_GUEST_SCHEDULE_O	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNIDVCYC_O	JECM_DEV_OMNI_GUEST_SFDC_CAPTURE_O	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNIDVCYC_O	JECM_DEV_OMNI_INFA_SHUTDOWN_N1_O	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNIDVCYC_O	JECM_DEV_OMNI_INFA_STARTUP_N1_O	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNIEMAIL_D	JECM_PROD_OMNI_SFWF_OUTREACH_EMAIL	Clienteling		Y	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNIEMAIL_D	JECM_PROD_OMNI_SFWF_OUTREACH_EMAIL_CK	Clienteling		Y	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNIEMPDT_D	JECM_PROD_OMNI_EMP_LEGACY_TO_STG0	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIEMPDT_D	JECM_PROD_OMNI_EMP_LEGACY_TO_STG0_CK_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIEMPDT_D	JECM_PROD_OMNI_EMP_STG0_TO_STG1	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIEMPDT_D	JECM_PROD_OMNI_EMP_STG0_TO_STG1_CK_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIEMPDT_D	JECM_PROD_OMNI_EMP_STG1_TO_STG2	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIEMPDT_D	JECM_PROD_OMNI_EMP_STG1_TO_STG2_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIEMPDT_D	JECM_PROD_OMNI_EMP_STG2_HDFS_TO_SFDC	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIEMPDT_D	JECM_PROD_OMNI_EMP_STG2_HDFS_TO_SFDC_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIEMPDT_D	JECM_PROD_OMNI_EMP_STG2_TO_HDFS__CK_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIEMPDT_D	JECM_PROD_OMNI_EMP_STG2_TO_SFDC_CK	Clienteling		N	Clienteling Support	D. Henry	
+SECM_OMNINFCYC_D	JECM_PROD_OMNI_GUEST_SCHEDULE	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNINFCYC_D	JECM_PROD_OMNI_GUEST_SFDC_CAPTURE	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNINFCYC_D	JECM_PROD_OMNI_INFA_SHUTDOWN_N1	Clienteling		Y	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNINFCYC_D	JECM_PROD_OMNI_INFA_SHUTDOWN_N2	Clienteling		Y	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNINFCYC_D	JECM_PROD_OMNI_INFA_SHUTDOWN_N3	Clienteling		Y	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNINFCYC_D	JECM_PROD_OMNI_INFA_SHUTDOWN_N4	Clienteling		Y	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNINFCYC_D	JECM_PROD_OMNI_INFA_STARTUP_N1	Clienteling		Y	Clienteling Support	D. Henry	R. Mohan
+SECM_OMNINFCYC_D	JECM_PROD_OMNI_INFA_STARTUP_N2	Clienteling		Y	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNINFCYC_D	JECM_PROD_OMNI_INFA_STARTUP_N3	Clienteling		Y	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNINFCYC_D	JECM_PROD_OMNI_INFA_STARTUP_N4	Clienteling		Y	S. Suman 	D. Henry	G. Haripuram
+SECM_OMNIPRICE_D	JECM_PROD_OMNI_PRICE_HDFS_TO_SFDC	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIPRICE_D	JECM_PROD_OMNI_PRICE_HDFS_TO_SFDC_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIPRICE_D	JECM_PROD_OMNI_PRICE_STG0_TO_STG1	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIPRICE_D	JECM_PROD_OMNI_PRICE_STG0_TO_STG1_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIPRICE_D	JECM_PROD_OMNI_PRICE_STG1_TO_STG2	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIPRICE_D	JECM_PROD_OMNI_PRICE_STG1_TO_STG2_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIPRICE_D	JECM_PROD_OMNI_PRICE_STG2_TO_HDFS	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIPRICE_D	JECM_PROD_OMNI_PRICE_STG2_TO_HDFS_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNISF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_NBABIRTHDAY	Clienteling		N	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_NBABIRTHDAY_CK	Clienteling		N	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_NBASPECOCC	Clienteling		N	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_NBASPECOCC_CK	Clienteling		N	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISFWF_D	JECM_PROD_OMNI_SFWF_UPD_GUEST_RPTMTRCS	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_OMNISFWF_D	JECM_PROD_OMNI_SFWF_UPD_GUEST_RPTMTRCS	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_OMNISFWF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_BIRTHDAY	Clienteling		Y	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISFWF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_BIRTHDAY_CK 	Clienteling		Y	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISFWF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_NEWCUSTOMER	Clienteling		Y	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISFWF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_NEWCUSTOMER_CK	Clienteling		Y	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISFWF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_WLPRICEDROP	Clienteling		Y	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISFWF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_WLPRICEDROP_CK	Clienteling		Y	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISFWF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_WLTARGET	Clienteling		Y	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNISFWF_Q4_D	JECM_PROD_OMNI_SFWF_Q4_WLTARGET_CK	Clienteling		Y	Clienteling Support	H. Reddy	D. Henry
+SECM_OMNIWSHLD_D	JECM_PROD_OMNI_WISH_SFDC2STG2	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIWSHLD_D	JECM_PROD_OMNI_WISH_SFDC2STG2_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIWSHLD_D	JECM_PROD_OMNI_WISHITEM_SFDC2STG2	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNIWSHLD_D	JECM_PROD_OMNI_WISHITEM_SFDC2STG2_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_OMNSITEDT_D	JECM_PROD_OMNI_SITE_LEGACY_TO_STG0	Clienteling		N	Clienteling Support		
+SECM_OMNSITEDT_D	JECM_PROD_OMNI_SITE_LEGACY_TO_STG0_CK_O	Clienteling		N	Clienteling Support		
+SECM_OMNSITEDT_D	JECM_PROD_OMNI_SITE_STG0_TO_STG1	Clienteling		N	Clienteling Support		
+SECM_OMNSITEDT_D	JECM_PROD_OMNI_SITE_STG0_TO_STG1_CK_O	Clienteling		N	Clienteling Support		
+SECM_OMNSITEDT_D	JECM_PROD_OMNI_SITE_STG1_TO_STG2	Clienteling		N	Clienteling Support		
+SECM_OMNSITEDT_D	JECM_PROD_OMNI_SITE_STG1_TO_STG2_CK_O	Clienteling		N	Clienteling Support		
+SECM_OMNSITEDT_D	JECM_PROD_OMNI_SITE_STG2_HDFS_TO_SFDC	Clienteling		N	Clienteling Support		
+SECM_OMNSITEDT_D	JECM_PROD_OMNI_SITE_STG2_HDFS_TO_SFDC_CK	Clienteling		N	Clienteling Support		
+SECM_OMNSITEDT_D	JECM_PROD_OMNI_SITE_STG2_TO_HDFS	Clienteling		N	Clienteling Support		
+SECM_OMNSITEDT_D	JECM_PROD_OMNI_SITE_STG2_TO_HDFS_CK_O	Clienteling		N	Clienteling Support		
+SECM_OPTOUTS_D	JECM_PRD_OMNI_EMRKT_OPTOUTS	Clienteling		N	Clienteling Support	D. Henry	
+SECM_OPTOUTS_D	JECM_PRD_OMNI_EMRKT_OPTOUTS_CK	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_HDFS_SFDC	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_HDFS_SFDC_CK	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_LEG_HDFS	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_LEG_HDFS_CK	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_LEG_STG0	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_LEG_STG0_CK	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_STG0_STG1	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_STG0_STG1_CK	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_STG1_STG2	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_STG1_STG2_CK	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_STG2_HDFS	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORD_DELTA_D	JECM_OMNI_ORD_EDW_STG2_HDFS_CK	Clienteling		N	Clienteling Support	D. Henry	
+SECM_ORDLD_D	JECM_PROD_OMNI_AFF_STG2HDFS_TO_SFDC_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_GMETRICS_STG2_HDFS_SFDC	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_GMETRICS_STG2_HDFS_SFDC_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_HANDLE_ITEM_REJECTS_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_ORD_STG0_TO_STG1_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_ORD_STG1_TO_STG2_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_ORD_STG2_TO_HDFS	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_ORD_STG2_TO_HDFS_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_SIS_STG0_ORDER_DELTA_CK_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_SIS_STG0_ORDER_DELTA_LD_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_TEND_STG2HDFS_TO_SFDC_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_TRAN_STG2HDFS_TO_SFDC_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_TRITM_STG2_TO_HDFS_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_ORDLD_D	JECM_PROD_OMNI_TRITM_STG2HDFS_TO_SFDC_CK	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_POSCUST_D	JECM_PROD_OMNI_SISID_SFDC_STG2_CK	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_POSCUST_D	JECM_PROD_OMNI_SISID_STG2_SIS_CK	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_POSCUST_D	JECM_PROD_OMNI_SISID_STG2_SIS_LD	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_PRD_DTALD_O	JECM_PROD_OMNI_ECOM_STG0_PRD_DELTA_LD_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_PRDPRICE_D	JECM_PROD_PRODUCT_PRICE_HYBRIS_STG0_CK	Guest Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_PROD_PRODUCT_PRICE_HYBRIS_STG0_LD	Guest Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_PROD_PRODUCT_PRICE_IMS_STG0_CK	Guest Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_PROD_PRODUCT_PRICE_IMS_STG0_LD	Guest Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_PROD_PRODUCT_PRICE_STG0_STG1__LD	Guest Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_PROD_PRODUCT_PRICE_STG0_STG1_CK	Guest Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_PROD_PRODUCT_PRICE_STG1_STG2_CK	Guest Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_PROD_PRODUCT_PRICE_STG1_STG2_LD	Guest Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_PROD_PRODUCT_PRICE_STG2_SFDC_CK	Guest Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_PROD_PRODUCT_PRICE_STG2_SFDC_LD	Guest Clienteling		Y	Guest Clienteling		
+SECM_PRODLD_D	JECM_PROD_OMNI_ECOM_STG0_CK_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_PRODLD_D	JECM_PROD_OMNI_ECOM_STG0_LD_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_PRODLD_D	JECM_PROD_OMNI_IMS_STG0_PROD_DELTA_CK_O	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_PRODLD_D	JECM_PROD_OMNI_IMS_STG0_PROD_DELTA_LD_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_PRODLD_D	JECM_PROD_OMNI_PRODUCT_HDFS_TO_SFDC_CK	Clienteling		N	Clienteling Support		
+SECM_PRODLD_D	JECM_PROD_OMNI_PRODUCT_STG0_TO_STG2_CK	Clienteling		N	Clienteling Support		
+SECM_PRODLD_D	JECM_PROD_OMNI_PRODUCT_STG2_TO_HDFS_CK	Clienteling		N	Clienteling Support		
+SECM_RCHRCNTTR_D	JECM_PROD_OMNI_SFWF_RCHRCNTTRANS	Clienteling		Y	Clienteling Support	D. Henry	G. Haripuram
+SECM_RCHRCNTTR_D	JECM_PROD_OMNI_SFWF_RCHRCNTTRANS_CK	Clienteling		Y	Clienteling Support	D. Henry	G. Haripuram
+SECM_RECMPDUE_M	JECM_PROD_OMNI_SFWF_Q4_INSDUE_CK	Clienteling		N	Clienteling Support	H. Reddy	G. Haripuram
+SECM_RECMPDUE_M	JECM_PROD_OMNI_SFWF_Q4_INSDUE_LD	Clienteling		N	Clienteling Support	H. Reddy	G. Haripuram
+SECM_RECMPDUE_M	JECM_PROD_SFWF_RESPONSYS_CMP_DUE	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RECMPDUE_M	JECM_PROD_SFWF_RESPONSYS_CMP_DUE_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PRD_OMNI_REP_ITM_HDFS_SFDC_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PRD_OMNI_REP_ITM_HDFS_SFDC_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PROD_OMNI_REP_HDFS_SFDC_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PROD_OMNI_REP_HDFS_SFDC_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PROD_OMNI_REP_LEGACY_STG0_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PROD_OMNI_REP_LEGACY_STG0_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PROD_OMNI_REP_STG0_STG1_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PROD_OMNI_REP_STG0_STG1_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PROD_OMNI_REP_STG1_STG2_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PROD_OMNI_REP_STG1_STG2_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PROD_OMNI_REP_STG2_HDFS_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REPAIRLD_D	JECM_PROD_OMNI_REP_STG2_HDFS_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REWCERTLD_D	JECM_PRD_OMNI_REWCERT_STG0_TO_STG2_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REWCERTLD_D	JECM_PRD_OMNI_REWCERT_STG0_TO_STG2_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REWCERTLD_D	JECM_PRD_OMNI_REWCRT_LEG_STG0_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REWCERTLD_D	JECM_PRD_OMNI_REWCRT_LEG_STG0_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REWCERTLD_D	JECM_PROD_OMNI_REWCERT_HDFS_SFDC_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REWCERTLD_D	JECM_PROD_OMNI_REWCERT_HDFS_SFDC_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REWCERTLD_D	JECM_PROD_OMNI_REWCERT_STG2_HDFS_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_REWCERTLD_D	JECM_PROD_OMNI_REWCERT_STG2_HDFS_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RFM_GMTX_D	JECM_PRD_OMNI_GMTRCS_ZA_SFDC	Clienteling		N	Clienteling Support	D. Henry	
+SECM_RFM_GMTX_D	JECM_PRD_OMNI_GMTRCS_ZA_SFDC_CK	Clienteling		N	Clienteling Support	D. Henry	
+SECM_RFMLD_D	JECM_PRD_OMNI_RFM_HDFS_SFDC_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RFMLD_D	JECM_PRD_OMNI_RFM_HDFS_SFDC_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RFMLD_D	JECM_PRD_OMNI_RFM_LEGACY_STG0_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RFMLD_D	JECM_PRD_OMNI_RFM_LEGACY_STG0_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RFMLD_D	JECM_PRD_OMNI_RFM_STG0_STG1_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RFMLD_D	JECM_PRD_OMNI_RFM_STG0_STG1_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RFMLD_D	JECM_PRD_OMNI_RFM_STG1_STG2_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RFMLD_D	JECM_PRD_OMNI_RFM_STG1_STG2_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RFMLD_D	JECM_PRD_OMNI_RFM_STG2_HDFS_DELTA_CK	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_RFMLD_D	JECM_PRD_OMNI_RFM_STG2_HDFS_DELTA_LD	Clienteling		N	S. Suman 	D. Henry	G. Haripuram
+SECM_SATHRCUST_D	JECM_PROD_OMNI_SAILTHRU_CUST_CK	Clienteling		N	Clienteling Support		
+SECM_SATHRCUST_D	JECM_PROD_OMNI_SAILTHRU_CUST_LD	Clienteling		N	Clienteling Support		
+SECM_SATHRCUST_D	JECM_PROD_SAILTHRU_CUSTOMER	Clienteling		N	Clienteling Support	H. Reddy	A. Sampathkumar
+SECM_SATHREMAI_D	JECM_PROD_SAILTHRU_REWARDS	Clienteling		N	Clienteling Support	H. Reddy	A. Sampathkumar
+SECM_SATHREMAI_D	JECM_PROD_SAILTHRU_SPECIALEVENTS	Clienteling		N	Clienteling Support	H. Reddy	A. Sampathkumar
+SECM_SFDCREPL_D	JECM_PROD_MERGEREQ_SFDC_HBASE_CK	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_MERGEREQ_SFDC_HBASE_LD	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_ACCOUNT_SFDC_STG2_CK_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_ACCOUNT_SFDC_STG2_LD_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_CP_SFDC_STG2_LD_O	Clienteling	 	N	Clienteling Support	D. Henry	A. Kasum
+SECM_SFDCREPL_D	JECM_PROD_OMNI_FBE_EVENT_SFDC_STG2_CK_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_FBE_EVENT_SFDC_STG2_LD_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_JCAFF_SFDC_STG2_CK_O	Clienteling	O	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_JCAFF_SFDC_STG2_CK_O	Clienteling	O	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_JCAFF_SFDC_STG2_LD_O	Clienteling	O	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_JCAFF_SFDC_STG2_LD_O	Clienteling	O	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_REPITM_SFDC_STG2_CK_O	Clienteling	O	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_REPITM_SFDC_STG2_LD_O	Clienteling	O	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_REPORD_SFDC_STG2_CK_O	Clienteling	O	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_REPORD_SFDC_STG2_LD_O	Clienteling	O	N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_SFWF_UPD_REASIGNED_FLG_CK	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_SFWF_UPD_REASSIGNED_FLG	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_USER_SFDC_STG2_CK_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_USER_SFDC_STG2_LD_O	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_OMNI_SPOCC_SFDC_STG2_LD_O	Clienteling	O	N	Clienteling Support		
+SECM_SFDCREPL_D	JECM_PROD_TASK_SFDC_HBASE_CK	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_PROD_TASK_SFDC_HBASE_LD	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SFWF_SMS_D	JECM_PROD_OMNI_SFWF_SMS_BATCH	Clienteling	 	N	Clienteling Support	D. Henry	A. Kasum
+SECM_SFWF_SMS_D	JECM_PROD_OMNI_SFWF_SMS_BATCH_CK	Clienteling	 	N	Clienteling Support	D. Henry	A. Kasum
+SECM_SFWF_SMS_D	JECM_PROD_OMNI_SFWF_SMS_CP_BATCH_CK	Clienteling	 	N	Clienteling Support	D. Henry	A. Kasum
+SECM_SFWF_SMS_D	JECM_PROD_OMNI_SFWF_SMS_OPT_IN	Clienteling	 	N	Clienteling Support	D. Henry	A. Kasum
+SECM_SFWF_SMS_D	JECM_PROD_OMNI_SFWF_SMS_OPT_IN_CK	Clienteling	 	N	Clienteling Support	D. Henry	A. Kasum
+SECM_SFWF_SMS_D	JECM_PROD_OMNI_SFWF_SMS_OPT_OUT	Clienteling	 	N	Clienteling Support	D. Henry	A. Kasum
+SECM_SFWF_SMS_D	JECM_PROD_OMNI_SFWF_SMS_OPT_OUT_CK	Clienteling	 	N	Clienteling Support	D. Henry	A. Kasum
+SECM_SISORD_D	JECM_PRD_OMNI_SIS_STG0_ORDER_DELTA_CK2_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_SISORD_D	JECM_PRD_OMNI_SIS_STG0_ORDER_DELTA_LD1_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_SISORD_D	JECM_PRD_OMNI_SIS_STG0_ORDER_DELTA_LD2_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_SISORD_D	JECM_PRD_OMNI_SIS_STG0_ORDER_DELTA_LD3_O	Clienteling		N	S. Suman 	G. Haripuram	A. Sampathkumar
+SECM_SLIPHIST_D	JECM_PRD_OMNI_SSH_STG2_TO_HBASE_CK	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_SLIPHIST_D	JECM_PROD_OMNI_SSH_STG2_TO_HBASE_CK	Clienteling		N	Clienteling Support		
+SECM_SPOC_TASK_D	JECM_PROD_OMNI_SPOCC_TASK_SFDC_STG2_CK_O	Clienteling	O	N	Clienteling Support		
+SECM_SPOC_TASK_D	JECM_PROD_OMNI_SPOCC_TASK_SFDC_STG2_LD_O	Clienteling	O	N	Clienteling Support		
+SECM_WSHLT_EML_D	JECM_PROD_OMNI_SFWF_WISHLIST_EMAIL	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+SECM_WSHLT_EML_D	JECM_PROD_OMNI_SFWF_WISHLIST_EMAIL_CK	Clienteling		N	Clienteling Support	D. Henry	G. Haripuram
+~~~
+Clienteling - UAT.xls
+TWS SCHEDULE	TWS JOB NAME	"APPLICATION CI
+(For ServiceNow IR)"	"U=User Submitted
+O=On Request"	"CRITICAL
+(Y/N)"	"PAGERDUTY GROUP
+(1st CONTACT)"	"2nd
+CONTACT
+(OBSOLETE)"	"3rd
+CONTACT
+(OBSOLETE)"
+SECM_CDPLD_D	JECM_PROD_CDP_DALLAS_ECOM_DELTA_CK	Clienteling		N	Clienteling support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_PROD_CDP_DALLAS_ECOM_DELTA_LD	Clienteling		N	Clienteling support	H. Reddy	A. Kasum
+SECM_CDPLD_D	JECM_UAT_CDP_PLCC_DELTA_CK	Clienteling		N	Clienteling support	H. Reddy	G.Melomud
+SECM_CDP_W	JECM_UAT_CDP_CONTACT_HIST_DELTA_CK	Clienteling		N	Clienteling support	G.Melomud	D.Henry
+SECM_CDP_W	JECM_UAT_CDP_CONTACT_HIST_DELTA_LD	Clienteling		N	Clienteling support	G.Melomud	D.Henry
+SECM_CDP_W	JECM_UAT_CDP_CONTACT_HIST_DELTA_DELETE_CK	Clienteling		N	Clienteling support	G.Melomud	D.Henry
+SECM_CDP_W	JECM_UAT_CDP_CONTACT_HIST_DELTA_DELETE_LD	Clienteling		N	Clienteling support	G.Melomud	D.Henry
+SECM_CDP_FR_AG_W     	JECM_UAT_CDP_CUSTOMER_TYPE_CK	Clienteling		N	Clienteling support	G.Melomud	D.Henry
+SECM_CDP_FR_AG_W     	JECM_UAT_CDP_CUSTOMER_TYPE_LD	Clienteling		N	Clienteling support	G.Melomud	D.Henry
+SECM_CDP_PLCC_D	JECM_UAT_CDP_PLCC_DELTA_LD	Clienteling		N	Clienteling support	G.Melomud	D.Henry
+SECM_CRMCUSTLD_D	JECM_PROD_OMNI_POS_STG0_CUST_DELTA_CK	Clienteling		N	Clienteling support	H. Reddy	A. Kasum
+SECM_CRMCUSTLD_D	JECM_PROD_OMNI_POS_STG0_CUST_DELTA_LD	Clienteling		N	Clienteling support	H. Reddy	A. Kasum
+SECM_CRMCUSTLD_D	JECM_UAT_CUSTOMER_STG0_TO_STG1_CK	Clienteling		N	Guest Clienteling		
+SECM_CRMCUSTLD_D	JECM_UAT_CUSTOMER_STG0_TO_STG1_LD	Clienteling		N	Guest Clienteling		
+SECM_CRMCUSTLD_D	JECM_UAT_CUSTOMER_STG1_TO_STG2_CK	Clienteling		N	Guest Clienteling		
+SECM_CRMCUSTLD_D	JECM_UAT_CUSTOMER_STG1_TO_STG2_LD	Clienteling		N	Guest Clienteling		
+SECM_CRMCUSTLD_D	JECM_UAT_CUSTOMER_STG2_TO_SFDC_CK	Clienteling		N	Guest Clienteling		
+SECM_CRMCUSTLD_D	JECM_UAT_CUSTOMER_STG2_TO_SFDC_LD	Clienteling		N	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_UAT_PRODUCT_PRICE_HYBRIS_STG0_CK	Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_UAT_PRODUCT_PRICE_HYBRIS_STG0_LD	Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_UAT_PRODUCT_PRICE_IMS_STG0_CK	Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_UAT_PRODUCT_PRICE_IMS_STG0_LD	Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_UAT_PRODUCT_PRICE_STG0_STG1_CK	Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_UAT_PRODUCT_PRICE_STG0_STG1_LD	Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_UAT_PRODUCT_PRICE_STG1_STG2_CK	Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_UAT_PRODUCT_PRICE_STG1_STG2_LD	Clienteling		Y	Guest Clienteling		
+SECM_PRDPRICE_D	JECM_UAT_PRODUCT_PRICE_STG1_SFDC_LD	Clienteling		Y	Guest Clienteling	D. Henry	G. Haripuram
+SECM_PRDPRICE_D	JECM_UAT_PRODUCT_PRICE_STG2_SFDC_CK	Clienteling		Y	Guest Clienteling	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_UAT_OMNI_ACCOUNT_SFDC_STG2_LD_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_UAT_OMNI_JCAFF_SFDC_STG2_CK_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_UAT_OMNI_JCAFF_SFDC_STG2_LD_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_UAT_OMNI_SPOCC_SFDC_STG2_CK_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_UAT_OMNI_SPOCC_SFDC_STG2_LD_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_UAT_OMNI_USER_SFDC_STG2_CK_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_SFDCREPL_D	JECM_UAT_OMNI_USER_SFDC_STG2_LD_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_SPOC_TASK_D	JECM_UAT_OMNI_SPOCC_TASK_SFDC_STG2_CK_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_SPOC_TASK_D	JECM_UAT_OMNI_SPOCC_TASK_SFDC_STG2_LD_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_UATSTG0_D	JECM_UAT_OMNI_CREDIT_CUST_STG0_CK_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_UATSTG0_D	JECM_UAT_OMNI_CREDIT_CUST_STG0_LD_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_UATSTG0_D	JECM_UAT_OMNI_ECOM_CUST_STG0_CK_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_UATSTG0_D	JECM_UAT_OMNI_ECOM_CUST_STG0_LD_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_UATSTG0_D	JECM_UAT_OMNI_IMS_PRODUCT_STG0_CK_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_UATSTG0_D	JECM_UAT_OMNI_IMS_PRODUCT_STG0_LD_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_UATSTG0_D	JECM_UAT_OMNI_SIS_CUST_STG0_CK_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_UATSTG0_D	JECM_UAT_OMNI_SIS_CUST_STG0_LD_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_UATSTG0_D	JECM_UAT_OMNI_SIS_ORDERS_STG0_CK_O	Clienteling		N	Clienteling support	D. Henry	G. Haripuram
+SECM_UATSTG0_D	JECM_UAT_OMNI_SIS_ORDERS_STG0_LD_O	Clienteling		N	Clienteling support		
+~~~
+Copy of Lawson Accounts Payable Package1.xls
+TWS SCHEDULE	TWS JOB NAME	"APPLICATION CI
+(For ServiceNow IR)"	"U=User Submitted
+O=On Request"	"CRITICAL
+(Y/N)"	"PAGERDUTY GROUP
+(1st CONTACT)"	"2nd
+CONTACT
+(OBSOLETE)"	"3rd
+CONTACT
+(OBSOLETE)"
+CASH_HIST_LOAD	JLAW_CASH_HIST_LOAD_RORP	CASH Incentive System		Y	IT Financial Systems	R. Sun	D. Fedorisin
+CASH_SOLAREXT	JLAW_SIS_EXT_2CASH			Y	Finance Support Group	R. Sun	D. Fedorisin
+EIS_EXECPR 	JLAW_EXECPR			Y	Finance Support Group	R. Sun	D. Fedorisin
+EIS_PAYROLL 	JLAW_PAYROLL			Y	Finance Support Group	R. Sun	D. Fedorisin
+EIS_UPDCNTL	JLAW_UPD_CNTRL			Y	Finance Support Group	R. Sun	D. Fedorisin
+MOVE_MIG_LOGS	MOVE_MIGRATION_LOGS			Y	Unix Admin		
+On Request	JLAW_WEBSPHERE_START		O	Y	Finance Support Group		
+On Request	JLAW_WEBSPHERE_STOP		O	Y	Finance Support Group		
+ORACLE_SOX_RPTS	ORACLE_SOX_REPORTS_AP			Y	C. Henn		
+ORACLE_SOX_RPTS	ORACLE_SOX_REPORTS_CASH			Y	M. Adams		
+ORACLE_SOX_RPTS	ORACLE_SOX_REPORTS_PAY			Y	C. Henn		
+ORACLE_UNAUT_PAY	JLAW_PAY_DETECT_AND_KILL_UNAUTHORIZATION			Y		M. Adams	
+ORACLE_UNAUTH_AP	JLAW_AP_DETECT_AND_KILL_UNAUTHORIZATION			Y		M. Adams	
+PR_POSPAY	PR_POSPAY			Y	Finance Support Group		
+PROD_CODE_LIBCHGS	PROD_CODE_LIB_CHGS			N	Unix Admin		
+SARC_FLUSH_APDB	JMOVE_FLUSH_NEWAP_ARCHIVE			N	M. Adams		
+SARC_FLUSH_GLDB	JMOVE_FLUSH_NEWGL_ARCHIVE			N	M. Adams		
+SARC_FLUSH_PAYDB	JMOVE_FLUSH_NEWPAY_ARCHIVE			N	M. Adams		
+SARCHIVE_NEWAPDB	JMOVE_NEWAPDB			N	M. Adams		
+SARCHIVE_NEWGLDB	JMOVE_NEWGLDB			N	M. Adams		
+SARCHIVE_NEWPAY	JMOVE_NEWPAYDB			N	M. Adams		
+SBOX_CPU_USG_CHT	JBOX_WKLY_CPU_USAGE_CHART			N	Unix Admin	E. Gatchalian	D. Reynard
+SHPLAW_SYS_BKUP	JHPLAW_SYS_DRP			N			
+SIMS_RLLOCFEED 	JLAW_STPLNLOCATIONS			N	J. Bistransky	S. McKay	S. Brink
+SLAUS_LOCA_D	JWLA_US_LOCFEED_EXPORT			N	Finance Support Group	R. Sun	
+SLAUS_LOCA_D	JWLA_US_LOCFEED_IMPORT_LAW			N	Finance Support Group	R. Sun	
+SLAUS_STORINFO_W	JWLA_US_RLS_STORINFO_LAW			N	Finance Support Group	R. Sun	
+SLAUS_STORINFO_W	JWLA_US_STOREINFO_IMPORT			N	Finance Support Group	R. Sun	
+SLAUS_TRNDS_W	JWLA_US_RLS_TRENDS_LAW			N	Finance Support Group	R. Sun	
+SLAW_ACH_RETURN	JLAW_ACH_RETURN_FTP			N			
+SLAW_ADDRSSCHG_D	JLAW_CHECK_ADDRESS_CHANGES	Lawson HR		N	Finance Support Group	B. Beck	J. Bistransky
+SLAW_ADDRSSCHG_D	JLAW_EXTRACT_ADDRESS_CHANGES	Lawson HR		N	Finance Support Group	B. Beck	J. Bistransky
+SLAW_AP_CR_FTP	JLAW_CR_ADDRESS			Y	Finance Support Group		
+SLAW_AP_CR_FTP	JLAW_CR_VOID			Y	Finance Support Group		
+SLAW_AP_PAY_BKP	JLAW_CLEAN_DUMP_LDAP			N	DBA Oncall		
+SLAW_AP_PAY_BKP	JLAW_ONLINE_LAWLDAP_BKUP			Y	DBA Oncall		
+SLAW_AP_PAY_BKP	JMOVE_FLUSH_LAW_LDAP_ARCHIVE			N	J. Mellinger		
+SLAW_AP_PAY_CLON	JLAW_CLEAN_DUMP_LDAP			N	DBA Oncall		
+SLAW_AP_PAY_CLON	JLAW_ONLINE_LAWLDAP_BKUP			Y	DBA Oncall		
+SLAW_AP_PAY_CLON	JMOVE_FLUSH_LAW_LDAP_ARCHIVE			N	J. Mellinger		
+SLAW_AP160	JLAW_AP160_EMPLOYEE			Y	Finance Support Group		D. Duke
+SLAW_AP160	JLAW_AP160_VENDOR			Y	Finance Support Group		D. Duke
+SLAW_AP610	JLAW_AP610			N	Finance Support Group		
+SLAW_AP665	JLAW_AP665			Y	Finance Support Group		D. Duke
+SLAW_APDETAIL	JHPLAW_APDETAIL			Y	Finance Support Group		D. Duke
+SLAW_APDETFTP	JHPLAW_APDETFTP			Y	Finance Support Group		D. Duke
+SLAW_AUDIT_LOG	JLAW_AUDIT_LOGGING			N		D. Reynard	M. Molnar
+SLAW_AUTOPAY	JLAW_AUTOPAY_ACH_FROM_CREDIT			Y	L. Bykowski		
+SLAW_BN106	JLAW_BN106_AETNA			Y	Finance Support Group		
+SLAW_BN106	JLAW_BN106_ANTHEM			Y	Finance Support Group		
+SLAW_BN106	JLAW_BN106_CAREMARK			Y	Finance Support Group		
+SLAW_BN106	JLAW_BN106_DELTA			Y	Finance Support Group		
+SLAW_BN106	JLAW_BN106_DELTA_TEXAS			Y	Finance Support Group	S. McKay	
+SLAW_BN106	JLAW_BN106_EYEMED			Y	Finance Support Group		
+SLAW_BN106	JLAW_BN106_MMO			Y	Finance Support Group		
+SLAW_BN637AETN_O	JLAW_FTP_BN637_AETNA	Lawson HR-Human Resources		N	Finance Support Group		
+SLAW_CACOMP	JLAW_CACOMP_REQUEST			N	Finance Support Group		
+SLAW_CATBNDAP_O	JLAW_APPLY_CATBUNDLE_AP		O	N	Finance Support Group		
+SLAW_CATBNDGL_O	JLAW_APPLY_CATBUNDLE_G		O	N	DBA Oncall		
+SLAW_CATBNDPAY_O	JLAW_APPLY_CATBUNDLE_PAY		O	N	DBA Oncall		
+SLAW_CHKADDRSS_O	JLAW_CHECK_ADDRESS_CHANGES_O	Lawson HR	O	N	Finance Support Group	B. Beck	J. Bistransky
+SLAW_CJR_SYNC_M	JLAW_CASH_JR_LD_CURRENT_SALES	CASH Incentive System		Y	Finance Support Group	R. Sun	D. Fedorisin
+SLAW_CJR_SYNC_M	JLAW_CASH_JR_LD_HIST_INCENTIVES	CASH Incentive System		Y	Finance Support Group	R. Sun	D. Fedorisin
+SLAW_CJRCALINC_M	JLAW_CASH_JR_CALC_COMM_MTB	CASH Incentive System		Y	IT Financial Systems	R. Sun	D. Fedorisin
+SLAW_CJRCALINC_M	JLAW_CASH_JR_CALC_QUOTA_MTB	CASH Incentive System		Y	IT Financial Systems	R. Sun	D. Fedorisin
+SLAW_CJRFTPSAL_M	JLAW_CASH_JR_FTP_SALES	CASH Incentive System		Y	Finance Support Group	R. Sun	D. Fedorisin
+SLAW_CJRLDSALE_M	JLAW_CASH_JR_LOAD_SALES	CASH Incentive System		Y	Finance Support Group	R. Sun	D. Fedorisin
+SLAW_COBRA2DIS_W	JLAW_COBRA_GEN_FILES	Lawson BN		N	Finance Support Group		
+SLAW_COBRA2DIS_W	JLAW_COBRA_SEND_NPM_FILE	Lawson BN		N	Finance Support Group		
+SLAW_COBRA2DIS_W	JLAW_COBRA_SEND_QB_FILE	Lawson BN		N	Finance Support Group		
+SLAW_COBRAGEN_O	JLAW_COBRA_GEN_FILES	Lawson BN	O	N	Finance Support Group		
+SLAW_CSH_COMMS_M	JLAW_CASH_FTP_COMMS_REPORT	CASH Incentive System		N	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSH_COMMS_M	JLAW_CASH_GENERATE_COMMS_REPORT	CASH Incentive System		N	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSH_FYSAL_O	JLAW_CASH_CALC_PRIOR_YEAR_SALES	CASH Incentive System	O	Y	Finance Support Group	R. Sun	D. Fedorisin
+SLAW_CSH_HRHIST	JLAW_CASH_HRHIST			N	Finance Support Group	R. Sun	B. Beck
+SLAW_CSH_NHSAL_O	JLAW_CASH_CALC_NEW_HIRE_SALES	CASH Incentive System		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_CSH_STTYP_M	JLAW_CASH_SET_STORE_TYPES	CASH Incentive System		Y	Finance Support Group	R. Sun	D. Fedorisin
+SLAW_CSHADJSAL_O	JLAW_CASH_ADJUST_PRIOR_YEAR_SALES	CASH Incentive System		Y	FR	R. Sun	D.Fedorisin
+SLAW_CSHPAYFED_W	JLAW_WD_COPY_CASH_W	Workday		N	IT Workday Support		
+SLAW_CSHROPCUP_O	JLAW_CASH_RORP_DETERMINATION_CHKUP	CASH Incentive System		N	IT Financial Systems	R. Sun	D. Fedorisin
+SLAW_CSHSALEMV_M	JLAW_CASH_REFRESH_SALES_MV	IT Financial System Support		Y	Finance Support Group	B. Beck	J. Bistransky
+SLAW_CSHSTEXCP_O	JLAW_CASH_SET_EXCEPTION	CASH Incentive System		Y	Finance Support Group	R. Sun	D.Fedorisin
+SLAW_DEDTOCRUN	JLAW_DEDTOCRUN			N	Finance Support Group		
+SLAW_DEFCMPEXT_O	JLAW_DEFERRED_COMP_EXT_O		O	N	Finance Support Group		
+SLAW_DEFCMPEXT_W	JLAW_DEFERRED_COMP_EXTR			N	Finance Support Group		
+SLAW_DLYSTRWARR	JLAW_DLYSTOREWARRANTY			Y	Finance Support Group		D. Duke
+SLAW_DRCK_WASPAC	JLAW_DRCHECK_WASSPACE			N		D. Coulson	
+SLAW_DRCKSYS	JLAW_DRCKSYS			Y	M. Molnar	D. Reynard	
+SLAW_ECNT_REPLY	JLAW_ECOUNT_REPLYSQL			Y	Finance Support Group		D. Duke
+SLAW_ECOUNT_CHCK	JLAW_ECOUNT_CHECK			Y	Finance Support Group		D. Duke
+SLAW_ECOUNT_PROC	JLAW_ECOUNT_REPLY			N	Finance Support Group		
+SLAW_ECOUNT_PROC	JLAW_ECOUNT_REQUEST			Y	Finance Support Group		D. Duke
+SLAW_ECOUNT_RPLY	JLAW_ECOUNT_REPLY_RETRY			Y	Finance Support Group		D. Duke
+SLAW_ECOUNT_SEND	JLAW_ECOUNT_SEND			Y	Finance Support Group		D. Duke
+SLAW_EIS_SETSU_M	JLAW_EIS_SET_SUSPEND_ACCOUNT_PURCHASE	EIS		Y	ITFinanceSysSupport@jewels.com	R. Sun	D. Fedorisin
+SLAW_EIS_WO_M	JLAW_EIS_FTP_WO_REPORT	EIS		Y	ITFinanceSysSupport@jewels.com	R. Sun	D.Fedorisin
+SLAW_EIS_WO_M	JLAW_EIS_TERMS_TO_WO	EIS		Y	ITFinanceSysSupport@jewels.com	R. Sun	
+SLAW_ELECTW2EQ_O	JLAW_ELECTRONIC_W2_TO_EQUIFAX		O	Y	Finance Support Group		D. Duke
+SLAW_EMPCASH	JLAW_EMPCASH			N	Finance Support Group		S. Brink
+SLAW_ERMFEED10_D	JLAW_ERMS_FEED_ALL_10	Lawson HR		N	Finance Support Group		
+SLAW_ERMSFEED_O	JLAW_ERMS_FEED_O     	Lawson HR		N	Finance Support Group		
+SLAW_ESPP_CONT_W	JLAW_STOCKPLAN_CONT_FEED_TO_SOLIUM	Lawson BN Benefits		Y	Finance Support Group	J. Bistransky	S. Brink
+SLAW_EXTADDRSS_O	JLAW_EXTRACT_ADDRESS_CHANGES_O	Lawson HR	O	N	Finance Support Group	B. Beck	J. Bistransky
+SLAW_EXTPGPKEY_M	JLAW_EXTRACT_PGP_KEY_RING	HPLAW		N	Finance Support Group		
+SLAW_FLEXPGP	JLAW_FLEXPGP			Y	Finance Support Group		
+SLAW_FLXSPDEXT_O	JLAW_FLEX_SPEND_EXTRACTS	Lawson BN	O	Y	Finance Support Group		
+SLAW_FLXSPDEXT_W	JLAW_FLEX_SPEND_EXTRACT_WK	Lawson BN		Y	Finance Support Group		
+SLAW_FTP_AP670_D	JLAW_FTP_AP670	IT Financial System Support		N	Finance Support Group		
+SLAW_FTP2AETNA_W	JLAW_FTP_BN637_AETNA	Lawson HR-Human Resources		N	Finance Support Group		
+SLAW_FTP2AETNA_W	JLAW_FTP_PR617_ATENA	Lawson HR-Human Resources		N	Finance Support Group		
+SLAW_GATESFTP	JLAW_GATESFTP			N			
+SLAW_GET_STOCK	JLAW_GET_STOCK_UPDATES			Y	Finance Support Group		
+SLAW_GLMAST_POS	JLAW_GLMASTER_POS			Y	Finance Support Group		
+SLAW_GLMST2IMS_W	JLAW_GLMASTER_TO_IMS	Lawson - GL		N	Finance Support Group	T. Duncan	S. McKay
+SLAW_HR_EMPITIM	JLAW_HR_EMPITIM			N	Finance Support Group		
+SLAW_HRCENFILE_D	JLAW_HREXPRESS_CENCUS_FILE	LAWSON HR		N	Finance Support Group		
+SLAW_HYPMTADTA_M	JLAW_HYPERION_SEND_EMPLOYEE_DATA_ALL	Lawson HR - Human Resources		Y	Finance Support Group	S. Mckay	B. Beck
+SLAW_HYPMTADTA_M	JLAW_HYPERION_SEND_EMPLOYEE_METADATA	Lawson HR - Human Resources		Y	Finance Support Group	S. Mckay	B. Beck
+SLAW_HYPMTADTA_M	JLAW_HYPERION_SEND_JOB_CODE_METADATA	Lawson HR - Human Resources		Y	Finance Support Group	S. Mckay	B. Beck
+SLAW_HYPMTADTA_M	JLAW_HYPERION_SEND_PAYGRADE_METADATA	Lawson HR - Human Resources		Y	Finance Support Group	S. Mckay	B. Beck
+SLAW_IC5EXPRPT_W	JLAW_IC500_EXCEPTION_RPT	PROCURE+		N	J. Rinehart	M. Kumar	
+SLAW_INTEMPUPD_D	JLAW_INTRANT_EMPLOYEE_UPDATE	Lawson HR		N	Finance Support Group	S. Mckay	
+SLAW_LDAP_FLUSH	JMOVE_FLUSH_LAW_LDAP_ARCHIVE			N	J. Mellinger		
+SLAW_LDAPISSUE_T 	JLAW_LAWSON_LDAP_START_O			Y	Finance Support Group		K. Siedlecki
+SLAW_LDAPISSUE_T 	JLAW_LAWSON_LDAP_STOP_O			Y	Finance Support Group		K. Siedlecki
+SLAW_LDAPSTART_O	JLAW_LAWSON_LDAP_START_O		O	Y	Finance Support Group		K. Siedlecki
+SLAW_LDAPSTOP_O	JLAW_LAWSON_LDAP_STOP_O		O	Y	Finance Support Group		K. Siedlecki
+~~~
+Credit Authorizations Application.xls
+TWS SCHEDULE	TWS JOB NAME	"APPLICATION CI
+(For ServiceNow IR)"	"U=User Submitted
+O=On Request"	"CRITICAL
+(Y/N)"	"PAGERDUTY GROUP
+(1st CONTACT)"	"2nd
+CONTACT
+(OBSOLETE)"	"3rd
+CONTACT
+(OBSOLETE)"
+MOVE_MIG_LOGS	MOVE_MIGRATION_LOGS			Y	Unix Admin on call		
+ORACLE_SOX_RPTS  	ORACLE_SOX_REPORTS_ACS			Y	DBA on call		
+ORACLE_SOX_RPTS2	ORACLE_SOX_REPORTS_ACS			Y	DBA on call		
+PROD_CODE_LIBCHG	PROD_CODE_LIB_CHGS			N	Unix Admin on call		
+SACS_ACS_LOG_FTP	JACS_ACS_LOG_FTP	Authorizations Credit System		N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_ACS088	JACS_ACS088	Authorizations Credit System		N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_ACS100_1	JACS_EXTDEALS			N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_ACS100_1	JACS_LOADDEALS			N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_ACSX301S_D	JACS_ACSX301S	Authorizations Credit System		Y	S. Helfrich	T. Kerscher	J. Bartholomew
+SACS_ACSX808_D	JACS_ACSX808			N	Email: IT CC Support 	L. Bykowski	
+SACS_ATBPURGE_D	JACS_ATB_PURGE	Authorizations Credit System		Y	S. Helfrich	W. Powell	J. Bartholomew
+SACS_CATBUNACS_Q	JACS_APPLY_CATBUNDLE_ACS			N	DBA on call		
+SACS_CATBUNCOM_Q	JACS_APPLY_CATBUNDLE_COM			N	DBA on call		
+SACS_CBSIMULAT_O	JACS_804_EXTRACT	Authorizations Credit System		N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_CONT_MONITR	JACS_CONTINGENCY_MONITOR			Y	DBA on call		
+SACS_CPYLTRFIL_O	JACS_COPY_LTR_FILE_O	Authorizations Credit System		N	S. Helfrich		
+SACS_CRDBUREXT_O	JACS_CREDBUR_CALL_EXT			N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_CREDITAPPS	JACS_GETAPPS	Authorizations Credit System		Y	S. Helfrich	W. Powell	J. Bartholomew
+SACS_CREDITAPPS	JACS_LOADAPPS	Authorizations Credit System		N	S. Helfrich		J. Bartholomew
+SACS_CYCLE_COMS	JACS_CYCLE_COMS			Y	S. Helfrich	W. Powell	J. Bartholomew
+SACS_EXIT_CONT_D	JACS_EXIT_CONTINGENCY			Y	DBA on call		
+SACS_EXIT_CONT_W	JACS_EXIT_CONTINGENCY			Y	DBA on call		
+SACS_EXTTRCOM_O	JACS_EXT_TRANS_COMNTS_O	Authorizations Credit System	O	N	S. Helfrich		
+SACS_EXTTRNDTA_D	JACS_EXTRACT_TRANSACTION_DATA	Authorizations Credit System		Y	S. Helfrich	W. Powell	J. Bartholomew
+SACS_INACSDAT1_O	JACS_CDE_INIT_ACS_DATA1	Credit Decision Engine II	O	N	Requester	S. Helfrich	J. Bartholomew
+SACS_JOBSCHDLR_W	JACS_JOBSCHDLR_A	HPACS - Job Sched		N		S. Pearce	
+SACS_JOBSCHDLR_W	JACS_JOBSCHDLR_B	HPACS - Job Sched		N		S. Pearce	
+SACS_LD2STG_CDE_TRANS	JACS_LD2STG_CDE_TRANS	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_LDCDE2STG_O	JACS_LOAD_CDE_TRANSACTIONS_TO_STAGE_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_LOAD_LOC	JACS083 			N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_LOAD_LOC	JACS084			N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_LOADDEALS_O	JACS_DEALS_EXTRACT		O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_LOADDEALS_O	JACSDEV_DEALS_LOAD		O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_NEWSYSOFF_O	JACS_SET_STORE_TABLE_ROUTE_OFF_O	Authorizations Credit System	O	Y	S. Helfrich	W. Powell	J. Bartholomew
+SACS_NEWSYSON_O	JACS_SET_STORE_TABLE_ROUTE_ON_O	Authorizations Credit System	O	Y	S. Helfrich	W. Powell	J. Bartholomew
+SACS_Q50_SEARCH	JACS_Q50_SEARCH			N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RESET_USER	JACS_RESET_USER			N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RST53DLTR_O	JACS_RESET_BC_JDLETTERS_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTACS050_O	JACS_RESET_BC_JCRSXTRA_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTACS055_O	JACS_RESET_BC_JCONTING_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTACS056_O	JACS_RESET_BC_JSCORCRD_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTACS057_O	JACS_RESET_BC_JTALLYJUDGSTATS_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTACS803_O	JACS_RESET_BC_EXT_TRANSACTION_DATA_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTACS804_O	JACS_RESET_BC_JACS_804_EXTRACT_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTACS805_O	JACS_RESET_BC_CDE_TRANS_LD2STG_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTACSEXT_O	JACS_RESET_BC_JACSXTRA_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTACSX57_O	JACS_RESET_BC_POLICY_SUMMARY_STATS_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTATBATT_O	JACS_RESET_BC_EXT_ATB_ATTRIBUTES_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTCRSCMT_O	JACS_RESET_BC_JCRSCOMMENTS_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_RSTDEDLTR_O	JACS_RESET_BC_CDE_DLETTERS_O	Authorizations Credit System	O	N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_SHAREPOOL_D	JACS_SHARED_POOL_MONITOR			Y	DBA on call		
+SACS_SOXAUDITSTP_D	JACS_SOX_DAILY_AUDITSTEP			N	Email ITEnterpriseServices		
+SACS_SOXRPT_M	JACS_SOX_GENERAL_CNTRL_REPORT   			Y	Unix Admin on call		
+SACS_TRMTBL_LD_W	JACS_TERMING_TABLE_LOAD_W			N	S. Helfrich	W. Powell	J. Bartholomew
+SACS_TRNSUMRPT_W	JACS_806_NEW_TRANS_SUMMARY_RPT	Authorizations Credit System		N	S. Helfrich		M. Betz
+SACS078	JACS078			N	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JACS_CDE_DLETTERS	Authorizations Credit System		Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JACS_EXTRACT_ATB_ATTRIBUTES	Authorizations Credit System		Y	S. Helfrich	J. Bartholomew	 
+SACSBATC	JACS_GENESIS_LETTERS	Authorizations Credit System		Y	S. Helfrich	C. Kapferer	
+SACSBATC	JACS_POLICY_SUMMARY_STATS	Authorizations Credit System		Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JACSXTRA  			Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JBATCHPR  			Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JCLRACSLOGFLS  			Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JCONTING  			Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JCRS_GENESIS_XTRA	Authorizations Credit System		Y	S. Helfrich	C. Kapferer	
+SACSBATC	JCRSCOMMENTS    			Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JCRSXTRA  			Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JDLETTRS  			Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JSCORCRD  			Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSBATC	JTALLYJUDGSTATS  			Y	S. Helfrich	W. Powell	J. Bartholomew
+SACSPDPKG_DRPBKP	JMQSERIES_STOP 			Y	Unix Admin on call		
+SACSPRODPKG_BKUP	JMQSERIES_STOP 			Y	Unix Admin on call		
+SACSWKLD	JACS090			N	S. Helfrich	W. Powell	J. Bartholomew
+SACSWKLD	JACSLOAD			N	S. Helfrich	W. Powell	J. Bartholomew
+SARC_FLUSH_ACSDB	JCHECK_FLUSH_ACSPROD_ARCHIVE			Y	DBA on call		
+SARC_FLUSH_ACSDB	JMOVE_FLUSH_ACSPROD_ARCHIVE 			Y	DBA on call		
+SARCHIVE_PRODDB	JCHECK_ACSPRODDB			Y	DBA on call		
+SARCHIVE_PRODDB	JMOVE_ACSPRODDB 			Y	DBA on call		
+SBOX_CPU_USG_CHT	JBOX_WKLY_CPU_USAGE_CHART			N	Unix Admin on call		
+SCACS_NSCH_SRCH_D	JACS_NSCH_SEARCH	Authorizations Credit System		N	S. Helfrich	W. Powell	J. Bartholomew
+SCDS_CDSX803_O	JACSSTG_RELTESTCASES_O	Authorizations Credit System		N	S. Helfrich	M. Betz	
+SCYCLE_ACSDB_COM	JACS_DB_SHUTDOWN			Y	DBA on call		
+SCYCLE_ACSDB_COM	JACS_DB_STARTUP			Y	DBA on call		
+SCYCLE_ACSDB_COM	JSTART_COM_SCRIPT			Y	DBA on call		
+SCYCLE_ACSDB_COM	JSTOP_COM_SCRIPT			Y	DBA on call		
+SCYCLE_DAILY	JCYCLE_COM 			Y	Unix Admin on call		
+SHPACSA_AUD_LOG	JACSA_AUDIT_LOGGING			N	Unix Admin on call		
+SHPACSB_AUD_LOG	JACSB_AUDIT_LOGGING			N	Unix Admin on call		
+SORACL_ANALYZ_ACS 	JORANACS 			Y	Unix Admin on call		
+SSOX_USERACCESS	JACS_ACSACC			N	L. Bykowski		E. Kenepp
+	JACS_GEN_APPRVD_APPS_RPT_O		O	N	S. Helfrich		
+~~~
+Credit Systems - RH.xls
+Job Doc Help & Templates							
+							
+TWS SCHEDULE	TWS JOB NAME	"APPLICATION CI
+(For ServiceNow IR)"	"U=User Submitted
+O=On Request"	"CRITICAL
+(Y/N)"	"PAGERDUTY GROUP
+(1st CONTACT)"	"2nd
+CONTACT
+(OBSOLETE)"	"3rd
+CONTACT
+(OBSOLETE)"
+SCRE_COTSLEVME_D	JCRE_COT_COMPRESS_XFER_EVENT_FOLDERS	creprodtws		N	W. Taylor	S. Pearce	M. Randall
+SCRE_COTSLEVME_D	JCRE_COT_GATHER_SALE_EVENT_MEDIA	creprodtws		N	W. Taylor	S. Pearce	M. Randall
+SCRE_COTSLEVME_D	JCRE_COT_REMOVE_OUTPUT_FOLDER_CONTENTS	creprodtws		N	W. Taylor	S. Pearce	M. Randall
+SSIS_UWPDAILY_D	JCRE_UWP_VOUCH_MATRIX_D	UWP		N	P. Punnam	C. Hughes	M. Randall
