@@ -101,8 +101,8 @@
                 // Count the occurrences of each job name
                 jobCounts[jobName] = (jobCounts[jobName] || 0) + 1;
 
-                // If a job appears more than once, add it to duplicates
-                if (jobCounts[jobName] === 2) {
+                // If a job appears more than once (and it's not a MACHINE_UNAVAILABLE), add it to duplicates
+                if (jobCounts[jobName] === 2 && jobName != "AutoSys_Production") {
                     duplicates.push(jobName);
                 }
 
