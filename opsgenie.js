@@ -509,7 +509,8 @@ async function fillOpsGenieAlert() {
     }
 
     let groupToOnCall = {
-        "DCOE Support": "On call - business intelligence primary",
+        // "DCOE Support": "On call - business intelligence primary",
+        "DCOE Support": "on call - esi", // DCOE used to be routed to Business Intelligence, but now it is routed to ESI.
         "Digital Integration ETL": "on call - digital etl",
         "Enterprise Service Integration": "on call - esi",
         "SAP S4": "on call - sap s4_schedule",
