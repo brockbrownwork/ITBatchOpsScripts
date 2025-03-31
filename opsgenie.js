@@ -514,7 +514,8 @@ async function fillOpsGenieAlert() {
         "Digital Integration ETL": "on call - digital etl",
         "Enterprise Service Integration": "on call - esi",
         "SAP S4": "on call - sap s4_schedule",
-        "Marketing Dallas": "on call - marketing dallas escalation policy"
+        "Marketing Dallas": "on call - marketing dallas escalation policy",
+        "Repair In-Store Services":"on call - repair store services"
     };
     group = groupToOnCall[group] ?? group;
 
