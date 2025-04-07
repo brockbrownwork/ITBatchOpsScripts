@@ -6,6 +6,10 @@ start microsoft-edge:"https://autosys-ui.auto.cloud.jewels.com/wcc/ui/Launcher.h
 ping localhost -n 3 >nul
 
 REM Open Opsgenie Alert List
+start microsoft-edge:"https://signetjewelers.app.opsgenie.com/alert/list"
+ping localhost -n 3 >nul
+
+REM Open the new alert creator
 start microsoft-edge:"https://signetjewelers.atlassian.net/jira/ops/teams/46d6c4ba-da5e-4633-b096-2132b4baa969/alerts?view=list&query="
 ping localhost -n 3 >nul
 
