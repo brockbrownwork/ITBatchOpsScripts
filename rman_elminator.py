@@ -11,9 +11,12 @@ def safe_locate(image_path):
 
 def main_loop():
     while True:
+        last_position = pyautogui.position()
         print("Waiting 10 seconds before starting check...")
         time.sleep(10)
-
+        if pyautogui.position() != last_position: # prevent iteration from executing if mouse has moved
+            last_position = pyautogui.position()
+            continue
         try:
             print("Checking for rman_1.png...")
             rman_1 = safe_locate("images/rman_1.png")
