@@ -515,7 +515,8 @@ async function fillOpsGenieAlert() {
         "Enterprise Service Integration": "on call - esi",
         "SAP S4": "on call - sap s4_schedule",
         "Marketing Dallas": "on call - marketing dallas escalation policy",
-        "Repair In-Store Services":"on call - repair store services"
+        "Repair In-Store Services":"on call - repair store services",
+        "IT Distribution and Manufacturing Support":"On Call - Distribution Escalation Policy"
     };
     group = groupToOnCall[group] ?? group;
 
@@ -535,7 +536,7 @@ async function fillOpsGenieAlert() {
         status = "MUST_START_ALARM";
     }
 
-    let description = `${jobName}; ${status}; autosys`;
+    let description = `Autosys ${status} - ${jobName} - Please advise IT-Batchops`;
 
     if (jobName.toLowerCase().endsWith("box") && status == "MAXRUNALARM") {
         alert("Don't page out maxrunalarms on boxes, look at the jobs inside it and investigate.");
