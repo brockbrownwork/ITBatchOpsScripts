@@ -13,6 +13,10 @@ REM Open the new alert creator
 start microsoft-edge:"https://signetjewelers.atlassian.net/jira/ops/teams/46d6c4ba-da5e-4633-b096-2132b4baa969/alerts?view=list&query="
 ping localhost -n 3 >nul
 
+REM Open RMJ
+https://portal.runmyjobs.cloud/dashboard
+ping localhost -n 3 >nul
+
 REM Open RHES Production TWS
 start microsoft-edge:"http://rhesprodtws01/"
 ping localhost -n 3 >nul

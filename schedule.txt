@@ -23,7 +23,7 @@ Saturday morning: There will be no mk_BATCH_EMAIL
 3:30 AM	Start Final Pass				Start Final Pass (release JPOS_PROCESS_POLL if not at 96%, do not start before this time...)
 3:45 AM	JIMS2MDS confirm successful			Confirm successful completion
 4:00 AM (Monday morning only) 				If the SMDS_SLSINVUPD_W is finished, set the priority of SMDS_SLSINVUPD_D to 10 so that it starts
-4:45 AM (Sunday morning Only)				?
+4:45 AM (Sunday morning Only)				?`
 5:30 AM	Reply yes to jcycle_crcom			Confirm the prompt
 6:30 AM 3rd shift turnover				Do the 3rd shift turnover
 7:00 AM	Page Out on MAXRUN Alarms			Handle any MAXRUN alarm issues post 7 AM
