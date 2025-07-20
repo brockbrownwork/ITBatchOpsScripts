@@ -516,7 +516,7 @@ async function fillOpsGenieAlert() {
         "SAP S4": "on call - sap s4_schedule",
         "Marketing Dallas": "on call - marketing dallas escalation policy",
         "Repair In-Store Services":"on call - repair store services",
-        "IT Distribution and Manufacturing Support":"On Call - Distribution Escalation Policy"
+        "IT Distribution and Manufacturing Support":"IT distribution support"
     };
     group = groupToOnCall[group] ?? group;
 
