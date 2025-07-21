@@ -14,7 +14,7 @@ start microsoft-edge:"https://signetjewelers.atlassian.net/jira/ops/teams/46d6c4
 ping localhost -n 3 >nul
 
 REM Open RMJ
-https://portal.runmyjobs.cloud/dashboard
+start microsoft-edge:"https://portal.runmyjobs.cloud/dashboard"
 ping localhost -n 3 >nul
 
 REM Open RHES Production TWS
