@@ -154,6 +154,9 @@ async function extractReportData() {
             group = "Business Int";
         }
         if (group === "Finance Dallas") {
+            if (group.startsWith("hr_*") ) {
+                alert("Kavitha takes the hr_* jobs now, not Rakesh.");
+            }
             alert("This group wants to be called directly, see notes for Dallas Finance, go to Autosys playbook then click the '...' at the bottom, then go to Finance call tab.");
             return;
         }
@@ -557,6 +560,10 @@ async function fillOpsGenieAlert() {
     if (status.includes("machine")) {
         alert("If this is a machine pending:\nping it, then go to enterprise command line to see if it's available in autosys\ntry to launch the autosys agent yourself in the enterprise command line, if that doesn't work try the start script. If that doesn't work, page IT platform operations and create an IR, I've copied the link to an IR you should copy the format of.");
         copyTextToClipboard("https://signetjewelers.atlassian.net/browse/SERVOPS-88232");
+    }
+    if (group.startsWith("pse_")) {
+        alert("Page out to Cheryl.");
+        return;
     }
 
     // Find and click the first button with the text "Create alert"
