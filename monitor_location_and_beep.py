@@ -7,18 +7,20 @@ import sys
 import mss
 from time import sleep
 from datetime import datetime
+import pyttsx3
+
+engine = pyttsx3.init()
 
 def get_current_time():
-    # Get the current time
+    """Gets and formats the current time."""
     now = datetime.now()
-    # Format the time in 12-hour format with AM/PM, including seconds
     current_time = now.strftime("%I:%M:%S%p").lower()
-    # Ensure a single-digit hour does not have a leading zero
     if current_time.startswith('0'):
         current_time = current_time[1:]
     return current_time
 
 def capture_points():
+    """Waits for user input to define the top-left and bottom-right corners of a rectangle."""
     mouse = Controller()
     print("Move mouse to the top-left corner and press Ctrl+`")
     keyboard.wait('ctrl+`')
@@ -35,6 +37,7 @@ def capture_points():
     return point1, point2
 
 def get_rectangle(point1, point2):
+    """Calculates the rectangle dimensions from two points."""
     x1 = min(point1[0], point2[0])
     y1 = min(point1[1], point2[1])
     x2 = max(point1[0], point2[0])
@@ -42,6 +45,7 @@ def get_rectangle(point1, point2):
     return {'left': int(x1), 'top': int(y1), 'width': int(x2 - x1), 'height': int(y2 - y1)}
 
 def capture_original_image(rect):
+    """Captures and saves the initial image of the defined area."""
     with mss.mss() as sct:
         image = sct.grab(rect)
         img = Image.frombytes('RGB', image.size, image.rgb)
@@ -51,6 +55,7 @@ def capture_original_image(rect):
         return img
 
 def images_are_similar(img1, img2, threshold=0.99):
+    """Compares two images and returns True if they are similar enough."""
     arr1 = np.array(img1)
     arr2 = np.array(img2)
 
@@ -58,61 +63,88 @@ def images_are_similar(img1, img2, threshold=0.99):
         return False
 
     similarity = np.mean(arr1 == arr2)
-    if round(similarity, 1) != 1:
+    if similarity < 0.999:
         print(f"Image similarity: {similarity * 100:.2f}%")
     else:
         print(f"Watching... ({get_current_time()})")
     return similarity >= threshold
 
-def make_beep(short = False):
+# --- NEW FUNCTION ---
+def speak_alert(location_name):
+    """Uses text-to-speech to announce the alert message three times."""
+    
+    # Determine the message based on user input
+    message = location_name if location_name else "please check location"
+    
+    print(f"ALARM: Announcing '{message}'")
+    
+    # Say the message three times
+    for _ in range(3):
+        engine.say(message)
+        engine.runAndWait()
+        engine.stop()
+        time.sleep(1) # A short pause between repetitions
+
+def make_short_beep():
+    """Produces a short beep sound for re-arming notification."""
     try:
         import winsound
-        if not short:
-            winsound.Beep(330, 500)
-            sleep(0.5)
-            winsound.Beep(330, 500)
-        else:
-            winsound.Beep(330, 100)
-            sleep(0.5)
-            winsound.Beep(330, 100)
+        winsound.Beep(440, 150) # A short, higher-pitched beep
     except ImportError:
-        # For Linux or MacOS, use 'os' module to make a beep
-        print('\a')  # ASCII Bell
+        print('\a')  # ASCII Bell for non-Windows systems
 
-def monitor(rect, original_image):
+# --- MODIFIED FUNCTION ---
+def monitor(rect, original_image, location_name):
+    """Main monitoring loop that checks for changes in the specified screen region."""
     armed = True
     print("Monitoring started. Press Ctrl+C to exit.")
     try:
         with mss.mss() as sct:
             while True:
-                sleep(10)
+                time.sleep(5)
+                
                 image = sct.grab(rect)
                 current_image = Image.frombytes('RGB', image.size, image.rgb)
-                # Uncomment to save and view current images
-                # current_image.save('current_image.png')
-                # current_image.show()
+
                 if not images_are_similar(original_image, current_image):
                     if armed:
-                        print("Image changed! Beep!")
-                        make_beep()
-                        armed = False
+                        print("Potential change detected. Verifying...")
+                        time.sleep(5) 
+                        
+                        second_check_image_data = sct.grab(rect)
+                        second_check_image = Image.frombytes('RGB', second_check_image_data.size, second_check_image_data.rgb)
+                        
+                        if not images_are_similar(original_image, second_check_image):
+                            print("Change confirmed! Sounding alarm!")
+                            # --- REPLACED BEEP WITH TTS ---
+                            speak_alert(location_name)
+                            armed = False # Disarm to prevent continuous alarms
+                        else:
+                            print("Change was temporary. Resuming monitoring.")
                 else:
                     if not armed:
-                        print("Image restored. Armed again.")
-                        make_beep(short = True)
+                        print("Image restored. System is armed again.")
+                        make_short_beep()
                         armed = True
-                time.sleep(1)
+                        
     except KeyboardInterrupt:
-        print("Monitoring stopped.")
+        print("\nMonitoring stopped.")
         sys.exit()
 
+# --- MODIFIED FUNCTION ---
 def main():
-    make_beep()
+    """Main function to run the program."""
     point1, point2 = capture_points()
     rect = get_rectangle(point1, point2)
+    
+    # --- ADDED: Prompt for a location name ---
+    location_name = input("Enter the alert phrase for this location (or press Enter for default): ").strip()
+    
     print(f"Monitoring rectangle: {rect}")
     original_image = capture_original_image(rect)
-    monitor(rect, original_image)
+    
+    # --- MODIFIED: Pass the location name to the monitor ---
+    monitor(rect, original_image, location_name)
 
 if __name__ == "__main__":
     main()
