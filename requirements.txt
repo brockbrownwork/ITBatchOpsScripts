@@ -10,3 +10,4 @@ reportlab
 schedule
 sounddevice
 tqdm
+pyttsx3==2.71
