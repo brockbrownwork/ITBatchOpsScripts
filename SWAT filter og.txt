@@ -1,0 +1,1 @@
+"Ticket category" = Incidents AND project = SERVOPS AND "Major incident" is not EMPTY ORDER BY "Time to resolution" ASC 
