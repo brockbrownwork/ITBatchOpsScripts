@@ -22,6 +22,17 @@
         });
     };
 
+    const hasTextAfterLastOpen = (mainText, searchText) => {
+        const lastOpenIndex = mainText.lastIndexOf('Open');
+        
+        if (lastOpenIndex === -1) {
+            return false; // The word "open" was not found.
+        }
+
+        const textAfterOpen = mainText.substring(lastOpenIndex + 4); // "open" is 4 characters long.
+        return textAfterOpen.includes(searchText);
+    };
+
     console.log("Waiting...");
     // Alternative usage with .then()
     wait10Seconds().then(() => {
@@ -117,7 +128,9 @@
             // Alert if any duplicates are found
             if (duplicates.length > 0) {
                 delayedAlert('Duplicate job names found: ' + duplicates.join(', '));
-                notify();
+                if (!("ZGRCR_LOCK_CHECK" in duplicates)) { // Make sure that the pesky ZGRCR_LOCK_CHECK isn't in the dupes
+                    notify();
+                }
             }
 
             return jobNames;
@@ -311,7 +324,9 @@
 
                 if (currentText !== previousText) {
                     if (containsOpen && !wasOpenPreviously) {
-                        notify();  // Alert if the text contains 'Open' after it was not present
+                        if (!(textAfterOpen(currentText, "ZGRCR_LOCK_CHECK"))) {
+                            notify();  // Alert if the text contains 'Open' after it was not present
+                        }
                         let jobs = findRepeatJobs(currentText);
                         // Check if there's a PNC job
                         if (currentText.includes("PNC") && !pncToggle) {
