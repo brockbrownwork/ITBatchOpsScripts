@@ -324,7 +324,7 @@
 
                 if (currentText !== previousText) {
                     if (containsOpen && !wasOpenPreviously) {
-                        if (!(textAfterOpen(currentText, "ZGRCR_LOCK_CHECK"))) { // ZAP AWAY that pesky job!
+                        if (!(hasTextAfterLastOpen(currentText, "ZGRCR_LOCK_CHECK"))) { // ZAP AWAY that pesky job!
                             notify();  // Alert if the text contains 'Open' after it was not present
                         }
                         let jobs = findRepeatJobs(currentText);
