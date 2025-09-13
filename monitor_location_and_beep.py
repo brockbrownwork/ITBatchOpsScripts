@@ -93,15 +93,21 @@ def make_short_beep():
     except ImportError:
         print('\a')  # ASCII Bell for non-Windows systems
 
-# --- MODIFIED FUNCTION ---
+
 def monitor(rect, original_image, location_name):
+    interval = 100
+    try:
+        interval = float(input("How often (in seconds) do you want to check? "))
+    except Exception as e:
+        pass
+
     """Main monitoring loop that checks for changes in the specified screen region."""
     armed = True
     print("Monitoring started. Press Ctrl+C to exit.")
     try:
         with mss.mss() as sct:
             while True:
-                time.sleep(5)
+                time.sleep(interval)
                 
                 image = sct.grab(rect)
                 current_image = Image.frombytes('RGB', image.size, image.rgb)
@@ -109,7 +115,7 @@ def monitor(rect, original_image, location_name):
                 if not images_are_similar(original_image, current_image):
                     if armed:
                         print("Potential change detected. Verifying...")
-                        time.sleep(5) 
+                        time.sleep(interval)
                         
                         second_check_image_data = sct.grab(rect)
                         second_check_image = Image.frombytes('RGB', second_check_image_data.size, second_check_image_data.rgb)
@@ -143,7 +149,7 @@ def main():
     print(f"Monitoring rectangle: {rect}")
     original_image = capture_original_image(rect)
     
-    # --- MODIFIED: Pass the location name to the monitor ---
+    # --- MODIFIED: pass the location name to the monitor ---
     monitor(rect, original_image, location_name)
 
 if __name__ == "__main__":
