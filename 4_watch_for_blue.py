@@ -7,13 +7,27 @@ import sys
 import mss
 from time import sleep
 from datetime import datetime
-from chord import play_chord
+import pyttsx3
+
+engine = pyttsx3.init()
+
+
+def email_alert():
+    """Uses text-to-speech to announce the alert message three times."""
+    
+    # Say the message three times
+    for _ in range(3):
+        engine.say("You've got mail!")
+        print("You've got mail!")
+        engine.runAndWait()
+        engine.stop()
+        time.sleep(1) # A short pause between repetitions
 
 # This script:
 # 1. Allows you to press Ctrl+~ to record the mouse position as the top-left corner of a box.
 # 2. Press Ctrl+~ again to record the mouse position as the bottom-right corner of a box.
 # 3. Every 10 seconds, it will analyze that region of the screen to count how many (255,0,0) blue pixels are present.
-# 4. If the count of blue pixels increases compared to the previous measurement, it plays a diminished chord.
+# 4. If the count of blue pixels increases compared to the previous measurement, it says You've Got Mail.
 
 # Global variables to store corner coordinates
 top_left = None
@@ -70,16 +84,6 @@ def count_blue_pixels(top_left, bottom_right):
 
     return blue_pixels
 
-def play_diminished_chord():
-    # Example: C diminished chord frequencies: C (261.63 Hz), Eb (311.13 Hz), Gb (369.99 Hz)
-    diminished_frequencies = [261.63, 311.13, 369.99]
-    play_chord(diminished_frequencies, duration=2, fade_duration=0.5)
-
-def play_minor_7_chord():
-    frequencies = [220.0, 261.6255653005986, 329.6275569128699, 391.99543598174927]
-    frequencies = [f * pow(2,1/12) for f in frequencies]
-    play_chord(frequencies, duration = 2, fade_duration = 0.5)
-
 print("Press Ctrl+` once to set the top-left corner, then again to set the bottom-right corner.")
 
 old_count = None
@@ -95,7 +99,7 @@ while True:
         if old_count is not None:
             if new_count > old_count:
                 print("Blue pixels increased! Playing sound...")
-                play_minor_7_chord()
+                email_alert()
             else:
                 print("No increase in blue pixels.")
 
