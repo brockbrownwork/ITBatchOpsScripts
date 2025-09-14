@@ -50,7 +50,6 @@ def capture_original_image(rect):
         image = sct.grab(rect)
         img = Image.frombytes('RGB', image.size, image.rgb)
         img.save('original_image.png')
-        img.show(title='Original Image')
         print("Original image captured and saved as 'original_image.png'.")
         return img
 
@@ -103,39 +102,33 @@ def monitor(rect, original_image, location_name):
 
     """Main monitoring loop that checks for changes in the specified screen region."""
     armed = True
-    print("Monitoring started. Press Ctrl+C to exit.")
-    try:
-        with mss.mss() as sct:
-            while True:
-                time.sleep(interval)
-                
-                image = sct.grab(rect)
-                current_image = Image.frombytes('RGB', image.size, image.rgb)
+    with mss.mss() as sct:
+        while True:
+            time.sleep(interval)
+            
+            image = sct.grab(rect)
+            current_image = Image.frombytes('RGB', image.size, image.rgb)
 
-                if not images_are_similar(original_image, current_image):
-                    if armed:
-                        print("Potential change detected. Verifying...")
-                        time.sleep(interval)
-                        
-                        second_check_image_data = sct.grab(rect)
-                        second_check_image = Image.frombytes('RGB', second_check_image_data.size, second_check_image_data.rgb)
-                        
-                        if not images_are_similar(original_image, second_check_image):
-                            print("Change confirmed! Sounding alarm!")
-                            # --- REPLACED BEEP WITH TTS ---
-                            speak_alert(location_name)
-                            armed = False # Disarm to prevent continuous alarms
-                        else:
-                            print("Change was temporary. Resuming monitoring.")
-                else:
-                    if not armed:
-                        print("Image restored. System is armed again.")
-                        make_short_beep()
-                        armed = True
-                        
-    except KeyboardInterrupt:
-        print("\nMonitoring stopped.")
-        sys.exit()
+            if not images_are_similar(original_image, current_image):
+                if armed:
+                    print("Potential change detected. Verifying...")
+                    time.sleep(interval)
+                    
+                    second_check_image_data = sct.grab(rect)
+                    second_check_image = Image.frombytes('RGB', second_check_image_data.size, second_check_image_data.rgb)
+                    
+                    if not images_are_similar(original_image, second_check_image):
+                        print("Change confirmed! Sounding alarm!")
+                        # --- REPLACED BEEP WITH TTS ---
+                        speak_alert(location_name)
+                        armed = False # Disarm to prevent continuous alarms
+                    else:
+                        print("Change was temporary. Resuming monitoring.")
+            else:
+                if not armed:
+                    print("Image restored. System is armed again.")
+                    make_short_beep()
+                    armed = True
 
 # --- MODIFIED FUNCTION ---
 def main():
@@ -148,9 +141,15 @@ def main():
     
     print(f"Monitoring rectangle: {rect}")
     original_image = capture_original_image(rect)
-    
-    # --- MODIFIED: pass the location name to the monitor ---
-    monitor(rect, original_image, location_name)
+    original_image.show()
+    while True:
+        try:
+            original_image = capture_original_image(rect)
+            
+            # --- MODIFIED: pass the location name to the monitor ---
+            monitor(rect, original_image, location_name)
+        except KeyboardInterrupt:
+            print("Resetting monitoring using a new image!")
 
 if __name__ == "__main__":
     main()
