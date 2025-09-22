@@ -89,7 +89,7 @@ async function populateJobs() {
 
 
 // This is your original function, now correctly awaiting the modified populateJobs.
-async function processTableRows() {
+async function sendCSV() {
     try {
         // Await the completion of populateJobs() before continuing.
         // This will now pause execution until the promise from scrollTableUntilLoaded is resolved.
