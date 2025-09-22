@@ -11,3 +11,4 @@ schedule
 sounddevice
 tqdm
 pyttsx3==2.71
+flask
