@@ -1,93 +1,143 @@
-function scrollTableUntilLoaded() {
-  /**
-   * This function finds the first element with the class "TableInt"
-   * and scrolls it down repeatedly until a span element with the text
-   * "Showing X of X results" is found, indicating all results are loaded.
-   */
-  const table = document.querySelector('.TableInt');
-
-  if (table) {
-    let scrollCount = 0;
-    const maxScrolls = 50; // Safeguard to prevent an infinite loop
-    const scrollAmount = 2000; // Scrolls down by 2000 pixels
-    const scrollInterval = 1000; // 1 second between scrolls
-
-    /**
-     * Checks the page for a span indicating all results are shown (e.g., "Showing 294 of 294 results").
-     * @returns {boolean} - True if the completion span is found, otherwise false.
-     */
-    const areAllResultsLoaded = () => {
-      // This regular expression looks for the pattern "Showing [number] of [same number] results".
-      // The `(\d+)` captures a group of digits, and `\1` ensures the second number matches the first.
-      const regex = /^Showing (\d+) of \1 results$/;
-      const spans = document.querySelectorAll('span');
-
-      for (const span of spans) {
-        // Check if any span's text content matches the required pattern
-        if (regex.test(span.textContent.trim())) {
-          console.log(`✅ Found completion text: "${span.textContent.trim()}"`);
-          return true;
-        }
-      }
-      return false;
-    };
-
-    const intervalId = setInterval(() => {
-      // First, check if all results have been loaded.
-      if (areAllResultsLoaded()) {
-        clearInterval(intervalId);
-        console.log("All results are loaded. Scrolling has stopped.");
-        return; // Exit the function
-      }
-
-      // Next, check if we've hit the scroll limit to prevent an infinite loop.
-      if (scrollCount >= maxScrolls) {
-        clearInterval(intervalId);
-        console.error(`Stopped scrolling after ${maxScrolls} attempts. The completion text was not found.`);
-        return; // Exit the function
-      }
-      
-      // If neither of the above conditions is met, scroll down.
-      table.scrollBy({
-        top: scrollAmount,
-        left: 0,
-        behavior: 'smooth'
-      });
-
-      scrollCount++;
-      console.log(`Scrolled... Attempt ${scrollCount}/${maxScrolls}`);
-
-    }, scrollInterval);
-
-  } else {
-    console.error("Could not find an element with class 'TableInt' to scroll.");
-  }
-}
-
-function clickRefreshButton(){
-    // IMPORTANT NOTE: This will only work if you have ONE RMJ tab open
-    // This script finds the first button that has both the classes 'ULButton' and 'RWItem'
-    // and also contains a specific span child. It then programmatically simulates a click on it.
-
-    // Use querySelector with the :has() pseudo-class to find the target button.
-    // The selector first finds elements with '.ULButton.RWItem' and then checks
-    // if they contain a span with the classes 'ULButton-Icon' and 'IMAGE_RWGENERAL_REFRESH'.
+/**
+ * Clicks the refresh button to ensure the job list is up-to-date.
+ */
+function clickRefreshButton() {
     const targetButton = document.querySelector('.ULButton.RWItem:has(span.ULButton-Icon.IMAGE_RWGENERAL_REFRESH)');
-
-    // Check if an element was found to prevent errors.
     if (targetButton) {
-    // Simulate a click on the found button.
-    targetButton.click();
-    console.log('Successfully clicked the button with classes ULButton and RWItem that contains the specified span.');
+        targetButton.click();
+        console.log('✅ Clicked the refresh button.');
     } else {
-    console.log('No button with the classes ULButton and RWItem and the specified span child was found on the page.');
+        console.warn('Refresh button not found.');
     }
 }
 
-function populateJobs(){
-  clickRefreshButton();
-  scrollTableUntilLoaded();
+/**
+ * Scrolls the table until all results are loaded.
+ * @returns {Promise<string>} A promise that resolves when loading is complete or rejects on timeout.
+ */
+function scrollTableUntilLoaded() {
+    // This function is now wrapped in a Promise.
+    return new Promise((resolve, reject) => {
+        const table = document.querySelector('.TableInt');
+
+        if (!table) {
+            // If the table doesn't exist, reject the promise immediately.
+            return reject(new Error("Could not find an element with class 'TableInt' to scroll."));
+        }
+
+        let scrollCount = 0;
+        const maxScrolls = 50;
+        const scrollAmount = 2000;
+        const scrollInterval = 1000;
+
+        const areAllResultsLoaded = () => {
+            const regex = /^Showing (\d+) of \1 results$/;
+            const spans = document.querySelectorAll('span');
+            for (const span of spans) {
+                if (regex.test(span.textContent.trim())) {
+                    console.log(`✅ Found completion text: "${span.textContent.trim()}"`);
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        const intervalId = setInterval(() => {
+            if (areAllResultsLoaded()) {
+                clearInterval(intervalId);
+                // Resolve the promise when scrolling is successful.
+                resolve("All results are loaded. Scrolling has stopped.");
+                return;
+            }
+
+            if (scrollCount >= maxScrolls) {
+                clearInterval(intervalId);
+                // Reject the promise if we hit the scroll limit.
+                reject(new Error(`Stopped scrolling after ${maxScrolls} attempts. The completion text was not found.`));
+                return;
+            }
+
+            table.scrollBy({
+                top: scrollAmount,
+                left: 0,
+                behavior: 'smooth'
+            });
+            scrollCount++;
+            console.log(`Scrolled... Attempt ${scrollCount}/${maxScrolls}`);
+        }, scrollInterval);
+    });
 }
+
+/**
+ * Populates the job list by clicking refresh and then scrolling until all jobs are loaded.
+ * This function is now async to await the completion of scrolling.
+ */
+async function populateJobs() {
+    clickRefreshButton();
+    // A small delay to allow the table to react to the refresh click before scrolling begins.
+    await new Promise(resolve => setTimeout(resolve, 500)); 
+    
+    try {
+        const result = await scrollTableUntilLoaded();
+        console.log(result); // Logs the resolution message from the promise
+    } catch (error) {
+        console.error(error);
+        // We throw the error so the calling function (processTableRows) knows something went wrong.
+        throw error;
+    }
+}
+
+
+// This is your original function, now correctly awaiting the modified populateJobs.
+async function processTableRows() {
+    try {
+        // Await the completion of populateJobs() before continuing.
+        // This will now pause execution until the promise from scrollTableUntilLoaded is resolved.
+        console.log("Starting to populate jobs...");
+        await populateJobs();
+        console.log("Job population complete. Processing table rows...");
+
+        const tableHeaders = printTableHeaders();
+        let csvContent = "";
+        const targetElement = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
+
+        if (targetElement) {
+            csvContent += tableHeaders.join(',') + '\n';
+            const rows = targetElement.querySelectorAll('tr');
+
+            if (rows.length > 0) {
+                rows.forEach((row, rowIndex) => {
+                    if (rowIndex + 1 >= 3) {
+                        const cells = row.querySelectorAll('td');
+                        const rowData = [];
+                        cells.forEach((cell) => {
+                            let cellText = cell.textContent.trim().replace(/"/g, '""'); // Escape double quotes
+                            if (cellText === "ErrorView Log") {
+                                cellText = "Error";
+                            }
+                            rowData.push(`"${cellText}"`);
+                        });
+                        csvContent += rowData.join(',') + '\n';
+                    }
+                });
+                console.log("CSV content generated.");
+                sendMessage(csvContent); // Assuming sendMessage is defined elsewhere
+                return csvContent;
+            } else {
+                console.log('No <tr> elements found inside the target element.');
+                return null;
+            }
+        } else {
+            console.log('No element found with the classes: ULPanel, RWHorizontal, OverviewPage');
+            return null;
+        }
+    } catch (error) {
+        console.error("Failed to process table rows due to an error during population:", error.message);
+        return null; // Stop execution if population fails
+    }
+}
+
+// NOTE: Your other functions (sendMessage, printTableHeaders) do not need to be changed.
 
 async function sendMessage(message) {
     const url = 'http://127.0.0.1:5000/message';
@@ -131,46 +181,4 @@ function printTableHeaders() {
     // 4. Also log the result to the browser's console for debugging.
     console.log("Table Headers:", headerTexts);
     return headerTexts;
-}
-
-async function processTableRows() {
-    // Await the completion of populateJobs() before continuing.
-    await populateJobs();
-
-    const tableHeaders = printTableHeaders();
-    let csvContent = "";
-
-    // The rest of your code remains the same.
-    const targetElement = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
-
-    if (targetElement) {
-        csvContent += tableHeaders.join(',') + '\n';
-        const rows = targetElement.querySelectorAll('tr');
-
-        if (rows.length > 0) {
-            rows.forEach((row, rowIndex) => {
-                if (rowIndex + 1 >= 3) {
-                    const cells = row.querySelectorAll('td');
-                    const rowData = [];
-                    cells.forEach((cell) => {
-                        let cellText = cell.textContent.trim();
-                        if (cellText == "ErrorView Log") {
-                            cellText = "Error";
-                        }
-                        rowData.push(`"${cellText}"`);
-                    });
-                    csvContent += rowData.join(',') + '\n';
-                }
-            });
-            console.log(csvContent);
-            sendMessage(csvContent);
-            return csvContent;
-        } else {
-            console.log('No <tr> elements found inside the target element.');
-            return null;
-        }
-    } else {
-        console.log('No element found with the classes: ULPanel, RWHorizontal, OverviewPage');
-        return null;
-    }
 }
