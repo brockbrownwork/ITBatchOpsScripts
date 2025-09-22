@@ -133,57 +133,44 @@ function printTableHeaders() {
     return headerTexts;
 }
 
-function processTableRows() {
-  const tableHeaders = printTableHeaders(); // Assumed to be a function that returns an array of strings
-  let csvContent = "";
+async function processTableRows() {
+    // Await the completion of populateJobs() before continuing.
+    await populateJobs();
 
-  // Use a CSS selector to find the first element with all three classes.
-  // The syntax '.class1.class2.class3' targets an element that has all of the classes specified.
-  const targetElement = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
+    const tableHeaders = printTableHeaders();
+    let csvContent = "";
 
-  // Check if an element was found.
-  if (targetElement) {
-    // Add headers to the CSV content.
-    csvContent += tableHeaders.join(',') + '\n';
+    // The rest of your code remains the same.
+    const targetElement = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
 
-    // Find all <tr> elements within the target element.
-    const rows = targetElement.querySelectorAll('tr');
+    if (targetElement) {
+        csvContent += tableHeaders.join(',') + '\n';
+        const rows = targetElement.querySelectorAll('tr');
 
-    // Check if any rows were found.
-    if (rows.length > 0) {
-      // Iterate over each <tr> (table row) element.
-      rows.forEach((row, rowIndex) => {
-        // If the current row is less than 3, don't process it.
-        if (rowIndex + 1 >= 3) {
-          // Find all <td> (table data) elements within the current row.
-          const cells = row.querySelectorAll('td');
-          const rowData = [];
-
-          // Iterate over each <td> element in the current row.
-          cells.forEach((cell) => {
-            // Get the text content of the <td> and trim any whitespace.
-            let cellText = cell.textContent.trim();
-            // Wrap the text in quotes to handle commas within the data.
-            if (cellText == "ErrorView Log") {
-              cellText = "Error";
-            }
-            rowData.push(`"${cellText}"`);
-          });
-
-          // Join the cell data with commas and add a newline.
-          csvContent += rowData.join(',') + '\n';
+        if (rows.length > 0) {
+            rows.forEach((row, rowIndex) => {
+                if (rowIndex + 1 >= 3) {
+                    const cells = row.querySelectorAll('td');
+                    const rowData = [];
+                    cells.forEach((cell) => {
+                        let cellText = cell.textContent.trim();
+                        if (cellText == "ErrorView Log") {
+                            cellText = "Error";
+                        }
+                        rowData.push(`"${cellText}"`);
+                    });
+                    csvContent += rowData.join(',') + '\n';
+                }
+            });
+            console.log(csvContent);
+            sendMessage(csvContent);
+            return csvContent;
+        } else {
+            console.log('No <tr> elements found inside the target element.');
+            return null;
         }
-      });
-      console.log(csvContent);
-      sendMessage(csvContent);
-      return csvContent;
     } else {
-      console.log('No <tr> elements found inside the target element.');
-      return null;
+        console.log('No element found with the classes: ULPanel, RWHorizontal, OverviewPage');
+        return null;
     }
-  } else {
-    // If no element with the specified classes is found, log a message.
-    console.log('No element found with the classes: ULPanel, RWHorizontal, OverviewPage');
-    return null;
-  }
 }
