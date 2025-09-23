@@ -140,7 +140,6 @@ async function sendCSV() {
 async function copyCSVAboveSelected() {
     try {
         // Await the completion of populateJobs() before continuing.
-        // This will now pause execution until the promise from scrollTableUntilLoaded is resolved.
         console.log("Starting to populate jobs...");
         await populateJobs();
         console.log("Job population complete. Processing table rows...");
@@ -151,31 +150,33 @@ async function copyCSVAboveSelected() {
 
         if (targetElement) {
             csvContent += tableHeaders.join(',') + '\n';
-            const rows = targetElement.querySelectorAll('tr');
+            // Get all rows as a true Array to use Array methods
+            const allRows = Array.from(targetElement.querySelectorAll('tr'));
 
-            if (rows.length > 0) {
+            if (allRows.length > 0) {
                 
                 // --- MODIFICATIONS START ---
 
                 let stopIndex = -1;
 
-                // 1. Find the index of the row with the 'Selected' class
-                for (let i = 0; i < rows.length; i++) {
-                    if (rows[i].classList.contains('Selected')) {
-                        stopIndex = i;
-                        break; // Exit the loop once the selected row is found
-                    }
+                // 1. Find the selected row directly using a CSS selector
+                const selectedRow = targetElement.querySelector('tr.Selected');
+
+                // 2. If a selected row is found, find its index within the full list of rows
+                if (selectedRow) {
+                    stopIndex = allRows.indexOf(selectedRow);
+                    console.log(`'Selected' row found at index: ${stopIndex}`);
                 }
 
-                // If no row is selected, process all rows as a fallback
+                // If no row is selected (stopIndex is still -1), process all rows
                 if (stopIndex === -1) {
-                    console.log("No 'Selected' row found. Processing all available rows.");
-                    stopIndex = rows.length - 1;
+                    console.log("Could not find a 'Selected' row. Processing all available rows.");
+                    stopIndex = allRows.length - 1;
                 }
 
-                // 2. Iterate through rows up to and including the 'stopIndex'
+                // 3. Iterate through rows up to and including the 'stopIndex'
                 for (let i = 0; i <= stopIndex; i++) {
-                    const row = rows[i];
+                    const row = allRows[i];
                     
                     // The original logic starts processing from the 3rd row (index 2)
                     if (i >= 2) { 
@@ -194,7 +195,7 @@ async function copyCSVAboveSelected() {
 
                 console.log("CSV content generated.");
 
-                // 3. Copy the generated CSV content to the clipboard
+                // Copy the generated CSV content to the clipboard
                 try {
                     await navigator.clipboard.writeText(csvContent);
                     console.log('CSV content copied to clipboard successfully. 📋');
@@ -204,7 +205,7 @@ async function copyCSVAboveSelected() {
                 
                 // --- MODIFICATIONS END ---
 
-                return csvContent; // Return the generated content
+                return csvContent;
 
             } else {
                 console.log('No <tr> elements found inside the target element.');
@@ -216,7 +217,7 @@ async function copyCSVAboveSelected() {
         }
     } catch (error) {
         console.error("Failed to process table rows due to an error during population:", error.message);
-        return null; // Stop execution if population fails
+        return null;
     }
 }
 
