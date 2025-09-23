@@ -219,6 +219,78 @@ async function copyCSVAboveSelected() {
         console.error("Failed to process table rows due to an error during population:", error.message);
         return null;
     }
+    
+async function copyJobsAboveSelected() {
+    try {
+        // Await the completion of populateJobs() before continuing.
+        console.log("Starting to populate jobs...");
+        await populateJobs();
+        console.log("Job population complete. Processing table rows...");
+
+        const tableHeaders = printTableHeaders();
+        let csvContent = "";
+        const targetElement = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
+
+        if (targetElement) {
+            // Get all rows as a true Array to use Array methods
+            const allRows = Array.from(targetElement.querySelectorAll('tr'));
+            
+            if (allRows.length > 0) {
+                // Find the selected row directly using a CSS selector
+                const selectedRow = targetElement.querySelector('tr.Selected');
+
+                if (selectedRow) {
+                    const selectedRowCells = selectedRow.querySelectorAll('td');
+                    const selectedFolder = selectedRowCells[tableHeaders.indexOf('Folder')]?.textContent.trim();
+                    const definitionColumnIndex = tableHeaders.indexOf('Definition');
+                    let definitionsToCopy = '';
+
+                    if (selectedFolder && definitionColumnIndex !== -1) {
+                        // Iterate through all rows to find matches
+                        for (const row of allRows) {
+                            const cells = row.querySelectorAll('td');
+                            const rowFolder = cells[tableHeaders.indexOf('Folder')]?.textContent.trim();
+                            
+                            // Check if the current row's folder matches the selected row's folder
+                            if (rowFolder === selectedFolder) {
+                                const definition = cells[definitionColumnIndex]?.textContent.trim();
+                                if (definition) {
+                                    definitionsToCopy += definition + '\n';
+                                }
+                            }
+                        }
+                    } else {
+                        console.log("Could not find 'Folder' or 'Definition' header, or no selected folder value.");
+                        return null;
+                    }
+                    
+                    if (definitionsToCopy) {
+                        try {
+                            await navigator.clipboard.writeText(definitionsToCopy);
+                            console.log('Definitions copied to clipboard successfully. 📋');
+                        } catch (err) {
+                            console.error('Failed to copy to clipboard:', err);
+                        }
+                    } else {
+                        console.log("No definitions found for the selected folder.");
+                        return null;
+                    }
+                } else {
+                    console.log("No 'Selected' row found.");
+                    return null;
+                }
+            } else {
+                console.log('No <tr> elements found inside the target element.');
+                return null;
+            }
+        } else {
+            console.log('No element found with the classes: ULPanel, RWHorizontal, OverviewPage');
+            return null;
+        }
+    } catch (error) {
+        console.error("Failed to process table rows due to an error:", error.message);
+        return null;
+    }
 }
 
 // NOTE: Your other functions (sendMessage, printTableHeaders) do not need to be changed.
