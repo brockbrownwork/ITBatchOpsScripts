@@ -137,6 +137,89 @@ async function sendCSV() {
     }
 }
 
+async function copyCSVAboveSelected() {
+    try {
+        // Await the completion of populateJobs() before continuing.
+        // This will now pause execution until the promise from scrollTableUntilLoaded is resolved.
+        console.log("Starting to populate jobs...");
+        await populateJobs();
+        console.log("Job population complete. Processing table rows...");
+
+        const tableHeaders = printTableHeaders();
+        let csvContent = "";
+        const targetElement = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
+
+        if (targetElement) {
+            csvContent += tableHeaders.join(',') + '\n';
+            const rows = targetElement.querySelectorAll('tr');
+
+            if (rows.length > 0) {
+                
+                // --- MODIFICATIONS START ---
+
+                let stopIndex = -1;
+
+                // 1. Find the index of the row with the 'Selected' class
+                for (let i = 0; i < rows.length; i++) {
+                    if (rows[i].classList.contains('Selected')) {
+                        stopIndex = i;
+                        break; // Exit the loop once the selected row is found
+                    }
+                }
+
+                // If no row is selected, process all rows as a fallback
+                if (stopIndex === -1) {
+                    console.log("No 'Selected' row found. Processing all available rows.");
+                    stopIndex = rows.length - 1;
+                }
+
+                // 2. Iterate through rows up to and including the 'stopIndex'
+                for (let i = 0; i <= stopIndex; i++) {
+                    const row = rows[i];
+                    
+                    // The original logic starts processing from the 3rd row (index 2)
+                    if (i >= 2) { 
+                        const cells = row.querySelectorAll('td');
+                        const rowData = [];
+                        cells.forEach((cell) => {
+                            let cellText = cell.textContent.trim().replace(/"/g, '""'); // Escape double quotes
+                            if (cellText === "ErrorView Log") {
+                                cellText = "Error";
+                            }
+                            rowData.push(`"${cellText}"`);
+                        });
+                        csvContent += rowData.join(',') + '\n';
+                    }
+                }
+
+                console.log("CSV content generated.");
+
+                // 3. Copy the generated CSV content to the clipboard
+                try {
+                    await navigator.clipboard.writeText(csvContent);
+                    console.log('CSV content copied to clipboard successfully. 📋');
+                } catch (err) {
+                    console.error('Failed to copy to clipboard:', err);
+                }
+                
+                // --- MODIFICATIONS END ---
+
+                return csvContent; // Return the generated content
+
+            } else {
+                console.log('No <tr> elements found inside the target element.');
+                return null;
+            }
+        } else {
+            console.log('No element found with the classes: ULPanel, RWHorizontal, OverviewPage');
+            return null;
+        }
+    } catch (error) {
+        console.error("Failed to process table rows due to an error during population:", error.message);
+        return null; // Stop execution if population fails
+    }
+}
+
 // NOTE: Your other functions (sendMessage, printTableHeaders) do not need to be changed.
 
 async function sendMessage(message) {
