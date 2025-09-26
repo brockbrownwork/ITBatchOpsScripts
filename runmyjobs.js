@@ -219,7 +219,7 @@ async function copyCSVAboveSelected() {
         console.error("Failed to process table rows due to an error during population:", error.message);
         return null;
     }
-    
+}    
 async function copyJobsAboveSelected() {
     try {
         // Await the completion of populateJobs() before continuing.
@@ -338,3 +338,125 @@ function printTableHeaders() {
     console.log("Table Headers:", headerTexts);
     return headerTexts;
 }
+
+/**
+ * Finds the currently selected row in the job table, identifies its 'Folder',
+ * then finds all rows ABOVE the selected one with the same folder. It copies the
+ * 'Definition' (job name) of those matching rows to the clipboard, separated by newlines.
+ */
+/**
+ * Finds the currently selected row, identifies its 'Folder', then finds all rows 
+ * ABOVE it with the same folder. It processes the 'Definition' (job name) to
+ * keep only the text before the first space. Finally, it copies the unique list
+ * of processed job names to the clipboard, separated by newlines.
+ */
+async function copyMatchingJobsAboveSelected() {
+    try {
+        // 1. Ensure the entire job list is loaded on the page
+        console.log("Starting to populate jobs...");
+        await populateJobs();
+        console.log("Job population complete. Ready to process.");
+
+        // 2. Locate the main table and the user-selected row
+        const tableContainer = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
+        if (!tableContainer) {
+            console.error("❌ Could not find the main table container.");
+            return;
+        }
+
+        const selectedRow = tableContainer.querySelector('tr.Selected');
+        if (!selectedRow) {
+            console.error("❌ No row is selected. Please click on a row to select it first.");
+            return;
+        }
+
+        const allRows = Array.from(tableContainer.querySelectorAll('tr'));
+        const selectedRowIndex = allRows.indexOf(selectedRow);
+
+        // 3. Determine the column indexes for 'Folder' and 'Definition'
+        const headers = printTableHeaders();
+        const folderIndex = headers.indexOf('Folder');
+        const definitionIndex = headers.indexOf('Definition');
+
+        if (folderIndex === -1 || definitionIndex === -1) {
+            console.error("❌ Could not find the 'Folder' or 'Definition' column headers.");
+            return;
+        }
+
+        // 4. Get the target folder name from the selected row
+        const targetFolder = selectedRow.querySelectorAll('td')[folderIndex]?.textContent.trim();
+        if (!targetFolder) {
+            console.error("❌ Could not read the folder name from the selected row.");
+            return;
+        }
+        console.log(`Target Folder: "${targetFolder}"`);
+        console.log(`Selected Row Index: ${selectedRowIndex}`);
+
+        // 5. Collect all unique, processed job names from matching folders
+        const uniqueJobNames = new Set(); // MODIFICATION: Use a Set to automatically handle duplicates.
+
+        for (let i = 0; i < selectedRowIndex; i++) {
+            const cells = allRows[i].querySelectorAll('td');
+            if (cells.length > Math.max(folderIndex, definitionIndex)) {
+                const currentFolder = cells[folderIndex].textContent.trim();
+                
+                if (currentFolder === targetFolder) {
+                    let jobName = cells[definitionIndex].textContent.trim();
+                    
+                    // MODIFICATION: Split by the first space and keep only the first part.
+                    jobName = jobName.split(' ')[0];
+                    
+                    uniqueJobNames.add(jobName); // Add the processed name to our Set.
+                }
+            }
+        }
+
+        // 6. Copy the final list to the clipboard
+        if (uniqueJobNames.size > 0) { // MODIFICATION: Check the .size property of the Set.
+            // MODIFICATION: Convert the Set to an array before joining.
+            const textToCopy = Array.from(uniqueJobNames).join('\n');
+            await navigator.clipboard.writeText(textToCopy);
+            console.log(`✅ Success! Copied ${uniqueJobNames.size} unique job names to the clipboard. 📋`);
+        } else {
+            console.warn(`⚠️ No jobs found in the folder "${targetFolder}" above your selected row.`);
+        }
+
+    } catch (error) {
+        console.error("An unexpected error occurred:", error);
+    }
+}
+
+  const copyButton = document.createElement('button');
+
+  // Set the button's text content
+  copyButton.textContent = "Copy Jobs";
+
+  // Add some basic styling to the button to place it at the top of the page.
+  // Using fixed positioning ensures it stays visible even when scrolling.
+  copyButton.style.position = 'fixed';
+  copyButton.style.top = '10px';
+  copyButton.style.left = '10px';
+  copyButton.style.zIndex = '9999';
+  copyButton.style.padding = '8px 16px';
+  copyButton.style.backgroundColor = '#4CAF50';
+  copyButton.style.color = 'white';
+  copyButton.style.border = 'none';
+  copyButton.style.borderRadius = '5px';
+  copyButton.style.cursor = 'pointer';
+
+  // Add a hover effect for better user experience
+  copyButton.addEventListener('mouseover', () => {
+    copyButton.style.backgroundColor = '#45a049';
+  });
+  copyButton.addEventListener('mouseout', () => {
+    copyButton.style.backgroundColor = '#4CAF50';
+  });
+
+  // Attach a click event listener to the button.
+  // When clicked, it will execute the `copyMatchingJobsAboveSelected` function.
+  copyButton.addEventListener('click', () => {
+    copyMatchingJobsAboveSelected();
+  });
+
+  // Append the button to the body of the document
+  document.body.appendChild(copyButton);
