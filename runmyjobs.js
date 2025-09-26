@@ -390,42 +390,38 @@ async function copyMatchingJobsAboveSelected() {
             return;
         }
         console.log(`Target Folder: "${targetFolder}"`);
-        console.log(`Selected Row Index: ${selectedRowIndex}`);
+        console.log(`Processing up to and including Row Index: ${selectedRowIndex}`);
 
         // 5. Collect all unique, processed job names from matching folders
-        const uniqueJobNames = new Set(); // MODIFICATION: Use a Set to automatically handle duplicates.
+        const uniqueJobNames = new Set(); 
 
-        for (let i = 0; i < selectedRowIndex; i++) {
+        // MODIFICATION: The loop now uses <= to include the selected row's index.
+        for (let i = 0; i <= selectedRowIndex; i++) {
             const cells = allRows[i].querySelectorAll('td');
             if (cells.length > Math.max(folderIndex, definitionIndex)) {
                 const currentFolder = cells[folderIndex].textContent.trim();
                 
                 if (currentFolder === targetFolder) {
                     let jobName = cells[definitionIndex].textContent.trim();
-                    
-                    // MODIFICATION: Split by the first space and keep only the first part.
                     jobName = jobName.split(' ')[0];
-                    
-                    uniqueJobNames.add(jobName); // Add the processed name to our Set.
+                    uniqueJobNames.add(jobName);
                 }
             }
         }
 
         // 6. Copy the final list to the clipboard
-        if (uniqueJobNames.size > 0) { // MODIFICATION: Check the .size property of the Set.
-            // MODIFICATION: Convert the Set to an array before joining.
+        if (uniqueJobNames.size > 0) {
             const textToCopy = Array.from(uniqueJobNames).join('\n');
             await navigator.clipboard.writeText(textToCopy);
             console.log(`✅ Success! Copied ${uniqueJobNames.size} unique job names to the clipboard. 📋`);
         } else {
-            console.warn(`⚠️ No jobs found in the folder "${targetFolder}" above your selected row.`);
+            console.warn(`⚠️ No jobs found in the folder "${targetFolder}" up to your selected row.`);
         }
 
     } catch (error) {
         console.error("An unexpected error occurred:", error);
     }
 }
-
   const copyButton = document.createElement('button');
 
   // Set the button's text content
