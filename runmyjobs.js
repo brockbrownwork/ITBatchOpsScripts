@@ -354,8 +354,8 @@ async function copyMatchingJobsAboveSelected() {
     try {
         // 1. Ensure the entire job list is loaded on the page
         console.log("Starting to populate jobs...");
-        await populateJobs();
-        console.log("Job population complete. Ready to process.");
+        // await populateJobs();
+        // console.log("Job population complete. Ready to process.");
 
         // 2. Locate the main table and the user-selected row
         const tableContainer = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
