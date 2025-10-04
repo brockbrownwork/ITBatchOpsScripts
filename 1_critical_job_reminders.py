@@ -46,9 +46,6 @@ def csv_to_jobs_dict(filepath):
     
     return jobs
 
-
-jobs = csv_to_jobs_dict("critical_jobs_schedule.csv")
-
 # Job data as lists (replace this with your data parsing if automated)
 jobs = [
 ]
