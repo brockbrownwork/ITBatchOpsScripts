@@ -51,15 +51,6 @@ jobs = csv_to_jobs_dict("critical_jobs_schedule.csv")
 
 # Job data as lists (replace this with your data parsing if automated)
 jobs = [
-    {"name": "edw_ODSP_RMS_DATA_EDWP_box", "start_time": "18:00", "end_time": "03:15"},
-    {"name": "hr_SCHEDULE_box", "start_time": "20:30", "end_time": "19:45"},
-    {"name": "hr_COMMISSIONS_box", "start_time": "00:59", "end_time": "02:45"},
-    {"name": "hr_com_MV_SALEPLUSw", "start_time": "00:59", "end_time": "02:32"},
-    {"name": "edp_UK_ECOMM_box", "start_time": "01:00", "end_time": "01:15"},
-    {"name": "edw_infa_SISSALES_SLIP_W", "start_time": "04:00", "end_time": "04:42"},
-    {"name": "mk_BATCH_END_EMAIL", "start_time": "07:30", "end_time": "07:31"},
-    {"name": "edw_infa_SIG_DALLAS_SALES", "start_time": "06:15", "end_time": "06:45"},
-    {"name": "zms_BATCH_END_ZL", "start_time": "04:00", "end_time": "04:01"}
 ]
 
 
