@@ -624,7 +624,7 @@ function startRunMonitor() {
         return;
     }
     
-    console.log("Starting run monitor! Will check every 60 seconds... ⏱️");
+    console.log("Starting run monitor! Will check every minute or whatever... ⏱️");
     // Run it once immediately
     checkLatestRunTime(); 
     // Then set it to run every few seconds
