@@ -431,7 +431,7 @@ async function copyMatchingJobsAboveSelected() {
   // Using fixed positioning ensures it stays visible even when scrolling.
   copyButton.style.position = 'fixed';
   copyButton.style.top = '10px';
-  copyButton.style.left = '10px';
+  copyButton.style.left = '140px';
   copyButton.style.zIndex = '9999';
   copyButton.style.padding = '8px 16px';
   copyButton.style.backgroundColor = '#4CAF50';
