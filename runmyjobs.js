@@ -456,3 +456,193 @@ async function copyMatchingJobsAboveSelected() {
 
   // Append the button to the body of the document
   document.body.appendChild(copyButton);
+
+// job monitoring junk under here...
+
+/**
+ * Global variable to store the most recent time found across all checks.
+ * We use null to know if it's the first run.
+ */
+let lastKnownLatestRunTime = null;
+
+/**
+ * Global variable to hold the interval ID so we can stop it later.
+ */
+let runMonitorInterval = null;
+
+/**
+ * Helper function to find the index of a column by its header text.
+ * This is based on the printTableHeaders() call in your function.
+ * It includes a fallback in case printTableHeaders() isn't available.
+ * @param {string} headerName - The name of the header to find (e.g., "Run End").
+ * @returns {number} The column index, or -1 if not found.
+ */
+function getColumnIndex(headerName) {
+    let index = -1;
+    
+    // 1. Try using the printTableHeaders() function from your example
+    try {
+        if (typeof printTableHeaders === "function") {
+            const headers = printTableHeaders();
+            index = headers.indexOf(headerName);
+        }
+    } catch (e) {
+        console.warn("Could not use printTableHeaders(), trying manual search.", e.message);
+    }
+
+    // 2. Fallback: Manually find the header in the table
+    if (index === -1) {
+        const tableContainer = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
+        if (tableContainer) {
+            const headerCells = tableContainer.querySelectorAll('th');
+            for (let i = 0; i < headerCells.length; i++) {
+                if (headerCells[i].textContent.trim() === headerName) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+    }
+    
+    return index;
+}
+
+/**
+ * Helper function to parse a time string (e.g., "1:30:45 p.m.")
+ * into a full Date object for comparison.
+ * @param {string} timeString - The text from the table cell.
+ * @returns {Date | null} A Date object or null if parsing fails.
+ */
+function parseRunTime(timeString) {
+    // Regex to match "HH:MM:SS a.m." or "HH:MM:SS p.m."
+    const timeRegex = /(\d{1,2}):(\d{2}):(\d{2}) (a\.m\.|p\.m\.)/i;
+    const match = timeString.match(timeRegex);
+
+    if (!match) {
+        return null; // String doesn't match the format
+    }
+
+    try {
+        let [, hours, minutes, seconds, ampm] = match;
+        hours = parseInt(hours, 10);
+        minutes = parseInt(minutes, 10);
+        seconds = parseInt(seconds, 10);
+        ampm = ampm.toLowerCase();
+
+        // Convert 12-hour to 24-hour
+        if (ampm.startsWith('p') && hours !== 12) {
+            hours += 12; // 1 PM -> 13
+        }
+        if (ampm.startsWith('a') && hours === 12) {
+            hours = 0; // 12 AM -> 0
+        }
+
+        // Create a Date object for today with the parsed time
+        const today = new Date();
+        return new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes, seconds);
+    } catch (e) {
+        console.error(`Error parsing time: "${timeString}"`, e);
+        return null;
+    }
+}
+
+/**
+ * This is the core function that runs every 60 seconds.
+ * It scans the "Run End" column, finds the latest time,
+ * and compares it to the last known latest time.
+ */
+async function checkLatestRunTime() {
+    console.log("Checking for new run times... 🔎");
+
+    // 1. Find the "Run End" column index
+    const runEndIndex = getColumnIndex('Run End');
+    if (runEndIndex === -1) {
+        console.error("❌ Could not find the 'Run End' column. Stopping check.");
+        return;
+    }
+
+    // 2. Locate the main table and rows (using selectors from your code)
+    const tableContainer = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
+    if (!tableContainer) {
+        console.error("❌ Could not find the main table container. Stopping check.");
+        return;
+    }
+    
+    // Get all data rows
+    const allRows = Array.from(tableContainer.querySelectorAll('tbody > tr'));
+    let currentScanLatestTime = null;
+
+    // 3. Iterate all rows to find the latest time in this scan
+    for (const row of allRows) {
+        const cells = row.querySelectorAll('td');
+        if (cells.length > runEndIndex) {
+            const cellText = cells[runEndIndex].textContent.trim();
+            const parsedTime = parseRunTime(cellText);
+
+            if (parsedTime) {
+                // Check if this time is the latest *in this scan*
+                if (!currentScanLatestTime || parsedTime > currentScanLatestTime) {
+                    currentScanLatestTime = parsedTime;
+                }
+            }
+        }
+    }
+
+    // 4. Compare this scan's latest time to the global "last known" time
+    if (currentScanLatestTime) {
+        // We found a valid time. Check if it's new.
+        if (!lastKnownLatestRunTime || currentScanLatestTime > lastKnownLatestRunTime) {
+            console.log(`✅ New latest run time found: ${currentScanLatestTime.toLocaleTimeString()}`);
+            
+            // 5. Use Text-to-Speech to say the message
+            try {
+                const utterance = new SpeechSynthesisUtterance("Check Run My Jobs");
+                window.speechSynthesis.speak(utterance);
+            } catch (e) {
+                console.error("Speech synthesis failed:", e);
+            }
+
+            // 6. Update the global "last known" time to this new time
+            lastKnownLatestRunTime = currentScanLatestTime;
+            
+        } else {
+            // No new time, the latest we see is the same as before.
+            console.log(`No new run times. Latest is still ${lastKnownLatestRunTime.toLocaleTimeString()}`);
+        }
+    } else {
+        // No times in the correct format were found in this scan.
+        console.log("No run times in 'HH:MM:SS a.m./p.m.' format found.");
+    }
+}
+
+/**
+ * Call this function to START the 60-second monitor.
+ */
+function startRunMonitor() {
+    if (runMonitorInterval) {
+        console.log("Monitor is already running.");
+        return;
+    }
+    
+    console.log("Starting run monitor! Will check every 60 seconds... ⏱️");
+    // Run it once immediately
+    checkLatestRunTime(); 
+    // Then set it to run every 60,000 milliseconds (60 seconds)
+    runMonitorInterval = setInterval(checkLatestRunTime, 60000); 
+}
+
+/**
+ * Call this function to STOP the monitor.
+ */
+function stopRunMonitor() {
+    if (runMonitorInterval) {
+        clearInterval(runMonitorInterval);
+        runMonitorInterval = null;
+        lastKnownLatestRunTime = null; // Reset the "latest" time
+        console.log("Run monitor stopped. 🛑");
+    } else {
+        console.log("Monitor is not running.");
+    }
+}
+
+startRunMonitor();
