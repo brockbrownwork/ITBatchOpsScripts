@@ -65,9 +65,6 @@ REM Workday
 start microsoft-edge:"https://www.myworkday.com/signetjewelers/d/home.htmld"
 ping localhost -n 3 >nul
 
-REM Microsoft Teams application
-start "" "C:\Users\bbrown\AppData\Local\Microsoft\Teams\Update.exe"
-
 REM Outlook
 start "" "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
 
