@@ -563,6 +563,7 @@ async function checkLatestRunTime() {
 
     // 1. Find the "Run End" column index
     const runEndIndex = getColumnIndex('Run End');
+    const definitionIndex = getColumnIndex('Definition');
     if (runEndIndex === -1) {
         console.error("❌ Could not find the 'Run End' column. Stopping check.");
         return;
@@ -584,6 +585,16 @@ async function checkLatestRunTime() {
         const cells = row.querySelectorAll('td');
         if (cells.length > runEndIndex) {
             const cellText = cells[runEndIndex].textContent;
+            // TODO: please fix this, it's terrible... it's to try to prevent a typerror that shouldn't be happening in the first place.
+            if (cells[definitionIndex].textContent) {
+                const jobName = cells[definitionIndex].textContent.split(" ")[0].toLowerCase();
+                var jobsToIgnore = ["SP_edp_SIGNET_FLASH_SALES_TBL"].map(job => job.toLowerCase());
+                if (jobsToIgnore.includes(jobName)) {
+                    console.log("The job, " + jobName + ", is in the list of jobs to ignore.");
+                    continue;
+                }
+            }
+
             
             // Use the new, stricter parsing function
             const parsedTime = parseRunTime(cellText);
@@ -638,7 +649,7 @@ function startRunMonitor() {
     // Run it once immediately
     checkLatestRunTime(); 
     // Then set it to run every few seconds
-    let checkInterval = 60;
+    let checkInterval = 5;
     runMonitorInterval = setInterval(checkLatestRunTime, checkInterval * 1000); 
 }
 
