@@ -169,14 +169,10 @@ let runMonitorInterval = null;
  * @returns {number} The column index, or -1 if not found.
  */
 function getColumnIndex(headerName) {
-    let index = -1;
-    
-    // 1. Try using the getTableHeaders() function from your example
-
-            const headers = getTableHeaders();
-            index = headers.indexOf(headerName);
-    
-    return index;
+    let index = -1;
+    const headers = getTableHeaders();
+    index = headers.indexOf(headerName);    
+    return index;
 }
 
 /**
