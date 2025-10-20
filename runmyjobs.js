@@ -11,6 +11,48 @@ function clickRefreshButton() {
     }
 }
 
+function showToast(message, duration = 1000) {
+    // 1. Create the element
+    const toastElement = document.createElement('div');
+    toastElement.textContent = message;
+
+    // 2. Style the element to be a non-intrusive, modern-looking popup
+    toastElement.style.position = 'fixed';
+    toastElement.style.top = '20px';
+    toastElement.style.left = '50%';
+    toastElement.style.transform = 'translateX(-50%)';
+    toastElement.style.padding = '12px 24px';
+    
+    // --- MODIFIED LINE: Changed to a semi-transparent green (Tailwind green-600 equivalent) ---
+    toastElement.style.backgroundColor = 'rgba(22, 163, 74, 0.85)'; // Green, semi-transparent
+    
+    toastElement.style.backdropFilter = 'blur(5px)'; // Frosted glass effect
+    toastElement.style.color = 'white';
+    toastElement.style.borderRadius = '8px';
+    toastElement.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)'; // Enhanced shadow
+    toastElement.style.zIndex = '9999'; // Ensure it's on top of everything
+    toastElement.style.opacity = '1';
+    toastElement.style.transition = 'opacity 0.5s ease-out'; // Smooth fade-out transition
+    toastElement.style.fontSize = '15px';
+    toastElement.style.fontWeight = '600'; // Make text bolder
+
+    // 3. Append it to the body
+    document.body.appendChild(toastElement);
+
+    // 4. Set a timeout to start the fade-out process
+    setTimeout(() => {
+        toastElement.style.opacity = '0';
+    }, duration);
+
+    // 5. Set another timeout to remove the element from the DOM after the transition completes
+    // The delay is the duration of visibility plus the duration of the fade-out animation (500ms)
+    setTimeout(() => {
+        if (document.body.contains(toastElement)) {
+            document.body.removeChild(toastElement);
+        }
+    }, duration + 500);
+}
+
 var debugMode = false;
 function toggleDebugMode() {
     debugMode = !debugMode;
@@ -109,6 +151,7 @@ async function copyMatchingJobsAboveSelected() {
             const textToCopy = Array.from(uniqueJobNames).join('\n');
             await navigator.clipboard.writeText(textToCopy);
             console.log(`✅ Success! Copied ${uniqueJobNames.size} unique job names to the clipboard. 📋`);
+            showToast(`✅ Success! Copied ${uniqueJobNames.size} unique job names to the clipboard. 📋`)
         } else {
             console.warn(`⚠️ No jobs found in the folder "${targetFolder}" up to your selected row.`);
         }
@@ -315,9 +358,9 @@ function startRunMonitor() {
     
     console.log("Starting run monitor! Will check every minute or whatever... ⏱️");
     // Run it once immediately
-    checkLatestRunTime(); 
+    checkLatestRunTime();
     // Then set it to run every few seconds
-    let checkInterval = 10;
+    let checkInterval = 30;
     runMonitorInterval = setInterval(checkLatestRunTime, checkInterval * 1000); 
 }
 
