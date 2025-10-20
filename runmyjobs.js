@@ -75,7 +75,7 @@ async function copyMatchingJobsAboveSelected() {
         }
 
         // 4. Get the target folder name from the selected row
-        const targetFolder = selectedRow.querySelectorAll('td')[folderIndex]?.textContent.trim();
+        const targetFolder = selectedRow.querySelectorAll('td')[folderIndex]?.textContent.split("/")[0].trim();
         if (!targetFolder) {
             console.error("❌ Could not read the folder name from the selected row.");
             return;
@@ -90,7 +90,7 @@ async function copyMatchingJobsAboveSelected() {
         for (let i = 0; i <= selectedRowIndex; i++) {
             const cells = allRows[i].querySelectorAll('td');
             if (cells.length > Math.max(folderIndex, definitionIndex)) {
-                const currentFolder = cells[folderIndex].textContent.trim();
+                const currentFolder = cells[folderIndex].textContent.split("/")[0].trim();
                 
                 if (currentFolder === targetFolder) {
                     let jobName = cells[definitionIndex].textContent.trim();
