@@ -364,4 +364,26 @@ function startRunMonitor() {
     runMonitorInterval = setInterval(checkLatestRunTime, checkInterval * 1000); 
 }
 
+document.addEventListener('copy', function(event) {
+    // Get the currently selected text. We use .trim() to ignore invisible selections like a space.
+    const selectedText = window.getSelection().toString().trim();
+
+    // Check if the selection is empty.
+    if (selectedText.length === 0) {
+        // Scenario 1: No text is selected. The default copy would be a "no-op".
+        console.log("Copy event detected, but no text is selected. Preventing default copy.");
+
+        // Prevent the browser from trying to copy the empty selection to the clipboard.
+        // This is crucial to hijack the event.
+        event.preventDefault();
+
+        // Call the user's custom function.
+        copyMatchingJobsAboveSelected();
+
+    } else {
+        // Scenario 2: Text is selected. Allow the default copy action to proceed.
+        console.log(`Text selected: "${selectedText}". Allowing default copy action.`);
+    }
+});
+
 startRunMonitor();
