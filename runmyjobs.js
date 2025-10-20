@@ -328,7 +328,7 @@ async function checkLatestRunTime() {
             
             // 5. Use Text-to-Speech to say the message
             try {
-                const utterance = new SpeechSynthesisUtterance("Check Run My Jobs");
+                const utterance = new SpeechSynthesisUtterance("Hark, Check Run My Jobs");
                 window.speechSynthesis.speak(utterance);
             } catch (e) {
                 console.error("Speech synthesis failed:", e);
