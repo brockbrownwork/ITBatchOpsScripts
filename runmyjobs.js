@@ -11,6 +11,12 @@ function clickRefreshButton() {
     }
 }
 
+var debugMode = false;
+function toggleDebugMode() {
+    debugMode = !debugMode;
+    console.log("Debug mode is now", debugMode ? "on" : "off");
+}
+
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -28,8 +34,6 @@ function getTableHeaders() {
     });
 
     headerTexts = headerTexts.slice(0, -1);
-    // 4. Also log the result to the browser's console for debugging.
-    console.log("Table Headers:", headerTexts);
     return headerTexts;
 }
 
@@ -229,8 +233,10 @@ function parseRunTime(timeString) {
 async function checkLatestRunTime() {
     console.log("Checking for new run times... 🔎");
 
-    clickRefreshButton();
-    await delay(5000);
+    if (!debugMode) {
+        clickRefreshButton();
+        await delay(5000);
+    }
 
     // 1. Find the "Run End" column index
     const runEndIndex = getColumnIndex('Run End');
