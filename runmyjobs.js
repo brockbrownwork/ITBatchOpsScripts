@@ -312,18 +312,4 @@ function startRunMonitor() {
     runMonitorInterval = setInterval(checkLatestRunTime, checkInterval * 1000); 
 }
 
-/**
- * Call this function to STOP the monitor.
- */
-function stopRunMonitor() {
-    if (runMonitorInterval) {
-        clearInterval(runMonitorInterval);
-        runMonitorInterval = null;
-        lastKnownLatestRunTime = null; // Reset the "latest" time
-        console.log("Run monitor stopped. 🛑");
-    } else {
-        console.log("Monitor is not running.");
-    }
-}
-
 startRunMonitor();
