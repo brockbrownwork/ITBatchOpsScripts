@@ -11,317 +11,7 @@ function clickRefreshButton() {
     }
 }
 
-/**
- * Scrolls the table until all results are loaded.
- * @returns {Promise<string>} A promise that resolves when loading is complete or rejects on timeout.
- */
-function scrollTableUntilLoaded() {
-    // This function is now wrapped in a Promise.
-    return new Promise((resolve, reject) => {
-        const table = document.querySelector('.TableInt');
-
-        if (!table) {
-            // If the table doesn't exist, reject the promise immediately.
-            return reject(new Error("Could not find an element with class 'TableInt' to scroll."));
-        }
-
-        let scrollCount = 0;
-        const maxScrolls = 50;
-        const scrollAmount = 2000;
-        const scrollInterval = 1000;
-
-        const areAllResultsLoaded = () => {
-            const regex = /^Showing (\d+) of \1 results$/;
-            const spans = document.querySelectorAll('span');
-            for (const span of spans) {
-                if (regex.test(span.textContent.trim())) {
-                    console.log(`✅ Found completion text: "${span.textContent.trim()}"`);
-                    return true;
-                }
-            }
-            return false;
-        };
-
-        const intervalId = setInterval(() => {
-            if (areAllResultsLoaded()) {
-                clearInterval(intervalId);
-                // Resolve the promise when scrolling is successful.
-                resolve("All results are loaded. Scrolling has stopped.");
-                return;
-            }
-
-            if (scrollCount >= maxScrolls) {
-                clearInterval(intervalId);
-                // Reject the promise if we hit the scroll limit.
-                reject(new Error(`Stopped scrolling after ${maxScrolls} attempts. The completion text was not found.`));
-                return;
-            }
-
-            table.scrollBy({
-                top: scrollAmount,
-                left: 0,
-                behavior: 'smooth'
-            });
-            scrollCount++;
-            console.log(`Scrolled... Attempt ${scrollCount}/${maxScrolls}`);
-        }, scrollInterval);
-    });
-}
-
-/**
- * Populates the job list by clicking refresh and then scrolling until all jobs are loaded.
- * This function is now async to await the completion of scrolling.
- */
-async function populateJobs() {
-    clickRefreshButton();
-    // A small delay to allow the table to react to the refresh click before scrolling begins.
-    await new Promise(resolve => setTimeout(resolve, 500)); 
-    
-    try {
-        const result = await scrollTableUntilLoaded();
-        console.log(result); // Logs the resolution message from the promise
-    } catch (error) {
-        console.error(error);
-        // We throw the error so the calling function (processTableRows) knows something went wrong.
-        throw error;
-    }
-}
-
-
-// This is your original function, now correctly awaiting the modified populateJobs.
-async function sendCSV() {
-    try {
-        // Await the completion of populateJobs() before continuing.
-        // This will now pause execution until the promise from scrollTableUntilLoaded is resolved.
-        console.log("Starting to populate jobs...");
-        await populateJobs();
-        console.log("Job population complete. Processing table rows...");
-
-        const tableHeaders = printTableHeaders();
-        let csvContent = "";
-        const targetElement = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
-
-        if (targetElement) {
-            csvContent += tableHeaders.join(',') + '\n';
-            const rows = targetElement.querySelectorAll('tr');
-
-            if (rows.length > 0) {
-                rows.forEach((row, rowIndex) => {
-                    if (rowIndex + 1 >= 3) {
-                        const cells = row.querySelectorAll('td');
-                        const rowData = [];
-                        cells.forEach((cell) => {
-                            let cellText = cell.textContent.trim().replace(/"/g, '""'); // Escape double quotes
-                            if (cellText === "ErrorView Log") {
-                                cellText = "Error";
-                            }
-                            rowData.push(`"${cellText}"`);
-                        });
-                        csvContent += rowData.join(',') + '\n';
-                    }
-                });
-                console.log("CSV content generated.");
-                sendMessage(csvContent); // Assuming sendMessage is defined elsewhere
-                return csvContent;
-            } else {
-                console.log('No <tr> elements found inside the target element.');
-                return null;
-            }
-        } else {
-            console.log('No element found with the classes: ULPanel, RWHorizontal, OverviewPage');
-            return null;
-        }
-    } catch (error) {
-        console.error("Failed to process table rows due to an error during population:", error.message);
-        return null; // Stop execution if population fails
-    }
-}
-
-async function copyCSVAboveSelected() {
-    try {
-        // Await the completion of populateJobs() before continuing.
-        console.log("Starting to populate jobs...");
-        await populateJobs();
-        console.log("Job population complete. Processing table rows...");
-
-        const tableHeaders = printTableHeaders();
-        let csvContent = "";
-        const targetElement = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
-
-        if (targetElement) {
-            csvContent += tableHeaders.join(',') + '\n';
-            // Get all rows as a true Array to use Array methods
-            const allRows = Array.from(targetElement.querySelectorAll('tr'));
-
-            if (allRows.length > 0) {
-                
-                // --- MODIFICATIONS START ---
-
-                let stopIndex = -1;
-
-                // 1. Find the selected row directly using a CSS selector
-                const selectedRow = targetElement.querySelector('tr.Selected');
-
-                // 2. If a selected row is found, find its index within the full list of rows
-                if (selectedRow) {
-                    stopIndex = allRows.indexOf(selectedRow);
-                    console.log(`'Selected' row found at index: ${stopIndex}`);
-                }
-
-                // If no row is selected (stopIndex is still -1), process all rows
-                if (stopIndex === -1) {
-                    console.log("Could not find a 'Selected' row. Processing all available rows.");
-                    stopIndex = allRows.length - 1;
-                }
-
-                // 3. Iterate through rows up to and including the 'stopIndex'
-                for (let i = 0; i <= stopIndex; i++) {
-                    const row = allRows[i];
-                    
-                    // The original logic starts processing from the 3rd row (index 2)
-                    if (i >= 2) { 
-                        const cells = row.querySelectorAll('td');
-                        const rowData = [];
-                        cells.forEach((cell) => {
-                            let cellText = cell.textContent.trim().replace(/"/g, '""'); // Escape double quotes
-                            if (cellText === "ErrorView Log") {
-                                cellText = "Error";
-                            }
-                            rowData.push(`"${cellText}"`);
-                        });
-                        csvContent += rowData.join(',') + '\n';
-                    }
-                }
-
-                console.log("CSV content generated.");
-
-                // Copy the generated CSV content to the clipboard
-                try {
-                    await navigator.clipboard.writeText(csvContent);
-                    console.log('CSV content copied to clipboard successfully. 📋');
-                } catch (err) {
-                    console.error('Failed to copy to clipboard:', err);
-                }
-                
-                // --- MODIFICATIONS END ---
-
-                return csvContent;
-
-            } else {
-                console.log('No <tr> elements found inside the target element.');
-                return null;
-            }
-        } else {
-            console.log('No element found with the classes: ULPanel, RWHorizontal, OverviewPage');
-            return null;
-        }
-    } catch (error) {
-        console.error("Failed to process table rows due to an error during population:", error.message);
-        return null;
-    }
-}    
-async function copyJobsAboveSelected() {
-    try {
-        // Await the completion of populateJobs() before continuing.
-        console.log("Starting to populate jobs...");
-        await populateJobs();
-        console.log("Job population complete. Processing table rows...");
-
-        const tableHeaders = printTableHeaders();
-        let csvContent = "";
-        const targetElement = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
-
-        if (targetElement) {
-            // Get all rows as a true Array to use Array methods
-            const allRows = Array.from(targetElement.querySelectorAll('tr'));
-            
-            if (allRows.length > 0) {
-                // Find the selected row directly using a CSS selector
-                const selectedRow = targetElement.querySelector('tr.Selected');
-
-                if (selectedRow) {
-                    const selectedRowCells = selectedRow.querySelectorAll('td');
-                    const selectedFolder = selectedRowCells[tableHeaders.indexOf('Folder')]?.textContent.trim();
-                    const definitionColumnIndex = tableHeaders.indexOf('Definition');
-                    let definitionsToCopy = '';
-
-                    if (selectedFolder && definitionColumnIndex !== -1) {
-                        // Iterate through all rows to find matches
-                        for (const row of allRows) {
-                            const cells = row.querySelectorAll('td');
-                            const rowFolder = cells[tableHeaders.indexOf('Folder')]?.textContent.trim();
-                            
-                            // Check if the current row's folder matches the selected row's folder
-                            if (rowFolder === selectedFolder) {
-                                const definition = cells[definitionColumnIndex]?.textContent.trim();
-                                if (definition) {
-                                    definitionsToCopy += definition + '\n';
-                                }
-                            }
-                        }
-                    } else {
-                        console.log("Could not find 'Folder' or 'Definition' header, or no selected folder value.");
-                        return null;
-                    }
-                    
-                    if (definitionsToCopy) {
-                        try {
-                            await navigator.clipboard.writeText(definitionsToCopy);
-                            console.log('Definitions copied to clipboard successfully. 📋');
-                        } catch (err) {
-                            console.error('Failed to copy to clipboard:', err);
-                        }
-                    } else {
-                        console.log("No definitions found for the selected folder.");
-                        return null;
-                    }
-                } else {
-                    console.log("No 'Selected' row found.");
-                    return null;
-                }
-            } else {
-                console.log('No <tr> elements found inside the target element.');
-                return null;
-            }
-        } else {
-            console.log('No element found with the classes: ULPanel, RWHorizontal, OverviewPage');
-            return null;
-        }
-    } catch (error) {
-        console.error("Failed to process table rows due to an error:", error.message);
-        return null;
-    }
-}
-
-// NOTE: Your other functions (sendMessage, printTableHeaders) do not need to be changed.
-
-async function sendMessage(message) {
-    const url = 'http://127.0.0.1:5000/message';
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'text/plain'
-            },
-            body: message
-        });
-
-        if (response.ok) {
-            console.log('Message sent successfully!');
-            // Clear the input field after successful send
-        } else {
-            const errorText = await response.text();
-            console.error('Failed to send message:', response.status, errorText);
-        }
-    } catch (error) {
-        // The catch block is now an important safety net for network errors,
-        // such as if the server is down.
-        console.error('Network error:', error);
-    }
-}
-
-function printTableHeaders() {
+function getTableHeaders() {
     // 1. Get all <th> elements on the page.
     const headerElements = document.querySelectorAll('th');
 
@@ -354,9 +44,6 @@ async function copyMatchingJobsAboveSelected() {
     try {
         // 1. Ensure the entire job list is loaded on the page
         console.log("Starting to populate jobs...");
-        // await populateJobs();
-        // console.log("Job population complete. Ready to process.");
-
         // 2. Locate the main table and the user-selected row
         const tableContainer = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
         if (!tableContainer) {
@@ -374,7 +61,7 @@ async function copyMatchingJobsAboveSelected() {
         const selectedRowIndex = allRows.indexOf(selectedRow);
 
         // 3. Determine the column indexes for 'Folder' and 'Definition'
-        const headers = printTableHeaders();
+        const headers = getTableHeaders();
         const folderIndex = headers.indexOf('Folder');
         const definitionIndex = headers.indexOf('Definition');
 
@@ -472,37 +159,18 @@ let runMonitorInterval = null;
 
 /**
  * Helper function to find the index of a column by its header text.
- * This is based on the printTableHeaders() call in your function.
- * It includes a fallback in case printTableHeaders() isn't available.
+ * This is based on the getTableHeaders() call in your function.
+ * It includes a fallback in case getTableHeaders() isn't available.
  * @param {string} headerName - The name of the header to find (e.g., "Run End").
  * @returns {number} The column index, or -1 if not found.
  */
 function getColumnIndex(headerName) {
     let index = -1;
     
-    // 1. Try using the printTableHeaders() function from your example
-    try {
-        if (typeof printTableHeaders === "function") {
-            const headers = printTableHeaders();
-            index = headers.indexOf(headerName);
-        }
-    } catch (e) {
-        console.warn("Could not use printTableHeaders(), trying manual search.", e.message);
-    }
+    // 1. Try using the getTableHeaders() function from your example
 
-    // 2. Fallback: Manually find the header in the table
-    if (index === -1) {
-        const tableContainer = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
-        if (tableContainer) {
-            const headerCells = tableContainer.querySelectorAll('th');
-            for (let i = 0; i < headerCells.length; i++) {
-                if (headerCells[i].textContent.trim() === headerName) {
-                    index = i;
-                    break;
-                }
-            }
-        }
-    }
+            const headers = getTableHeaders();
+            index = headers.indexOf(headerName);
     
     return index;
 }
@@ -585,15 +253,6 @@ async function checkLatestRunTime() {
         const cells = row.querySelectorAll('td');
         if (cells.length > runEndIndex) {
             const cellText = cells[runEndIndex].textContent;
-            // TODO: please fix this, it's terrible... it's to try to prevent a typerror that shouldn't be happening in the first place.
-            if (cells[definitionIndex].textContent) {
-                const jobName = cells[definitionIndex].textContent.split(" ")[0].toLowerCase();
-                var jobsToIgnore = ["SP_edp_SIGNET_FLASH_SALES_TBL"].map(job => job.toLowerCase());
-                if (jobsToIgnore.includes(jobName)) {
-                    console.log("The job, " + jobName + ", is in the list of jobs to ignore.");
-                    continue;
-                }
-            }
 
             
             // Use the new, stricter parsing function
