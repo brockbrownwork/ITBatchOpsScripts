@@ -11,6 +11,10 @@ function clickRefreshButton() {
     }
 }
 
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function getTableHeaders() {
     // 1. Get all <th> elements on the page.
     const headerElements = document.querySelectorAll('th');
@@ -229,6 +233,9 @@ function parseRunTime(timeString) {
 async function checkLatestRunTime() {
     console.log("Checking for new run times... 🔎");
 
+    clickRefreshButton();
+    await delay(5000);
+
     // 1. Find the "Run End" column index
     const runEndIndex = getColumnIndex('Run End');
     const definitionIndex = getColumnIndex('Definition');
@@ -296,7 +303,7 @@ async function checkLatestRunTime() {
 }
 
 /**
- * Call this function to START the 60-second monitor.
+ * Call this function to START the monitor.
  */
 function startRunMonitor() {
     if (runMonitorInterval) {
@@ -308,7 +315,7 @@ function startRunMonitor() {
     // Run it once immediately
     checkLatestRunTime(); 
     // Then set it to run every few seconds
-    let checkInterval = 5;
+    let checkInterval = 10;
     runMonitorInterval = setInterval(checkLatestRunTime, checkInterval * 1000); 
 }
 
