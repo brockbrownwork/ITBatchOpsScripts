@@ -13,3 +13,4 @@ tqdm
 pyttsx3==2.71
 flask
 flask-core
+opencv-python
