@@ -71,7 +71,7 @@ def monitor_host(host: str, ping_interval: float = 5.0):
             # If previously down and now up, alert user
             if reachable:
                 print(f"{host} is back up!")
-                say(f"{host} is back up!")
+                say(f"HP credit is back up!")
                 alert_pop_up(f"{host} is back up!", f"{host} has come back online.")
                 host_is_down = False
 
