@@ -3,6 +3,18 @@ import time
 import platform
 import tkinter as tk
 from tkinter import messagebox
+import pyttsx3
+
+engine = pyttsx3.init()
+def say(message):
+    """Uses text-to-speech to announce the alert message three times."""
+    # Say the message three times
+    for _ in range(3):
+        engine.say(message)
+        print(message)
+        engine.runAndWait()
+        engine.stop()
+        time.sleep(1) # A short pause between repetitions
 
 def is_host_reachable(host: str) -> bool:
     """
@@ -59,6 +71,7 @@ def monitor_host(host: str, ping_interval: float = 5.0):
             # If previously down and now up, alert user
             if reachable:
                 print(f"{host} is back up!")
+                say(f"{host} is back up!")
                 alert_pop_up(f"{host} is back up!", f"{host} has come back online.")
                 host_is_down = False
 
