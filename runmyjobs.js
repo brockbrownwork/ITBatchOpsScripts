@@ -236,7 +236,7 @@ function parseRunTime(timeString) {
     // Regex is now "anchored" with ^ at the start and $ at the end.
     // This forces it to match the *entire* string, not just a part of it.
     // So, "Yesterday 10:54:06 p.m." will NOT match.
-    const timeRegex = /^(\d{1,2}):(\d{2}):(\d{2}) (a\.m\.|p\.m\.)$/i;
+    const timeRegex = /^(\d{1,2}):(\d{2}):(\d{2}) (a\.m\.)$/i;
     const match = trimmedString.match(timeRegex);
 
     if (!match) {
@@ -343,7 +343,7 @@ async function checkLatestRunTime() {
         }
     } else {
         // No times in the correct format were found in this scan.
-        console.log("No run times in 'HH:MM:SS a.m./p.m.' format found in this scan.");
+        console.log("No run times in 'HH:MM:SS a.m.' format found in this scan.");
     }
 }
 
