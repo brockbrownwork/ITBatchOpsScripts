@@ -386,4 +386,95 @@ document.addEventListener('copy', function(event) {
     }
 });
 
-startRunMonitor();
+
+/**
+ * Utility function to get a Date object representing the time 
+ * in a specific time zone, avoiding unreliable new Date().setHours().
+ * @param {string} timeZone - IANA time zone identifier (e.g., 'America/New_York')
+ * @returns {Date} The current time in the specified time zone.
+ */
+function getCurrentTimeInTimeZone(timeZone) {
+    // Get the current UTC milliseconds
+    const nowUtcMs = Date.now();
+    
+    // Get the localized time string
+    const localizedString = new Intl.DateTimeFormat('en-US', {
+        timeZone: timeZone,
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: false // Use 24-hour format
+    }).format(new Date(nowUtcMs));
+
+    // Parse the localized string back into a Date object.
+    // This new Date object will be interpreted in the environment's local timezone
+    // but its internal timestamp will be correct for the EST time it represents.
+    return new Date(localizedString);
+}
+
+
+function startRunMonitor() {
+  console.log("Monitor started running!");
+  // Add the actual logic for your monitor here
+  
+  // After running, schedule the next execution for tomorrow's 12:01 AM EST
+  scheduleDailyRun(true);
+}
+
+function scheduleDailyRun(isReschedule = false) {
+  // Use the IANA time zone identifier for Eastern Time
+  const TIMEZONE = 'America/New_York'; 
+  const currentEst = getCurrentTimeInTimeZone(TIMEZONE);
+
+  // Set the target time to 12:01 AM EST on the current day
+  const targetTime = new Date(currentEst);
+  targetTime.setHours(0, 1, 0, 0); // 00:01:00.000 (12:01 AM) EST
+
+  let delayInMilliseconds;
+  let scheduledMessage;
+  
+  // Check if the current time is on or after the target time (12:01 AM EST)
+  if (currentEst.getTime() >= targetTime.getTime() && !isReschedule) {
+    // 1. RUN IMMEDIATELY (Scenario: It's past 12:01 AM and we're starting the script)
+    console.log(`Current EST Time: ${currentEst.toLocaleTimeString()}`);
+    console.log("Current time is past 12:01 AM EST. Running monitor immediately.");
+    return startRunMonitor();
+    
+  } else {
+    // 2. SCHEDULE FOR LATER TODAY or TOMORROW
+    
+    // If it's a reschedule, we must target tomorrow's 12:01 AM
+    if (isReschedule) {
+        targetTime.setDate(targetTime.getDate() + 1); // Move to tomorrow
+        scheduledMessage = `Rescheduled successfully. Next run: ${targetTime.toLocaleDateString()} at ${targetTime.toLocaleTimeString()} EST.`;
+    } else {
+        // If the script starts just before 12:01 AM (e.g., 11:59 PM), schedule for today
+        scheduledMessage = `Scheduled for TODAY at 12:01 AM EST.`;
+    }
+
+    // Calculate the delay
+    delayInMilliseconds = targetTime.getTime() - currentEst.getTime();
+
+    // Ensure we are targeting the next 12:01 AM (can happen if the environment's 
+    // clock is far off or for safety). If the delay is negative, it means the target
+    // time calculation failed to account for a day transition, so we correct it.
+    if (delayInMilliseconds < 0) {
+        targetTime.setDate(targetTime.getDate() + 1);
+        delayInMilliseconds = targetTime.getTime() - currentEst.getTime();
+    }
+    
+    // Set the timeout to wait the calculated duration
+    setTimeout(startRunMonitor, delayInMilliseconds);
+    
+    console.log(`Current EST Time: ${currentEst.toLocaleTimeString()}`);
+    console.log(`Scheduled Start Time: ${targetTime.toLocaleTimeString()} EST on ${targetTime.toLocaleDateString()}`);
+    console.log(scheduledMessage);
+    console.log(`Waiting for: ${Math.ceil(delayInMilliseconds / 1000 / 60)} minutes.`);
+  }
+}
+
+// Initial call to start the scheduling process
+scheduleDailyRun();
