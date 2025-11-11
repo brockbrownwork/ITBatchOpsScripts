@@ -194,6 +194,7 @@ print("Press Ctrl+` once to set the top-left corner, then again to set the botto
 
 old_count = None
 email_refresh_count = 0
+refresh_warning_minutes_interval = 3 # increase to make the refresh warning less annoying
 
 # Main loop:
 while True:
@@ -212,7 +213,7 @@ while True:
         if not inbox_button_exists(top_left, bottom_right):
             email_refresh_count += 1
             print("Inbox button not seen x", email_refresh_count)
-            if email_refresh_count % 6 == 0: # increase this number as needed so that it becomes less annoying, right now it should be at every minute...
+            if email_refresh_count % 6 * refresh_warning_minutes_interval == 0: # increase this number as needed so that it becomes less annoying, right now it should be at every minute...
                 email_alert(refresh_inbox_needed = True)
         else:
             email_refresh_count = 0
