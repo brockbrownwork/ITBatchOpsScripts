@@ -63,6 +63,7 @@ let previousServers = new Set(getAllServerNames());
  */
 async function checkServers() {
     const currentServersList = await getAllServerNames();
+    console.log(`📎 Servers currently in list:\n${currentServersList}`);
     
     // Find Servers that are in the new list but not in the old one
     const newServers = currentServersList.filter(Server => !previousServers.has(Server));
