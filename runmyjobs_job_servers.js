@@ -9,174 +9,153 @@ function getAllServerNames() {
 
     if (definitionIndex === -1) {
         console.error("❌ Could not find the 'Name' column header.");
-        return []; // Return an empty array if the column isn't found
+        return []; 
     }
 
     // 2. Locate the main table container
     const tableContainer = document.querySelector('.ULPanel.RWHorizontal.OverviewPage');
     if (!tableContainer) {
         console.error("❌ Could not find the main table container.");
-        return []; // Return an empty array if the table isn't found
+        return []; 
     }
 
-    // 3. Get all data rows (using 'tbody > tr' is safer to skip header rows)
+    // 3. Get all data rows
     const allRows = Array.from(tableContainer.querySelectorAll('tbody > tr'));
     
-    // 4. Extract the text from the 'Definition' cell for each row
+    // 4. Extract the text
     const ServerNames = allRows
         .map(row => {
             const cells = row.querySelectorAll('td');
             if (cells.length > definitionIndex) {
-                // Get the full text content of the cell and trim whitespace
                 return cells[definitionIndex].textContent.trim();
             }
-            return null; // Handle rows that might be malformed
+            return null; 
         })
-        .filter(name => name !== null && name !== ""); // Filter out any null or empty strings
+        .filter(name => name !== null && name !== ""); 
 
     return ServerNames;
 }
 
 function getTableHeaders() {
-    // 1. Get all <th> elements on the page.
     const headerElements = document.querySelectorAll('th');
-
-    // 2. Create an empty array to store the text content.
     let headerTexts = [];
-    
-    // 3. Loop through the NodeList of elements and push the text content to the array.
     headerElements.forEach(header => {
         headerTexts.push(header.textContent.trim());
     });
-
     headerTexts = headerTexts.slice(0, -1);
     return headerTexts;
 }
 
 // --- Start of Monitoring Logic ---
 
-// Stores the Servers from the previous check. Using a Set for fast lookups.
+// Configuration for the debounce/verification
+const VERIFICATION_DELAY_MS = 4000; // Wait 4 seconds between verification checks
+
+// Stores the Servers from the previous check.
 let previousServers = new Set(getAllServerNames());
+
+/**
+ * Helper function to pause execution for a set time
+ */
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * The main function that checks for new Servers and triggers alerts.
  */
 async function checkServers() {
-    const currentServersList = await getAllServerNames();
-    console.log(`📎 Servers currently in list:\n${currentServersList}`);
+    console.log("🔍 Checking server list...");
     
-    // Find Servers that are in the new list but not in the old one
-    const newServers = currentServersList.filter(Server => !previousServers.has(Server));
+    // --- CHECK 1 (Initial) ---
+    const list1 = await getAllServerNames();
+    
+    // Check if there are any NEW servers compared to our saved state
+    const newInList1 = list1.filter(Server => !previousServers.has(Server));
 
-    if (newServers.length > 0) {
-        console.log("New Servers detected:", newServers);
-        // We found new Servers! Trigger the alerts.
-        triggerAlerts(newServers);
+    // If no changes found immediately, just update our baseline and exit
+    if (newInList1.length === 0) {
+        previousServers = new Set(list1);
+        return;
     }
 
-    // Update the state for the next check
-    previousServers = new Set(currentServersList);
+    console.warn(`⚠️ Potential change detected (${newInList1.length} new). Verifying 3 times to ensure it is not a glitch...`);
+
+    // --- CHECK 2 (Verification) ---
+    await wait(VERIFICATION_DELAY_MS); // Wait a moment
+    const list2 = await getAllServerNames();
+    const newInList2 = list2.filter(Server => !previousServers.has(Server));
+
+    if (newInList2.length === 0) {
+        console.log("Create false alarm: List reverted on 2nd check.");
+        return; // Stop, it was a glitch
+    }
+
+    // --- CHECK 3 (Final Confirmation) ---
+    await wait(VERIFICATION_DELAY_MS); // Wait a moment
+    const list3 = await getAllServerNames();
+    const newInList3 = list3.filter(Server => !previousServers.has(Server));
+
+    if (newInList3.length === 0) {
+        console.log("False alarm: List reverted on 3rd check.");
+        return; // Stop, it was a glitch
+    }
+
+    // --- CONFIRMED ---
+    // If we get here, the new servers persisted across all 3 checks.
+    console.log("✅ Change confirmed. Triggering alerts.");
+    triggerAlerts(newInList3);
+
+    // Update the state for the next monitoring cycle
+    previousServers = new Set(list3);
 }
 
 /**
  * Triggers the TTS and Notification alerts.
  */
 function triggerAlerts(newServers) {
-    // Format the Server list for the message
-    // This creates a string like "Server_a and Server_b"
-    const ServerListString = newServers.join(' and ');
-    
-    // Create the message based on your request
-    const message = `The following servers have error statuses: ${ServerListString}`;
+    const ServerListString = newServers.join('\n');
+    const message = `The following servers have error statuses:\n${ServerListString}`;
 
-    // 1. Speak the message
     speak(message);
     console.log(message);
-    
-    // 2. Show the notification
     showNotification("Server Error Alert", message);
 }
 
 
 // --- Helper Functions ---
 
-/**
- * Uses the Web Speech API to speak the provided text.
- */
 function speak(text) {
     if ('speechSynthesis' in window) {
         const utterance = new SpeechSynthesisUtterance(text);
-        // You can configure voice, pitch, rate here if desired
-        // utterance.voice = ...;
-        // utterance.rate = 1;
         window.speechSynthesis.speak(utterance);
     } else {
         console.error("Browser does not support Speech Synthesis.");
     }
 }
 
-/**
- * Uses the Notification API to show a desktop notification.
- */
 function showNotification(title, body) {
     if ("Notification" in window && Notification.permission === "granted") {
-        new Notification(title, {
-            body: body,
-            // You can add an icon here
-            // icon: "path/to/icon.png" 
-        });
+        new Notification(title, { body: body });
     } else {
         console.warn("Notification permission is not granted.");
     }
 }
 
-/**
- * Kicks off the poller.
- */
 function startServerMonitoring() {
     console.log("Starting server monitor...");
-    
-    // Check immediately, then start the interval
     checkServers(); 
-    
-    // Set the poller to check every 30 seconds
+    // Check every 30 seconds
     setInterval(checkServers, 1000 * 30);
 }
 
-
-/**
- * Asks the user for permission to display desktop notifications.
- * @returns {Promise<string>} A promise that resolves with the permission status ('granted', 'denied', or 'default').
- */
 function requestNotificationPermission() {
-  // Check if the browser supports the Notification API
-  if (!('Notification' in window)) {
-    console.warn("This browser does not support desktop notifications.");
-    // Return 'unsupported' status for clarity, though technically not a standard status
-    return Promise.resolve('unsupported'); 
-  }
+  if (!('Notification' in window)) return Promise.resolve('unsupported'); 
+  if (Notification.permission === 'granted') return Promise.resolve('granted');
+  if (Notification.permission === 'denied') return Promise.resolve('denied');
 
-  // If permission has already been granted, we don't need to ask again
-  if (Notification.permission === 'granted') {
-    console.log("Notification permission already granted.");
-    return Promise.resolve('granted');
-  }
-
-  // If permission is 'denied', we cannot ask the user again unless they change it in their browser settings
-  if (Notification.permission === 'denied') {
-    console.warn("Notification permission is permanently denied by the user.");
-    return Promise.resolve('denied');
-  }
-
-  // Request permission from the user
   return Notification.requestPermission().then(permission => {
-    // The promise resolves with the new permission status
-    console.log(`Notification permission status: ${permission}`);
     return permission;
   });
 }
 
 requestNotificationPermission();
 startServerMonitoring();
-
-// --- End of Monitoring Logic ---
