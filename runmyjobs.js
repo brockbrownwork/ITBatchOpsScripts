@@ -390,3 +390,57 @@ document.addEventListener('copy', function(event) {
 });
 
 startRunMonitor();
+
+// Get rid of the spaces at the ends when you paste
+/**
+ * Function to handle the paste event, trim the text, and then paste it.
+ * @param {Event} event - The PasteEvent object.
+ */
+function handlePaste(event) {
+    // 1. Prevent the default paste action (which would paste the untrimmed text)
+    event.preventDefault();
+
+    // 2. Get the raw text from the clipboard
+    // The clipboardData object is used to access the data on the clipboard.
+    const clipboardData = event.clipboardData || window.clipboardData;
+    const pastedText = clipboardData.getData('text/plain');
+
+    // 3. Strip whitespace from both ends of the text
+    const trimmedText = pastedText.trim();
+
+    // 4. Insert the trimmed text into the current selection/focus
+    // For most editable elements (like <input>, <textarea>, or contenteditable divs),
+    // document.execCommand('insertText', ...) is a widely supported way to programmatically
+    // insert text as if the user typed it.
+    document.execCommand('insertText', false, trimmedText);
+}
+
+/**
+ * Function to handle the paste event across the entire document,
+ * trim the text, and then paste the modified text.
+ * @param {Event} event - The PasteEvent object.
+ */
+function handlePaste(event) {
+    // 1. Prevent the browser's default paste action
+    event.preventDefault();
+
+    // 2. Get the raw text from the clipboard
+    const clipboardData = event.clipboardData || window.clipboardData;
+    const pastedText = clipboardData.getData('text/plain');
+
+    // 3. Strip whitespace from both ends of the text
+    const trimmedText = pastedText.trim();
+
+    // 4. Insert the trimmed text into the currently focused element
+    // document.execCommand('insertText', ...) is used here for compatibility
+    // with various editable elements (inputs, textareas, contenteditable divs).
+    document.execCommand('insertText', false, trimmedText);
+}
+
+// --- Attachment ---
+
+// Attach the 'handlePaste' function to the 'paste' event listener on the document object.
+document.addEventListener('paste', handlePaste);
+
+// Optional: Log a confirmation
+console.log("Document-wide paste handler attached. All pasted text will now be trimmed.");
