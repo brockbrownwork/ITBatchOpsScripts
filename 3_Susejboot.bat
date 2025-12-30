@@ -2,6 +2,9 @@ REM Batch script to open specified URLs one at a time in Microsoft Edge
 
 REM @echo off
 
+REM Outlook
+start "" "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
+
 REM Open the new alert creator
 start microsoft-edge:"https://signetjewelers.atlassian.net/jira/ops/teams/46d6c4ba-da5e-4633-b096-2132b4baa969/alerts?view=list&query="
 ping localhost -n 3 >nul
@@ -57,9 +60,6 @@ ping localhost -n 3 >nul
 REM Workday
 start microsoft-edge:"https://www.myworkday.com/signetjewelers/d/home.htmld"
 ping localhost -n 3 >nul
-
-REM Outlook
-start "" "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
 
 echo All specified links have been opened.
 
