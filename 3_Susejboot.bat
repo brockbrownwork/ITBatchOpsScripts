@@ -41,10 +41,6 @@ REM Open SWAT Incidents in Jira
 start microsoft-edge:"https://signetjewelers.atlassian.net/issues/?filter=45837&atlOrigin=eyJpIjoiNjMzMzY5YWUwNjg3NDMxMDkwNWZhYjI1OTBlMTQyNWEiLCJwIjoiaiJ9"
 ping localhost -n 3 >nul
 
-REM Open Workday
-start microsoft-edge:"https://www.myworkday.com/signetjewelers/d/home.htmld"
-ping localhost -n 3 >nul
-
 REM Open Service Catalog - Submit an Issue
 start microsoft-edge:"https://signetjewelers.atlassian.net/servicedesk/customer/portal/1010"
 ping localhost -n 3 >nul
@@ -55,10 +51,6 @@ ping localhost -n 3 >nul
 
 REM Change requests
 start microsoft-edge:"https://signetjewelers.atlassian.net/jira/servicedesk/projects/SERVOPS/queues/custom/1542"
-ping localhost -n 3 >nul
-
-REM Workday
-start microsoft-edge:"https://www.myworkday.com/signetjewelers/d/home.htmld"
 ping localhost -n 3 >nul
 
 echo All specified links have been opened.
