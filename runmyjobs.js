@@ -141,13 +141,10 @@ async function copyMatchingJobsAboveSelected() {
                 if (currentFolder === targetFolder) {
                     let jobName = cells[definitionIndex].textContent.trim();
                     jobName = jobName.split(' ')[0];
+                    uniqueJobNames.add(jobName);
                     if (jobName.split("_").pop().startsWith("ABAP")) {
                         alert("ABAP job found, make sure that goes into DevOps chat. :)")
                     }
-                    else if (jobName.toLowerCase() == "SP_edp_SIGNET_FLASH_SALES_TBL".toLowerCase()) {
-                        continue
-                    }
-                    uniqueJobNames.add(jobName);
                 }
             }
         }
