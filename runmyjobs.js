@@ -213,6 +213,11 @@ function parseRunTime(timeString) {
     }
 }
 
+function getRandomString(list) {
+  const randomIndex = Math.floor(Math.random() * list.length);
+  return list[randomIndex];
+}
+
 async function checkLatestRunTime() {
     console.log("Checking for new run times... 🔎");
 
@@ -253,8 +258,10 @@ async function checkLatestRunTime() {
     if (currentScanLatestTime) {
         if (!lastKnownLatestRunTime || currentScanLatestTime > lastKnownLatestRunTime) {
             console.log(`✅ New latest run time found: ${currentScanLatestTime.toLocaleTimeString()}`);
+            let greetings = ["Hark", "Alert", "Hello", "Heads up", "Whoa man", "Hey dude", "uh, like"];
+            let greeting = getRandomString(greetings);
             try {
-                const utterance = new SpeechSynthesisUtterance("Hark, Check Run My Jobs");
+                const utterance = new SpeechSynthesisUtterance(`${greeting}, Check Run My Jobs`);
                 window.speechSynthesis.speak(utterance);
             } catch (e) {
                 console.error("Speech synthesis failed:", e);
