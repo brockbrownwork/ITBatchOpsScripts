@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wikiwiki Aloha Web Client Test</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #0056b3; }
+        pre { background-color: #e2e2e2; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover { background-color: #0056b3; }
+        #messages { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; background-color: #f9f9f9; margin-top: 20px; }
+        .log-item { margin-bottom: 5px; border-bottom: 1px dotted #eee; padding-bottom: 3px; }
+        .log-item.info { color: #0056b3; }
+        .log-item.error { color: #dc3545; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wikiwiki Aloha Web Client Test</h1>
+        <p>This page demonstrates a simple web client connecting to the Wikiwiki Aloha server.</p>
+        <p>Open your browser's developer console (F12) to see more detailed logs.</p>
+
+        <button id="sendMessageButton">Send Test Message to Server</button>
+
+        <h2>Messages from Server:</h2>
+        <div id="messages"></div>
+    </div>
+
+    <script>
+        const SERVER_URL = "http://localhost:5001";
+        const CLIENT_TYPE = "WebClientTest"; // Unique type for this test client
+
+        const messagesDiv = document.getElementById('messages');
+        const sendMessageButton = document.getElementById('sendMessageButton');
+
+        function logToPage(message, type = 'info') {
+            const p = document.createElement('p');
+            p.className = `log-item ${type}`;
+            p.textContent = message;
+            messagesDiv.appendChild(p);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll to bottom
+        }
+
+        console.log("Attempting to connect to server...");
+        logToPage("Attempting to connect to server...", 'info');
+
+        const sio = io(SERVER_URL, {
+            reconnectionDelay: 5000,
+            reconnectionAttempts: 10,
+            transports: ['websocket']
+        });
+
+        let clientName = null;
+
+        sio.on('connect', () => {
+            console.log(`Connected to server. Sending identification as '${CLIENT_TYPE}'.`);
+            logToPage(`Connected to server. Sending identification as '${CLIENT_TYPE}'.`, 'info');
+            sio.emit('identify', { client_type: CLIENT_TYPE });
+        });
+
+        sio.on('connect_error', (err) => {
+            console.error(`Connection failed: ${err.message}`);
+            logToPage(`Connection failed: ${err.message}`, 'error');
+        });
+
+        sio.on('disconnect', () => {
+            console.warn("Disconnected from server. Will attempt to reconnect.");
+            logToPage("Disconnected from server. Will attempt to reconnect.", 'info');
+        });
+
+        sio.on('registered', (data) => {
+            clientName = data.client_name;
+            console.log(`Successfully registered with server as '${clientName}'.`);
+            logToPage(`Successfully registered with server as '${clientName}'.`, 'info');
+        });
+
+        sio.on('message', (data) => {
+            console.log(`Received message from server:`, data);
+            logToPage(`SERVER MESSAGE: ${JSON.stringify(data)}`);
+        });
+
+        sio.on('command', (data) => {
+            const { action, payload } = data;
+            console.log(`Received command: '${action}' with payload:`, payload);
+            logToPage(`SERVER COMMAND: ${action} - ${JSON.stringify(payload)}`);
+            
+            // Example action handling
+            if (action === "display_alert") {
+                alert(`Server Alert: ${payload.message || 'No message'}`);
+            }
+        });
+
+        sio.on('command_with_response', (data, callback) => {
+            const { action, payload } = data;
+            console.log(`Received command with response request: '${action}' with payload:`, payload);
+            logToPage(`SERVER COMMAND (response expected): ${action} - ${JSON.stringify(payload)}`);
+
+            // Example response handling
+            if (action === "get_browser_info") {
+                const response = {
+                    status: 'ok',
+                    userAgent: navigator.userAgent,
+                    location: window.location.href,
+                    screenWidth: window.innerWidth,
+                    screenHeight: window.innerHeight
+                };
+                console.log("Sending response:", response);
+                logToPage(`Sending response: ${JSON.stringify(response)}`);
+                callback(response);
+            } else {
+                const errorResponse = { status: 'error', message: `Unknown action: ${action}` };
+                console.log("Sending error response:", errorResponse);
+                logToPage(`Sending error response: ${JSON.stringify(errorResponse)}`, 'error');
+                callback(errorResponse);
+            }
+        });
+
+        sendMessageButton.addEventListener('click', () => {
+            if (clientName) {
+                const testMessage = {
+                    source: clientName,
+                    payload: {
+                        message: "Hello from the web client!",
+                        timestamp: new Date().toISOString()
+                    }
+                };
+                sio.emit('message_from_client', testMessage);
+                console.log("Sent test message:", testMessage);
+                logToPage(`Sent test message: ${JSON.stringify(testMessage.payload)}`, 'info');
+            } else {
+                console.warn("Client not yet registered. Cannot send message.");
+                logToPage("Client not yet registered. Cannot send message.", 'info');
+            }
+        });
+
+    </script>
+</body>
+</html>
