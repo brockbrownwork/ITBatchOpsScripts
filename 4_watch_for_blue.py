@@ -239,9 +239,13 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
         print("User activity detected. Aborting inbox search.")
         return False
 
-    # Check if Outlook is visible before proceeding
-    if not image_exists_in_region('images/outlook_logo.png', region_top_left, region_bottom_right):
-        print("Outlook logo not found. Aborting inbox search.")
+    # Check if Outlook is visible anywhere on screen before proceeding
+    with mss.mss() as sct:
+        monitor = sct.monitors[1]  # Primary monitor
+        screen_top_left = (monitor["left"], monitor["top"])
+        screen_bottom_right = (monitor["left"] + monitor["width"], monitor["top"] + monitor["height"])
+    if not image_exists_in_region('images/outlook_logo.png', screen_top_left, screen_bottom_right):
+        print("Outlook logo not found on screen. Aborting inbox search.")
         return False
 
     # User is idle, announce and proceed
