@@ -34,13 +34,13 @@ def _on_key_press(key):
         last_activity_time = time.time()
 
 # Start listeners in daemon threads
-mouse_listener = MouseListener(on_move=_on_mouse_move, on_click=_on_mouse_click)
-mouse_listener.daemon = True
-mouse_listener.start()
+_mouse_activity_listener = MouseListener(on_move=_on_mouse_move, on_click=_on_mouse_click)
+_mouse_activity_listener.daemon = True
+_mouse_activity_listener.start()
 
-keyboard_listener = KeyboardListener(on_press=_on_key_press)
-keyboard_listener.daemon = True
-keyboard_listener.start()
+_keyboard_activity_listener = KeyboardListener(on_press=_on_key_press)
+_keyboard_activity_listener.daemon = True
+_keyboard_activity_listener.start()
 
 def user_was_active_recently(seconds=10):
     """Returns True if user mouse movement or keystrokes were detected within the last `seconds`."""
