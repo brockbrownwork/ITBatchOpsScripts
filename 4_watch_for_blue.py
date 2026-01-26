@@ -270,6 +270,9 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
     # V. Check if inbox.png or inbox_highlighted.png exists
     if inbox_button_exists(region_top_left, region_bottom_right):
         print("Inbox found after scrolling!")
+        engine.say("Found it.")
+        engine.runAndWait()
+        engine.stop()
         return True
 
     print("Inbox not found after scrolling.")
