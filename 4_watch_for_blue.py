@@ -258,10 +258,10 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
         return False
     print("Outlook down arrow found. Proceeding with scroll...")
 
-    # IV. Scroll up 30, then scroll down 12
+    # IV. Scroll up 30, then scroll down 14
     scroll_mouse(30, direction='up')
     time.sleep(0.5)
-    scroll_mouse(12, direction='down')
+    scroll_mouse(14, direction='down')
     time.sleep(0.5)
 
     # V. Check if inbox.png or inbox_highlighted.png exists
