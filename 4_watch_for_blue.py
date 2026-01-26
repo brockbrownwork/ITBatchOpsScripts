@@ -230,13 +230,13 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
     region_bottom_left = (region_top_left[0], region_bottom_right[1])
     # --- Step I: Hover Mouse ---
 
-    # Check for user activity in last 10 seconds
-    if not user_was_active_recently(seconds=10):
-        print("No user activity detected in last 10 seconds. Skipping inbox search.")
+    # Check for user activity in last 10 seconds - skip if user is active to avoid interfering
+    if user_was_active_recently(seconds=10):
+        print("User activity detected in last 10 seconds. Skipping inbox search to avoid interference.")
         return False
 
     # Announce the attempt
-    print("User activity detected. Attempting to look for the inbox...")
+    print("No recent user activity. Attempting to look for the inbox...")
     engine.say("Attempting to look for the inbox.")
     engine.runAndWait()
     engine.stop()
