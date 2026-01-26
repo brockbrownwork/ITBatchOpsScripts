@@ -244,7 +244,7 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
     engine.runAndWait()
     engine.stop()
 
-    # II. Hover mouse over bottom-left of the box (with x+10, y-10 offset)
+    # II. Hover mouse over bottom-left of the box (except in toward the middle a little bit)
     # Bottom-left means: x from top_left, y from bottom_right
     hover_x = int(region_top_left[0]) + 30
     hover_y = int(region_bottom_right[1]) - 30
