@@ -239,6 +239,11 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
         print("User activity detected. Aborting inbox search.")
         return False
 
+    # Check if Outlook is visible before proceeding
+    if not image_exists_in_region('images/outlook_logo.png', region_top_left, region_bottom_right):
+        print("Outlook logo not found. Aborting inbox search.")
+        return False
+
     # User is idle, announce and proceed
     engine.say("Attempting to look for the inbox.")
     engine.runAndWait()
