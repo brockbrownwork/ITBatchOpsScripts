@@ -3,7 +3,7 @@
 A Python script that monitors a user-defined screen region for new Outlook emails by detecting changes in blue pixel counts. When new emails arrive, the unread count indicator in Outlook changes, which this script detects by counting specific blue-colored pixels. It then announces "You've got mail!" using text-to-speech.
 
 ## Why This Exists
-Outlook doesn't always provide reliable desktop notifications. This script provides an audible alert whenever the blue unread indicator pixels increase in the monitored region, ensuring you never miss an incoming email.
+Outlook doesn't ~~always~~ provide reliable desktop notifications. This script provides an audible alert whenever the blue unread indicator pixels increase in the monitored region, ensuring you never miss an incoming email.
 
 ## Setup
 1. Run the script: `python 4_watch_for_blue.py`
