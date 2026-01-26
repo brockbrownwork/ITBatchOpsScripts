@@ -214,6 +214,7 @@ while True:
             email_refresh_count += 1
             print("Inbox button not seen x", email_refresh_count)
             if email_refresh_count % (6 * refresh_warning_minutes_interval) == 0: # increase this number as needed so that it becomes less annoying, right now it should be at every minute...
+                # TODO: attempt to find the inbox button instead of immediately alerting the user, if it can't find it then alert the user
                 email_alert(refresh_inbox_needed = True)
         else:
             email_refresh_count = 0
