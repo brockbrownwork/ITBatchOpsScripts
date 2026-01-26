@@ -1,1 +1,0 @@
-"Ticket category" = Incidents AND project = SERVOPS AND "Major incident" is not EMPTY and status = Open ORDER BY "Time to resolution" ASC 
