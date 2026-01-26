@@ -257,7 +257,9 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
         print("Outlook down arrow not found in region.")
         return False
     print("Outlook down arrow found. Proceeding with scroll...")
-    time.sleep(0.3)
+    # Nudge mouse by 1 pixel to ensure UI registers the hover
+    hover_at_position(hover_x + 1, hover_y)
+    time.sleep(0.1)
 
     # IV. Scroll up 30, then scroll down 14
     scroll_mouse(30, direction='up')
