@@ -109,7 +109,7 @@ def image_exists_in_region(image_path, region_top_left, region_bottom_right):
     return False
 
 # --- NEW HELPER FUNCTION ---
-def _find_exact_match(haystack_arr, needle_arr):
+def _find_exact_match(haystack_arr, needle_arr, return_position=False):
     """
     Searches a larger numpy array (haystack) for an exact match of a
     smaller numpy array (needle).
@@ -117,29 +117,143 @@ def _find_exact_match(haystack_arr, needle_arr):
     Args:
         haystack_arr: The numpy array of the screen region.
         needle_arr: The numpy array of the template image to find.
+        return_position: If True, return the (x, y) position of the match.
 
     Returns:
-        True if an exact match is found, otherwise False.
+        If return_position is False: True if an exact match is found, otherwise False.
+        If return_position is True: (x, y, width, height) tuple if found, otherwise None.
     """
     H, W, _ = haystack_arr.shape
     h, w, _ = needle_arr.shape
 
     # Check if needle is larger than haystack
     if h > H or w > W:
-        return False
+        return None if return_position else False
 
     # Iterate through all possible top-left positions
     for y in range(H - h + 1):
         for x in range(W - w + 1):
             # Get the sub-region from the haystack
             sub_array = haystack_arr[y : y + h, x : x + w]
-            
+
             # Perform an exact pixel-by-pixel comparison
             if np.array_equal(sub_array, needle_arr):
+                if return_position:
+                    return (x, y, w, h)
                 return True
-                
+
     # No match found after checking all positions
+    return None if return_position else False
+
+
+def _magic_wand_select(screen_arr, start_x, start_y, target_color):
+    """
+    Performs a magic wand (flood fill) selection on the screen starting from a point,
+    selecting all connected pixels of the exact target color.
+
+    Args:
+        screen_arr: The numpy array of the full screen (RGB).
+        start_x: The x coordinate to start the selection.
+        start_y: The y coordinate to start the selection.
+        target_color: The RGB tuple of the color to select.
+
+    Returns:
+        A set of (x, y) tuples representing all selected pixels.
+    """
+    H, W, _ = screen_arr.shape
+
+    # Check if start position is valid
+    if start_x < 0 or start_x >= W or start_y < 0 or start_y >= H:
+        return set()
+
+    # Check if the starting pixel matches the target color
+    if tuple(screen_arr[start_y, start_x]) != target_color:
+        return set()
+
+    selected = set()
+    to_check = [(start_x, start_y)]
+
+    while to_check:
+        x, y = to_check.pop()
+
+        if (x, y) in selected:
+            continue
+        if x < 0 or x >= W or y < 0 or y >= H:
+            continue
+        if tuple(screen_arr[y, x]) != target_color:
+            continue
+
+        selected.add((x, y))
+
+        # Add 4-connected neighbors
+        to_check.append((x + 1, y))
+        to_check.append((x - 1, y))
+        to_check.append((x, y + 1))
+        to_check.append((x, y - 1))
+
+    return selected
+
+
+def _get_selection_bounds(selected_pixels):
+    """
+    Gets the bounding rectangle of a set of selected pixels.
+
+    Args:
+        selected_pixels: A set of (x, y) tuples.
+
+    Returns:
+        A tuple (min_x, min_y, max_x, max_y) or None if empty.
+    """
+    if not selected_pixels:
+        return None
+
+    xs = [p[0] for p in selected_pixels]
+    ys = [p[1] for p in selected_pixels]
+
+    return (min(xs), min(ys), max(xs), max(ys))
+
+
+def _check_for_unread_colors(screen_arr, bounds):
+    """
+    Checks if any unread message indicator colors exist within the given bounds.
+
+    Args:
+        screen_arr: The numpy array of the screen (RGB).
+        bounds: A tuple (min_x, min_y, max_x, max_y).
+
+    Returns:
+        True if unread message colors are found, False otherwise.
+    """
+    if bounds is None:
+        return False
+
+    min_x, min_y, max_x, max_y = bounds
+
+    # Extract the region
+    region = screen_arr[min_y:max_y+1, min_x:max_x+1]
+
+    # Unread message indicator colors
+    unread_colors = [
+        (0, 90, 176),
+        (0, 90, 170),
+        (46, 90, 158)
+    ]
+
+    for color in unread_colors:
+        matches = np.sum(
+            (region[:, :, 0] == color[0]) &
+            (region[:, :, 1] == color[1]) &
+            (region[:, :, 2] == color[2])
+        )
+        if matches > 0:
+            return True
+
     return False
+
+# Most common background colors for inbox images (for magic wand selection)
+INBOX_BG_COLOR = (225, 225, 225)  # inbox.png background
+INBOX_HIGHLIGHTED_BG_COLOR = (205, 230, 247)  # inbox_highlighted.png background
+
 
 # --- MODIFIED FUNCTION ---
 def inbox_button_exists(
@@ -149,16 +263,19 @@ def inbox_button_exists(
     """
     Checks for the presence of either an un-highlighted or highlighted inbox image
     within a specified region of the screen using exact pixel matching.
-    Returns True if found, False otherwise.
+    When found, performs a magic wand selection from the center of the found image
+    on the full screen and checks for unread message indicator colors.
 
     Args:
         region_top_left: A 2-tuple (x, y) of the top-left coordinates of the search area.
         region_bottom_right: A 2-tuple (x, y) of the bottom-right coordinates of the search area.
 
     Returns:
-        True if an image is found, otherwise False.
+        A tuple (found, has_unread):
+            - found: True if inbox image is found, False otherwise.
+            - has_unread: True if unread message colors detected in selection, False otherwise.
     """
-    
+
     # 1. Define the screen region to capture
     x1, y1 = int(region_top_left[0]), int(region_top_left[1])
     x2, y2 = int(region_bottom_right[0]), int(region_bottom_right[1])
@@ -168,7 +285,7 @@ def inbox_button_exists(
 
     if width <= 0 or height <= 0:
         print("Invalid search region. Make sure bottom-right is after top-left.")
-        return False
+        return (False, False)
 
     search_region = {"top": y1, "left": x1, "width": width, "height": height}
 
@@ -181,16 +298,16 @@ def inbox_button_exists(
             haystack_arr = np.array(haystack_pil)
     except Exception as e:
         print(f"Error capturing screen region: {e}")
-        return False # Cannot proceed if screen grab fails
+        return (False, False)  # Cannot proceed if screen grab fails
 
-    # 3. Define the "needles" (the template images)
-    image_paths = [
-        'images/inbox.png',
-        'images/inbox_highlighted.png'
+    # 3. Define the "needles" (the template images) with their background colors
+    image_configs = [
+        ('images/inbox.png', INBOX_BG_COLOR),
+        ('images/inbox_highlighted.png', INBOX_HIGHLIGHTED_BG_COLOR)
     ]
 
     # 4. Loop through each needle and search for it
-    for path in image_paths:
+    for path, bg_color in image_configs:
         try:
             # Load needle image
             needle_pil = Image.open(path)
@@ -199,19 +316,70 @@ def inbox_button_exists(
             # Convert to numpy array
             needle_arr = np.array(needle_pil)
 
-            # Use the helper function to find an exact match
-            if _find_exact_match(haystack_arr, needle_arr):
-                return True # Found a match
-                
+            # Use the helper function to find an exact match and get position
+            match_result = _find_exact_match(haystack_arr, needle_arr, return_position=True)
+
+            if match_result is not None:
+                match_x, match_y, match_w, match_h = match_result
+                print(f"Inbox found at region-relative position ({match_x}, {match_y})")
+
+                # Calculate the center of the found image in screen coordinates
+                center_screen_x = x1 + match_x + match_w // 2
+                center_screen_y = y1 + match_y + match_h // 2
+
+                # 5. Capture the full screen for magic wand selection
+                try:
+                    with mss.mss() as sct:
+                        monitor = sct.monitors[1]  # Primary monitor
+                        full_screen_img = sct.grab(monitor)
+                        full_screen_pil = Image.frombytes(
+                            "RGB",
+                            (full_screen_img.width, full_screen_img.height),
+                            full_screen_img.rgb
+                        )
+                        full_screen_arr = np.array(full_screen_pil)
+                except Exception as e:
+                    print(f"Error capturing full screen: {e}")
+                    return (True, False)
+
+                # 6. Perform magic wand selection from the center using the background color
+                print(f"Performing magic wand selection at ({center_screen_x}, {center_screen_y}) with color {bg_color}")
+                selected_pixels = _magic_wand_select(
+                    full_screen_arr,
+                    center_screen_x,
+                    center_screen_y,
+                    bg_color
+                )
+
+                if not selected_pixels:
+                    print("Magic wand selection returned no pixels")
+                    return (True, False)
+
+                print(f"Magic wand selected {len(selected_pixels)} pixels")
+
+                # 7. Get the bounding rectangle of the selection
+                bounds = _get_selection_bounds(selected_pixels)
+                if bounds:
+                    print(f"Selection bounds: {bounds}")
+
+                # 8. Check for unread message colors within the bounds
+                has_unread = _check_for_unread_colors(full_screen_arr, bounds)
+                if has_unread:
+                    print("Unread message indicator colors detected!")
+                else:
+                    print("No unread message indicators found in selection")
+
+                return (True, has_unread)
+
         except FileNotFoundError:
             print(f"Warning: Template image not found at {path}")
-            pass # Try the next image
+            pass  # Try the next image
         except Exception as e:
             print(f"Error processing template image {path}: {e}")
-            pass # Try the next image
+            pass  # Try the next image
 
     # --- 5. Neither image was found ---
-    return False
+    return (False, False)
 
 def attempt_to_find_inbox(region_top_left, region_bottom_right):
     """
@@ -277,9 +445,13 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
     time.sleep(0.5)
 
     # V. Check if inbox.png or inbox_highlighted.png exists
-    if inbox_button_exists(region_top_left, region_bottom_right):
+    found, has_unread = inbox_button_exists(region_top_left, region_bottom_right)
+    if found:
         print("Inbox found after scrolling!")
-        engine.say("Found it.")
+        if has_unread:
+            engine.say("Found it. You have unread messages.")
+        else:
+            engine.say("Found it.")
         engine.runAndWait()
         engine.stop()
         return True
@@ -381,7 +553,8 @@ while True:
                 email_alert()
             else:
                 print("No increase in blue pixels.")
-        if not inbox_button_exists(top_left, bottom_right):
+        inbox_found, has_unread = inbox_button_exists(top_left, bottom_right)
+        if not inbox_found:
             email_refresh_count += 1
             print("Inbox button not seen x", email_refresh_count)
             if email_refresh_count % (6 * refresh_warning_minutes_interval) == 0:
@@ -392,6 +565,8 @@ while True:
                     email_alert(refresh_inbox_needed = True)
         else:
             email_refresh_count = 0
+            if has_unread:
+                print("Unread messages detected via magic wand selection!")
         old_count = new_count
         # Wait 10 seconds before next check
         sleep(10)
