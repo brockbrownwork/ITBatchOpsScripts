@@ -279,7 +279,13 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
     # V. Check if inbox.png or inbox_highlighted.png exists
     if inbox_button_exists(region_top_left, region_bottom_right):
         print("Inbox found after scrolling!")
-        engine.say("Found it.")
+
+        # Check for unread messages by looking for blue pixels in the region
+        unread_count = count_blue_pixels(region_top_left, region_bottom_right)
+        if unread_count > 0:
+            engine.say(f"Found it. You have unread messages.")
+        else:
+            engine.say("Found it. No unread messages.")
         engine.runAndWait()
         engine.stop()
         return True
