@@ -244,8 +244,8 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
 
     # II. Hover mouse over bottom-left of the box (with x+10, y-10 offset)
     # Bottom-left means: x from top_left, y from bottom_right
-    hover_x = int(region_top_left[0]) + 10
-    hover_y = int(region_bottom_right[1]) - 10
+    hover_x = int(region_top_left[0]) + 30
+    hover_y = int(region_bottom_right[1]) - 30
     hover_at_position(hover_x, hover_y)
     print(f"Hovering at position ({hover_x}, {hover_y})")
     time.sleep(0.5)  # Brief pause to let any UI respond
