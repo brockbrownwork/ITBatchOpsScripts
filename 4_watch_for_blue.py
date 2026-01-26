@@ -57,8 +57,10 @@ def scroll_mouse(scroll_count, direction='up'):
         direction: 'up' or 'down'.
     """
     mouse = Controller()
-    scroll_value = scroll_count if direction == 'up' else -scroll_count
-    mouse.scroll(0, scroll_value)
+    scroll_direction = 1 if direction == 'up' else -1
+    for _ in range(scroll_count):
+        mouse.scroll(0, scroll_direction)
+        time.sleep(0.1)
 
 def image_exists_in_region(image_path, region_top_left, region_bottom_right):
     """
