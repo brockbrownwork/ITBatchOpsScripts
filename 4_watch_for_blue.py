@@ -1,5 +1,5 @@
 import keyboard
-from pynput.mouse import Controller
+from pynput.mouse import Controller, Button
 from PIL import Image
 import numpy as np
 import time
@@ -10,6 +10,101 @@ from datetime import datetime
 import pyttsx3
 
 engine = pyttsx3.init()
+
+def detect_user_activity(timeout_seconds=10):
+    """
+    Checks for mouse movement or keyboard activity over a specified time period.
+    Checks once per second for the duration.
+
+    Args:
+        timeout_seconds: How long to wait for activity (default 10 seconds).
+
+    Returns:
+        True if mouse moved or key pressed, False otherwise.
+    """
+    mouse = Controller()
+    initial_pos = mouse.position
+
+    for _ in range(timeout_seconds):
+        time.sleep(1)
+        current_pos = mouse.position
+        if current_pos != initial_pos:
+            return True
+        # Check if any key was pressed (simple approach using keyboard module)
+        # We can't easily detect "any key pressed in last second" with keyboard module
+        # So we'll just check mouse movement as the primary indicator
+        initial_pos = current_pos  # Update position for next check
+
+    return False
+
+def hover_at_position(x, y):
+    """
+    Moves the mouse to the specified position.
+
+    Args:
+        x: The x coordinate.
+        y: The y coordinate.
+    """
+    mouse = Controller()
+    mouse.position = (x, y)
+
+def scroll_mouse(scroll_count, direction='up'):
+    """
+    Scrolls the mouse wheel at the current position.
+
+    Args:
+        scroll_count: Number of scroll steps.
+        direction: 'up' or 'down'.
+    """
+    mouse = Controller()
+    scroll_value = scroll_count if direction == 'up' else -scroll_count
+    mouse.scroll(0, scroll_value)
+
+def image_exists_in_region(image_path, region_top_left, region_bottom_right):
+    """
+    Checks if a specific image exists within a screen region using exact pixel matching.
+
+    Args:
+        image_path: Path to the template image to find.
+        region_top_left: A 2-tuple (x, y) of the top-left coordinates.
+        region_bottom_right: A 2-tuple (x, y) of the bottom-right coordinates.
+
+    Returns:
+        True if the image is found, False otherwise.
+    """
+    x1, y1 = int(region_top_left[0]), int(region_top_left[1])
+    x2, y2 = int(region_bottom_right[0]), int(region_bottom_right[1])
+
+    width = x2 - x1
+    height = y2 - y1
+
+    if width <= 0 or height <= 0:
+        return False
+
+    search_region = {"top": y1, "left": x1, "width": width, "height": height}
+
+    try:
+        with mss.mss() as sct:
+            sct_img = sct.grab(search_region)
+            haystack_pil = Image.frombytes("RGB", (sct_img.width, sct_img.height), sct_img.rgb)
+            haystack_arr = np.array(haystack_pil)
+    except Exception as e:
+        print(f"Error capturing screen region: {e}")
+        return False
+
+    try:
+        needle_pil = Image.open(image_path)
+        needle_pil = needle_pil.convert("RGB")
+        needle_arr = np.array(needle_pil)
+
+        if _find_exact_match(haystack_arr, needle_arr):
+            return True
+    except FileNotFoundError:
+        print(f"Warning: Template image not found at {image_path}")
+    except Exception as e:
+        print(f"Error processing template image {image_path}: {e}")
+
+    return False
 
 # --- NEW HELPER FUNCTION ---
 def _find_exact_match(haystack_arr, needle_arr):
@@ -116,6 +211,65 @@ def inbox_button_exists(
     # --- 5. Neither image was found ---
     return False
 
+def attempt_to_find_inbox(region_top_left, region_bottom_right):
+    """
+    Attempts to find and navigate to the inbox.
+
+    Steps:
+    I. Wait for user activity (mouse movement) for 10 seconds. If no activity, return False.
+    II. Hover mouse over bottom-left of the box (with x+10, y-10 offset).
+    III. Check if outlook_down_arrow.png exists in region. If not, return False.
+    IV. Scroll up 30, then scroll down 12.
+    V. Check if inbox.png or inbox_highlighted.png exists. Return True if found, else False.
+
+    Args:
+        region_top_left: A 2-tuple (x, y) of the top-left coordinates.
+        region_bottom_right: A 2-tuple (x, y) of the bottom-right coordinates.
+
+    Returns:
+        True if inbox was found, False otherwise.
+    """
+    # I. Wait and check for user inactivity
+    print("Checking if user is idle before attempting to find inbox...")
+
+    if detect_user_activity(timeout_seconds=10):
+        # User is active, don't interrupt them
+        print("User activity detected. Aborting inbox search.")
+        return False
+
+    # User is idle, announce and proceed
+    engine.say("Attempting to look for the inbox.")
+    engine.runAndWait()
+    engine.stop()
+
+    # II. Hover mouse over bottom-left of the box (with x+10, y-10 offset)
+    # Bottom-left means: x from top_left, y from bottom_right
+    hover_x = int(region_top_left[0]) + 10
+    hover_y = int(region_bottom_right[1]) - 10
+    hover_at_position(hover_x, hover_y)
+    print(f"Hovering at position ({hover_x}, {hover_y})")
+    time.sleep(0.5)  # Brief pause to let any UI respond
+
+    # III. Check if outlook_down_arrow.png exists in region
+    if not image_exists_in_region('images/outlook_down_arrow.png', region_top_left, region_bottom_right):
+        print("Outlook down arrow not found in region.")
+        return False
+    print("Outlook down arrow found. Proceeding with scroll...")
+
+    # IV. Scroll up 30, then scroll down 12
+    scroll_mouse(30, direction='up')
+    time.sleep(0.5)
+    scroll_mouse(12, direction='down')
+    time.sleep(0.5)
+
+    # V. Check if inbox.png or inbox_highlighted.png exists
+    if inbox_button_exists(region_top_left, region_bottom_right):
+        print("Inbox found after scrolling!")
+        return True
+
+    print("Inbox not found after scrolling.")
+    return False
+
 def email_alert(refresh_inbox_needed = False):
     """Uses text-to-speech to announce the alert message three times."""
     message = "You've got mail!"
@@ -213,8 +367,12 @@ while True:
         if not inbox_button_exists(top_left, bottom_right):
             email_refresh_count += 1
             print("Inbox button not seen x", email_refresh_count)
-            if email_refresh_count % (6 * refresh_warning_minutes_interval) == 0: # increase this number as needed so that it becomes less annoying, right now it should be at every minute...
-                email_alert(refresh_inbox_needed = True)
+            if email_refresh_count % (6 * refresh_warning_minutes_interval) == 0:
+                # Attempt to find inbox before alerting
+                if attempt_to_find_inbox(top_left, bottom_right):
+                    email_refresh_count = 0  # Reset counter if inbox was found
+                else:
+                    email_alert(refresh_inbox_needed = True)
         else:
             email_refresh_count = 0
         old_count = new_count
