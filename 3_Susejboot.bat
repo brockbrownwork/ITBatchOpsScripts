@@ -6,7 +6,7 @@ REM Outlook
 start "" "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
 
 REM Open the new alert creator
-start microsoft-edge:"https://signetjewelers.atlassian.net/jira/ops/teams/46d6c4ba-da5e-4633-b096-2132b4baa969/alerts?view=list&query="
+start microsoft-edge:"https://signetjewelers.atlassian.net/jira/ops/teams/46d6c4ba-da5e-4633-b096-2132b4baa969/alerts?view=list&query=%28status%3A%20%22open%22%20OR%20status%3A%20%22acknowledged%22%20OR%20status%3A%20%22snoozed%22%20OR%20status%3A%20%22closed%22%29&onlyAlerts=true"
 ping localhost -n 3 >nul
 
 REM Open RMJ
