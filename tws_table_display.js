@@ -228,7 +228,7 @@ const TWSTableDisplay = {
         },
 
         // Download table as landscape PDF
-        async downloadPDF(filterText = null, filterColumn = null, tableName = "TWS Table") {
+        async downloadPDF(tableName = "TWS Table") {
             console.log("[TWSTableDisplay] Preparing PDF download...");
 
             try {
@@ -249,9 +249,9 @@ const TWSTableDisplay = {
             let displayRows = rows;
             let displayCellClasses = cellClasses;
 
-            // Apply filter if provided
             // Special case for "Carry forward": include all rows from workstations that have at least one EXEC job
-            if (tableName === "Carry forward") {
+            const tableNameLower = tableName.toLowerCase();
+            if (tableNameLower === "carry forward") {
                 // Find all workstations that have at least one EXEC job
                 const workstationsWithExec = new Set();
                 rows.forEach(row => {
@@ -271,23 +271,6 @@ const TWSTableDisplay = {
                 displayCellClasses = filteredIndices.map(idx => cellClasses[idx]);
 
                 console.log(`[TWSTableDisplay] Carry forward: Found ${workstationsWithExec.size} workstation(s) with EXEC jobs: ${Array.from(workstationsWithExec).join(", ")}`);
-            } else if (filterText) {
-                const searchText = filterText.toLowerCase();
-                const filteredIndices = [];
-                displayRows = rows.filter((row, idx) => {
-                    let matches = false;
-                    if (filterColumn) {
-                        const val = row[filterColumn] || "";
-                        matches = val.toLowerCase().includes(searchText);
-                    } else {
-                        matches = Object.values(row).some(val =>
-                            val.toLowerCase().includes(searchText)
-                        );
-                    }
-                    if (matches) filteredIndices.push(idx);
-                    return matches;
-                });
-                displayCellClasses = filteredIndices.map(idx => cellClasses[idx]);
             }
 
             if (displayRows.length === 0) {
@@ -311,9 +294,6 @@ const TWSTableDisplay = {
             doc.text(tableName, 14, 15);
             doc.setFontSize(10);
             doc.text(`Generated: ${timestamp}`, 14, 22);
-            if (filterText) {
-                doc.text(`Filter: "${filterText}"${filterColumn ? ` (${filterColumn})` : ""}`, 14, 28);
-            }
 
             // Prepare table data
             const headers = columns;
@@ -328,7 +308,7 @@ const TWSTableDisplay = {
             doc.autoTable({
                 head: [headers],
                 body: tableData,
-                startY: filterText ? 32 : 26,
+                startY: 26,
                 styles: {
                     fontSize: 7,
                     cellPadding: 1.5,
@@ -359,7 +339,6 @@ const TWSTableDisplay = {
             });
 
             // Generate filename based on table name (case-insensitive matching)
-            const tableNameLower = tableName.toLowerCase();
             const filenameMap = {
                 "workstations": "01_workstations.pdf",
                 "carry forward": "02_carry forward.pdf",
@@ -395,6 +374,5 @@ const TWSTableDisplay = {
     console.log("[TWSTableDisplay]   TWSTableDisplay.columns()           - Show available columns");
     console.log("[TWSTableDisplay]   TWSTableDisplay.refresh()           - Refresh page and show table");
     console.log("[TWSTableDisplay]   TWSTableDisplay.getData()           - Get raw data object");
-    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF()                      - Download table as landscape PDF");
-    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF('text')               - Download filtered table as PDF");
-    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF(null, null, 'Title')  - Download with custom title");
+    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF()           - Download table as landscape PDF");
+    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF('abends')  - Download with custom title/filename");
