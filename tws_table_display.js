@@ -361,6 +361,14 @@ const TWSTableDisplay = {
                 filename = "01_workstations.pdf";
             } else if (tableName === "Carry forward") {
                 filename = "02_carry forward.pdf";
+            } else if (tableName === "Priority zero jobstreams") {
+                filename = "03_priority_zero_jobstreams.pdf";
+            } else if (tableName === "Priority zero jobs") {
+                filename = "04_priority_zero_jobs.pdf";
+            } else if (tableName === "Abends") {
+                filename = "05_abends.pdf";
+            } else if (tableName === "Executing") {
+                filename = "06_executing.pdf";
             } else {
                 const dateStr = new Date().toISOString().slice(0, 10);
                 const timeStr = new Date().toTimeString().slice(0, 5).replace(":", "");

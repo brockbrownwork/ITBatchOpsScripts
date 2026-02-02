@@ -78,7 +78,7 @@ TWS table viewer for displaying and filtering all jobs:
 - Displays full table with `console.table` formatting
 - Filter by any text, by State, or by Job name
 - PDF export with `downloadPDF()` method
-- Special PDF filenames: "Workstations" → `01_workstations.pdf`, "Carry forward" → `02_carry forward.pdf`
+- Special PDF filenames: "Workstations" → `01_workstations.pdf`, "Carry forward" → `02_carry forward.pdf`, "Priority zero jobstreams" → `03_priority_zero_jobstreams.pdf`, "Priority zero jobs" → `04_priority_zero_jobs.pdf`, "Abends" → `05_abends.pdf`, "Executing" → `06_executing.pdf`
 - Commands: `TWSTableDisplay.show()`, `.byState('SUCC')`, `.byJob('NAME')`, `.columns()`, `.refresh()`, `.downloadPDF()`
 - Usage: Paste into browser console or include as `<script>` tag on TWS page
 
