@@ -132,6 +132,10 @@ const TWSTableDisplay = {
                         }
                     }
                 }
+                // Skip rows where Workstation contains "AWS"
+                if ((entry["Workstation"] || "").toUpperCase().includes("AWS")) {
+                    return;
+                }
                 rows.push(entry);
                 if (includeCellClasses) {
                     cellClasses.push(rowClasses);
