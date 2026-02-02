@@ -251,18 +251,12 @@ const TWSTableDisplay = {
 
             // Special case: "Carry forward" table only shows EXEC status rows
             if (tableName === "Carry forward") {
-                const filteredIndices = [];
-                displayRows = rows.filter((row, idx) => {
-                    const state = row["State"] || "";
-                    const matches = state === "EXEC";
-                    if (matches) filteredIndices.push(idx);
-                    return matches;
-                });
-                displayCellClasses = filteredIndices.map(idx => cellClasses[idx]);
-                console.log(`[TWSTableDisplay] Carry forward filter: showing ${displayRows.length} EXEC rows`);
+                filterText = "EXEC";
+                filterColumn = "State";
             }
+
             // Apply filter if provided
-            else if (filterText) {
+            if (filterText) {
                 const searchText = filterText.toLowerCase();
                 const filteredIndices = [];
                 displayRows = rows.filter((row, idx) => {
