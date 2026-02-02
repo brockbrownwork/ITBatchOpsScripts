@@ -24,6 +24,8 @@ ITBatchOpsScripts/
 ├── jira_alert_creator.js      # Jira alert automation
 ├── tws_abend_watcher.js       # Standalone TWS job error watcher (ABEND/FAIL/CANCEL)
 ├── tws_table_display.js       # TWS table viewer with filtering
+├── nagios_watcher.js          # Nagios host status watcher with TTS alerts
+├── chord.py                   # Audio utility for playing chords (used by reminders)
 └── merge pdf.py               # PDF merging utility
 ```
 
@@ -75,6 +77,16 @@ TWS table viewer for displaying and filtering all jobs:
 - Filter by any text, by State, or by Job name
 - Commands: `TWSTableDisplay.show()`, `.byState('SUCC')`, `.byJob('NAME')`, `.columns()`, `.refresh()`
 - Usage: Paste into browser console or include as `<script>` tag on TWS page
+
+### nagios_watcher.js
+
+Nagios host status watcher for monitoring service states:
+- Watches `.serviceunknown` and `.servicecritical` elements for count increases
+- Uses recursive frame crawler to navigate nested `<frame>` and `<iframe>` elements
+- Text-to-speech alerts via Web Speech API when counts increase
+- Auto-starts on load after 2 second delay
+- Commands: `NagiosWatcher.start(30)`, `.stop()`, `.checkNow()`, `.reset()`, `.status()`
+- Usage: Paste into browser console or include as `<script>` tag on Nagios page
 
 ### wikiwikialoha
 
