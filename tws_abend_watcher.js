@@ -22,7 +22,7 @@
 // The findElementRecursive() function drills through frames, iframes, and nested html tags.
 
 const TWSAbendWatcher = {
-    version: "2.2-standalone",
+    version: "2.3-standalone",
     seenEntries: new Map(), // key: "Job|State|SchedTime" -> count
     targetNames: ["Job", "State", "Sched Time"],
     // States to watch for (case-insensitive matching)
@@ -129,6 +129,10 @@ const TWSAbendWatcher = {
             return [];
         }
 
+        // Debug: log raw row count
+        const rawRowCount = tbody.rows.length;
+        console.log(`[TWSAbendWatcher] DEBUG: tbody.rows.length = ${rawRowCount}`);
+
         const rows = Array.from(tbody.rows).map(row => {
             let entry = {};
             for (const [title, index] of Object.entries(colMap)) {
@@ -136,15 +140,28 @@ const TWSAbendWatcher = {
                 entry[title] = cell?.innerText.trim() || "";
             }
             return entry;
-        }).filter(r => {
-            // Ignore entries where any key field is empty (not "N/A" - use empty string check)
+        });
+
+        // Debug: log before filtering
+        console.log(`[TWSAbendWatcher] DEBUG: rows before filter = ${rows.length}`);
+        if (rows.length > 0 && rows.length <= 3) {
+            console.log("[TWSAbendWatcher] DEBUG: first few rows:", rows.slice(0, 3));
+        }
+
+        const filteredRows = rows.filter(r => {
+            // Ignore entries where any key field is empty
             const job = r["Job"];
             const state = r["State"];
             const schedTime = r["Sched Time"];
             return job && job.length > 0 && state && state.length > 0 && schedTime && schedTime.length > 0;
         });
 
-        return rows;
+        // Debug: log after filtering
+        if (rows.length !== filteredRows.length) {
+            console.log(`[TWSAbendWatcher] DEBUG: filtered out ${rows.length - filteredRows.length} rows with empty fields`);
+        }
+
+        return filteredRows;
     },
 
     // Generate a unique key for an entry
