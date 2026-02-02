@@ -249,20 +249,22 @@ const TWSTableDisplay = {
             let displayRows = rows;
             let displayCellClasses = cellClasses;
 
-            // Special case: "Carry forward" table only shows EXEC status rows
-            if (tableName === "Carry forward") {
-                filterText = "EXEC";
-                filterColumn = "State";
-            }
+            // Apply filter if provided (including special case for "Carry forward" which filters to EXEC state)
+            const effectiveFilterText = tableName === "Carry forward" ? "EXEC" : filterText;
+            const effectiveFilterColumn = tableName === "Carry forward" ? "State" : filterColumn;
 
-            // Apply filter if provided
-            if (filterText) {
-                const searchText = filterText.toLowerCase();
+            if (effectiveFilterText) {
+                const searchText = effectiveFilterText.toLowerCase();
                 const filteredIndices = [];
+                console.log(`[TWSTableDisplay] Filtering ${rows.length} rows by "${effectiveFilterText}" in column "${effectiveFilterColumn}"`);
+                console.log(`[TWSTableDisplay] Available columns: ${columns.join(", ")}`);
+                if (rows.length > 0) {
+                    console.log(`[TWSTableDisplay] Sample row State values:`, rows.slice(0, 5).map(r => r["State"] || r["state"] || "(no State column)"));
+                }
                 displayRows = rows.filter((row, idx) => {
                     let matches = false;
-                    if (filterColumn) {
-                        const val = row[filterColumn] || "";
+                    if (effectiveFilterColumn) {
+                        const val = row[effectiveFilterColumn] || "";
                         matches = val.toLowerCase().includes(searchText);
                     } else {
                         matches = Object.values(row).some(val =>
@@ -273,6 +275,7 @@ const TWSTableDisplay = {
                     return matches;
                 });
                 displayCellClasses = filteredIndices.map(idx => cellClasses[idx]);
+                console.log(`[TWSTableDisplay] Filter result: ${displayRows.length} matching rows`);
             }
 
             if (displayRows.length === 0) {
