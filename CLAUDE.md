@@ -77,7 +77,9 @@ TWS table viewer for displaying and filtering all jobs:
 - Uses same recursive frame crawler as tws_abend_watcher.js
 - Displays full table with `console.table` formatting
 - Filter by any text, by State, or by Job name
-- Commands: `TWSTableDisplay.show()`, `.byState('SUCC')`, `.byJob('NAME')`, `.columns()`, `.refresh()`
+- PDF export with `downloadPDF()` method
+- Special PDF filenames: "Workstations" → `01_workstations.pdf`, "Carry forward" → `02_carry forward.pdf`
+- Commands: `TWSTableDisplay.show()`, `.byState('SUCC')`, `.byJob('NAME')`, `.columns()`, `.refresh()`, `.downloadPDF()`
 - Usage: Paste into browser console or include as `<script>` tag on TWS page
 
 ### nagios_watcher.js

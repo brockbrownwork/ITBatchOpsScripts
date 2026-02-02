@@ -355,10 +355,17 @@ const TWSTableDisplay = {
                 }
             });
 
-            // Generate filename with timestamp
-            const dateStr = new Date().toISOString().slice(0, 10);
-            const timeStr = new Date().toTimeString().slice(0, 5).replace(":", "");
-            const filename = `TWS_Table_${dateStr}_${timeStr}.pdf`;
+            // Generate filename based on table name
+            let filename;
+            if (tableName === "Workstations") {
+                filename = "01_workstations.pdf";
+            } else if (tableName === "Carry forward") {
+                filename = "02_carry forward.pdf";
+            } else {
+                const dateStr = new Date().toISOString().slice(0, 10);
+                const timeStr = new Date().toTimeString().slice(0, 5).replace(":", "");
+                filename = `TWS_Table_${dateStr}_${timeStr}.pdf`;
+            }
 
             doc.save(filename);
             console.log(`[TWSTableDisplay] PDF downloaded: ${filename} (${displayRows.length} rows)`);
