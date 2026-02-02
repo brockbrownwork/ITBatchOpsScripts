@@ -285,10 +285,14 @@
     console.log("[TWSAbendWatcher]   TWSAbendWatcher.checkNow()    - Run a single check now");
     console.log("[TWSAbendWatcher]   TWSAbendWatcher.reset()       - Clear seen entries");
 
-    // Notify on load (removed alert, kept TTS)
-    if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance("TWS Abend Watcher loaded");
-        utterance.rate = 1.0;
-        window.speechSynthesis.speak(utterance);
-    }
+    // Auto-start watching on load
+    console.log("[TWSAbendWatcher] Auto-starting in 2 seconds...");
+    setTimeout(() => {
+        TWSAbendWatcher.start(30);
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance("TWS Abend Watcher started");
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+    }, 2000);
 })();
