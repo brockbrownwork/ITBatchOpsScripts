@@ -355,20 +355,22 @@ const TWSTableDisplay = {
                 }
             });
 
-            // Generate filename based on table name
+            // Generate filename based on table name (case-insensitive matching)
+            const tableNameLower = tableName.toLowerCase();
+            const filenameMap = {
+                "workstations": "01_workstations.pdf",
+                "carry forward": "02_carry forward.pdf",
+                "priority zero jobstreams": "03_priority_zero_jobstreams.pdf",
+                "priority zero jobs": "04_priority_zero_jobs.pdf",
+                "abends": "05_abends.pdf",
+                "executing": "06_executing.pdf"
+            };
+
             let filename;
-            if (tableName === "Workstations") {
-                filename = "01_workstations.pdf";
-            } else if (tableName === "Carry forward") {
-                filename = "02_carry forward.pdf";
-            } else if (tableName === "Priority zero jobstreams") {
-                filename = "03_priority_zero_jobstreams.pdf";
-            } else if (tableName === "Priority zero jobs") {
-                filename = "04_priority_zero_jobs.pdf";
-            } else if (tableName === "Abends") {
-                filename = "05_abends.pdf";
-            } else if (tableName === "Executing") {
-                filename = "06_executing.pdf";
+            if (filenameMap[tableNameLower]) {
+                filename = filenameMap[tableNameLower];
+                // Capitalize first letter of tableName for display
+                tableName = tableName.charAt(0).toUpperCase() + tableName.slice(1);
             } else {
                 const dateStr = new Date().toISOString().slice(0, 10);
                 const timeStr = new Date().toTimeString().slice(0, 5).replace(":", "");
