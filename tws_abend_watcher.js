@@ -22,7 +22,7 @@
 // The findElementRecursive() function drills through frames, iframes, and nested html tags.
 
 const TWSAbendWatcher = {
-    version: "2.1-standalone",
+    version: "2.2-standalone",
     seenEntries: new Map(), // key: "Job|State|SchedTime" -> count
     targetNames: ["Job", "State", "Sched Time"],
     // States to watch for (case-insensitive matching)
@@ -54,10 +54,20 @@ const TWSAbendWatcher = {
     },
 
     // Find the target tbody using recursive crawler
+    // Try multiple selectors in case the page structure varies
     findTableBody() {
-        const tbody = this.findElementRecursive(document, "#sortable > tbody");
-        if (!tbody) return null;
-        return tbody;
+        // Primary selector
+        let tbody = this.findElementRecursive(document, "#sortable > tbody");
+        if (tbody) return tbody;
+
+        // Fallback: try finding #sortable table directly
+        const table = this.findElementRecursive(document, "#sortable");
+        if (table) {
+            tbody = table.querySelector("tbody");
+            if (tbody) return tbody;
+        }
+
+        return null;
     },
 
     // Build column index mapping from headers using innerText to bypass hidden junk
@@ -66,13 +76,21 @@ const TWSAbendWatcher = {
         const colMap = {};
 
         headers.forEach((th, index) => {
-            const text = th.innerText.replace(/\s+/g, ' ').trim().toLowerCase();
+            const text = th.innerText.replace(/\s+/g, ' ').trim();
+            // Store each header's actual name for debugging
             this.targetNames.forEach(target => {
-                if (text.includes(target.toLowerCase())) {
+                if (text.toLowerCase().includes(target.toLowerCase())) {
                     colMap[target] = index;
                 }
             });
         });
+
+        // Debug: log if we're missing expected columns
+        const missingCols = this.targetNames.filter(name => !(name in colMap));
+        if (missingCols.length > 0) {
+            console.warn(`[TWSAbendWatcher] Missing columns: ${missingCols.join(", ")}`);
+            console.log("[TWSAbendWatcher] Available headers:", headers.map(th => th.innerText.replace(/\s+/g, ' ').trim()));
+        }
 
         return colMap;
     },
@@ -98,21 +116,35 @@ const TWSAbendWatcher = {
         this.consecutiveTableNotFound = 0;
 
         const table = tbody.closest('table');
+        if (!table) {
+            console.error("[TWSAbendWatcher] ERROR: Found tbody but couldn't find parent table");
+            return [];
+        }
+
         const colMap = this.buildColumnMap(table);
 
-        return Array.from(tbody.rows).map(row => {
+        // Check if we found the required columns
+        if (Object.keys(colMap).length === 0) {
+            console.error("[TWSAbendWatcher] ERROR: No columns mapped. Table structure may have changed.");
+            return [];
+        }
+
+        const rows = Array.from(tbody.rows).map(row => {
             let entry = {};
             for (const [title, index] of Object.entries(colMap)) {
-                entry[title] = row.cells[index]?.innerText.trim() || "N/A";
+                const cell = row.cells[index];
+                entry[title] = cell?.innerText.trim() || "";
             }
             return entry;
         }).filter(r => {
-            // Ignore entries where any key field is "N/A"
+            // Ignore entries where any key field is empty (not "N/A" - use empty string check)
             const job = r["Job"];
             const state = r["State"];
             const schedTime = r["Sched Time"];
-            return job && job !== "N/A" && state && state !== "N/A" && schedTime && schedTime !== "N/A";
+            return job && job.length > 0 && state && state.length > 0 && schedTime && schedTime.length > 0;
         });
+
+        return rows;
     },
 
     // Generate a unique key for an entry
