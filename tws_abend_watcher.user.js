@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TWS Abend Watcher
 // @namespace    https://github.com/brockbrownwork/ITBatchOpsScripts
-// @version      1.3
+// @version      1.4
 // @description  Monitors TWS abend table for new entries and announces via TTS
 // @author       Brock Brown
 // @match        *://rhesprodtws01/*
@@ -22,7 +22,7 @@
     'use strict';
 
     const TWSAbendWatcher = {
-        version: "1.3",
+        version: "1.4",
         seenEntries: new Map(), // key: "Job|State|SchedTime" -> count
         targetNames: ["Job", "State", "Sched Time"],
         isRunning: false,
@@ -77,7 +77,7 @@
         extractRows() {
             const tbody = this.findTableBody();
             if (!tbody) {
-                console.error("TWS Table not found. Are you sure the frame is loaded?");
+                GM_log("ERROR: TWS Table not found. Are you sure the frame is loaded?");
                 return [];
             }
 
@@ -106,9 +106,9 @@
                 utterance.pitch = 1.0;
                 utterance.volume = 1.0;
                 window.speechSynthesis.speak(utterance);
-                console.log(`[TTS] ${text}`);
+                GM_log(`[TTS] ${text}`);
             } else {
-                console.warn("Speech synthesis not supported in this browser.");
+                GM_log("WARN: Speech synthesis not supported in this browser.");
             }
         },
 
@@ -119,7 +119,7 @@
                 btn.click();
                 return true;
             }
-            console.warn("Refresh button not found.");
+            GM_log("WARN: Refresh button not found.");
             return false;
         },
 
@@ -160,7 +160,7 @@
         // Log the current table in a nicely formatted way
         logTable(rows) {
             if (rows.length === 0) {
-                console.log("  (table is empty)");
+                GM_log("  (table is empty)");
                 return;
             }
 
@@ -176,44 +176,49 @@
             });
 
             // Build header
-            const header = cols.map(col => col.padEnd(widths[col])).join(" │ ");
-            const separator = cols.map(col => "─".repeat(widths[col])).join("─┼─");
+            const header = cols.map(col => col.padEnd(widths[col])).join(" | ");
+            const separator = cols.map(col => "-".repeat(widths[col])).join("-+-");
 
-            console.log(`  ┌─${cols.map(col => "─".repeat(widths[col])).join("─┬─")}─┐`);
-            console.log(`  │ ${header} │`);
-            console.log(`  ├─${separator}─┤`);
+            // Build table as single string for GM_log
+            let table = [];
+            table.push(`  +-${cols.map(col => "-".repeat(widths[col])).join("-+-")}-+`);
+            table.push(`  | ${header} |`);
+            table.push(`  +-${separator}-+`);
 
-            // Build rows
             rows.forEach(row => {
-                const line = cols.map(col => (row[col] || "").padEnd(widths[col])).join(" │ ");
-                console.log(`  │ ${line} │`);
+                const line = cols.map(col => (row[col] || "").padEnd(widths[col])).join(" | ");
+                table.push(`  | ${line} |`);
             });
 
-            console.log(`  └─${cols.map(col => "─".repeat(widths[col])).join("─┴─")}─┘`);
+            table.push(`  +-${cols.map(col => "-".repeat(widths[col])).join("-+-")}-+`);
+
+            GM_log(table.join("\n"));
         },
 
         // Main check function - checks for new entries then refreshes
         async performCheck() {
             const currentRows = this.extractRows();
-            console.log(`%c[${new Date().toLocaleTimeString()}] TWS Abend Table (${currentRows.length} entries)`, "color: #6cf; font-weight: bold;");
+            GM_log(`[${new Date().toLocaleTimeString()}] TWS Abend Table (${currentRows.length} entries)`);
             this.logTable(currentRows);
 
             const newEntries = this.checkForNewEntries(currentRows);
 
             if (newEntries.length > 0) {
-                console.log(`%c ⚠ Found ${newEntries.length} NEW entry(ies)! `, "background: #ff0; color: #000; font-size: 14px; font-weight: bold;");
-                console.table(newEntries);
+                GM_log(`⚠ Found ${newEntries.length} NEW entry(ies)!`);
+                newEntries.forEach(entry => {
+                    GM_log(`  NEW: ${entry["Job"]} | ${entry["State"]} | ${entry["Sched Time"]}`);
+                });
 
                 newEntries.forEach(entry => {
                     const jobName = entry["Job"] || "unknown job";
                     this.speak(`There's a new TWS abend: ${jobName}`);
                 });
             } else {
-                console.log("%c ✓ No new entries", "color: #8f8;");
+                GM_log("✓ No new entries");
             }
 
             // Refresh after checking so data is fresh for next check
-            console.log(`%c[${new Date().toLocaleTimeString()}] Refreshing...`, "color: #888;");
+            GM_log(`[${new Date().toLocaleTimeString()}] Refreshing...`);
             this.clickRefresh();
 
             return newEntries;
@@ -228,14 +233,14 @@
                 this.seenEntries.set(key, (this.seenEntries.get(key) || 0) + 1);
             });
 
-            console.log(`%c TWS Abend Watcher Initialized: ${currentRows.length} existing entries `, "background: #222; color: #bada55; font-size: 14px;");
-            console.table(currentRows);
+            GM_log(`TWS Abend Watcher Initialized: ${currentRows.length} existing entries`);
+            this.logTable(currentRows);
         },
 
         // Start periodic checking
         start(intervalSeconds = 30) {
             if (this.isRunning) {
-                console.log("Already running.");
+                GM_log("Already running.");
                 return;
             }
 
@@ -246,7 +251,7 @@
                 this.performCheck();
             }, intervalSeconds * 1000);
 
-            console.log(`Started watching. Checking every ${intervalSeconds} seconds.`);
+            GM_log(`Started watching. Checking every ${intervalSeconds} seconds.`);
         },
 
         // Stop periodic checking
@@ -256,13 +261,13 @@
                 this.checkInterval = null;
             }
             this.isRunning = false;
-            console.log("Stopped watching.");
+            GM_log("Stopped watching.");
         },
 
         // Reset seen entries
         reset() {
             this.seenEntries.clear();
-            console.log("Reset seen entries.");
+            GM_log("Reset seen entries.");
         },
 
         // Run a single check manually
@@ -274,10 +279,10 @@
     // Expose to global scope
     window.TWSAbendWatcher = TWSAbendWatcher;
 
-    console.log(`=== TWS Abend Watcher v${TWSAbendWatcher.version} Loaded ===`);
-    console.log("Commands:");
-    console.log("  TWSAbendWatcher.start(30)     - Start watching (check every 30 seconds)");
-    console.log("  TWSAbendWatcher.stop()        - Stop watching");
-    console.log("  TWSAbendWatcher.checkNow()    - Run a single check now");
-    console.log("  TWSAbendWatcher.reset()       - Clear seen entries");
+    GM_log(`=== TWS Abend Watcher v${TWSAbendWatcher.version} Loaded ===`);
+    GM_log("Commands:");
+    GM_log("  TWSAbendWatcher.start(30)     - Start watching (check every 30 seconds)");
+    GM_log("  TWSAbendWatcher.stop()        - Stop watching");
+    GM_log("  TWSAbendWatcher.checkNow()    - Run a single check now");
+    GM_log("  TWSAbendWatcher.reset()       - Clear seen entries");
 })();
