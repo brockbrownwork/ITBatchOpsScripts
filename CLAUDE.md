@@ -23,6 +23,7 @@ ITBatchOpsScripts/
 ├── opsgenie.js                # OpsGenie integration
 ├── jira_alert_creator.js      # Jira alert automation
 ├── tws_abend_watcher.js       # Standalone TWS job error watcher (ABEND/FAIL/CANCEL)
+├── tws_table_display.js       # TWS table viewer with filtering
 └── merge pdf.py               # PDF merging utility
 ```
 
@@ -64,6 +65,15 @@ Standalone script for monitoring TWS job table for error states:
 - Checks for new entries, then refreshes page for next cycle
 - Auto-starts on load after 2 second delay
 - Commands: `TWSAbendWatcher.start(30)`, `.stop()`, `.checkNow()`, `.reset()`
+- Usage: Paste into browser console or include as `<script>` tag on TWS page
+
+### tws_table_display.js
+
+TWS table viewer for displaying and filtering all jobs:
+- Uses same recursive frame crawler as tws_abend_watcher.js
+- Displays full table with `console.table` formatting
+- Filter by any text, by State, or by Job name
+- Commands: `TWSTableDisplay.show()`, `.byState('SUCC')`, `.byJob('NAME')`, `.columns()`, `.refresh()`
 - Usage: Paste into browser console or include as `<script>` tag on TWS page
 
 ### wikiwikialoha
