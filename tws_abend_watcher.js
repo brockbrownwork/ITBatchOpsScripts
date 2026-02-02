@@ -174,39 +174,22 @@
             return newEntries;
         },
 
-        // Log the current table in a nicely formatted way
+        // Log the current table in a nicely formatted way using console.table
         logTable(rows) {
             if (rows.length === 0) {
                 console.log("[TWSAbendWatcher]   (table is empty)");
                 return;
             }
 
-            // Calculate column widths
-            const cols = this.targetNames;
-            const widths = {};
-            cols.forEach(col => {
-                widths[col] = col.length;
-                rows.forEach(row => {
-                    const val = row[col] || "";
-                    widths[col] = Math.max(widths[col], val.length);
-                });
-            });
+            // Use console.table for nice browser formatting
+            // Create clean objects with only the columns we care about
+            const tableData = rows.map(row => ({
+                "Job": row["Job"] || "",
+                "State": row["State"] || "",
+                "Sched Time": row["Sched Time"] || ""
+            }));
 
-            // Build header
-            const header = cols.map(col => col.padEnd(widths[col])).join(" | ");
-
-            // Build table as array for console.table alternative
-            console.log("[TWSAbendWatcher] Table:");
-            console.log(`  +-${cols.map(col => "-".repeat(widths[col])).join("-+-")}-+`);
-            console.log(`  | ${header} |`);
-            console.log(`  +-${cols.map(col => "-".repeat(widths[col])).join("-+-")}-+`);
-
-            rows.forEach(row => {
-                const line = cols.map(col => (row[col] || "").padEnd(widths[col])).join(" | ");
-                console.log(`  | ${line} |`);
-            });
-
-            console.log(`  +-${cols.map(col => "-".repeat(widths[col])).join("-+-")}-+`);
+            console.table(tableData);
         },
 
         // Main check function - checks for new entries then refreshes
