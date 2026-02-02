@@ -15,10 +15,8 @@
  *   TWSTableDisplay.refresh()        - Refresh the page and show table
  */
 
-(function() {
-    'use strict';
 
-    const TWSTableDisplay = {
+const TWSTableDisplay = {
         version: "1.0",
 
         // Recursive frame crawler - drills through frames, iframes, and nested html tags
@@ -184,4 +182,3 @@
     console.log("[TWSTableDisplay]   TWSTableDisplay.columns()           - Show available columns");
     console.log("[TWSTableDisplay]   TWSTableDisplay.refresh()           - Refresh page and show table");
     console.log("[TWSTableDisplay]   TWSTableDisplay.getData()           - Get raw data object");
-})();
