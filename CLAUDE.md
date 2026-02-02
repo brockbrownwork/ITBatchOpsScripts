@@ -84,8 +84,9 @@ Nagios host status watcher for monitoring service states:
 - Watches `.serviceunknown` and `.servicecritical` elements for count increases
 - Uses recursive frame crawler to navigate nested `<frame>` and `<iframe>` elements
 - Text-to-speech alerts via Web Speech API when counts increase
+- **Flap detection**: Alerts only trigger after elevated counts persist for multiple consecutive checks (default: 2), preventing false alarms from transient spikes
 - Auto-starts on load after 2 second delay
-- Commands: `NagiosWatcher.start(30)`, `.stop()`, `.checkNow()`, `.reset()`, `.status()`
+- Commands: `NagiosWatcher.start(30)`, `.stop()`, `.checkNow()`, `.reset()`, `.status()`, `.setFlapThreshold(n)`
 - Usage: Paste into browser console or include as `<script>` tag on Nagios page
 
 ### wikiwikialoha
