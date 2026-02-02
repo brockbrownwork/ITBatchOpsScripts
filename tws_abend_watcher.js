@@ -22,7 +22,7 @@
 // The findElementRecursive() function drills through frames, iframes, and nested html tags.
 
 const TWSAbendWatcher = {
-    version: "2.3-standalone",
+    version: "2.4-standalone",
     seenEntries: new Map(), // key: "Job|State|SchedTime" -> count
     targetNames: ["Job", "State", "Sched Time"],
     // States to watch for (case-insensitive matching)
@@ -149,11 +149,9 @@ const TWSAbendWatcher = {
         }
 
         const filteredRows = rows.filter(r => {
-            // Ignore entries where any key field is empty
+            // Only filter out rows without a job name
             const job = r["Job"];
-            const state = r["State"];
-            const schedTime = r["Sched Time"];
-            return job && job.length > 0 && state && state.length > 0 && schedTime && schedTime.length > 0;
+            return job && job.length > 0;
         });
 
         // Debug: log after filtering
