@@ -22,7 +22,7 @@ ITBatchOpsScripts/
 ├── runmyjobs.js               # RunMyJobs automation
 ├── opsgenie.js                # OpsGenie integration
 ├── jira_alert_creator.js      # Jira alert automation
-├── tws_abend_watcher.user.js  # Tampermonkey userscript for TWS abend monitoring
+├── tws_abend_watcher.js       # Standalone TWS job error watcher (ABEND/FAIL/CANCEL)
 └── merge pdf.py               # PDF merging utility
 ```
 
@@ -54,16 +54,17 @@ Outlook email notification watcher:
 - Text-to-speech alerts via `pyttsx3`
 - Hotkey: `Ctrl+\`` to set monitoring region
 
-### tws_abend_watcher.user.js
+### tws_abend_watcher.js
 
-Tampermonkey userscript for monitoring TWS abend table:
-- Auto-updates from GitHub via `@updateURL` and `@downloadURL`
+Standalone script for monitoring TWS job table for error states:
+- Watches for jobs in ABEND, FAIL, CANCEL, or CANCELLED states
 - Uses recursive frame crawler to navigate nested `<html>` and `<frame>` elements
 - Tracks seen entries by Job/State/Sched Time with occurrence counting
-- Text-to-speech alerts via Web Speech API when new abends appear
+- Text-to-speech alerts via Web Speech API when new problem jobs appear
 - Checks for new entries, then refreshes page for next cycle
+- Auto-starts on load after 2 second delay
 - Commands: `TWSAbendWatcher.start(30)`, `.stop()`, `.checkNow()`, `.reset()`
-- **Important:** Increment `@version` in the userscript header before pushing changes
+- Usage: Paste into browser console or include as `<script>` tag on TWS page
 
 ### wikiwikialoha
 

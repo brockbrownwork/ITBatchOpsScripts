@@ -1,8 +1,9 @@
 /**
- * TWS Abend Watcher - Standalone Version
+ * TWS Job Watcher - Standalone Version
  *
- * Monitors TWS abend table for new entries and announces via TTS.
- * This is a non-Tampermonkey version that can be loaded directly in the browser console
+ * Monitors TWS table for jobs in error states (ABEND, FAIL, CANCEL, CANCELLED)
+ * and announces new entries via TTS.
+ * This is a standalone version that can be loaded directly in the browser console
  * or included as a script on the page.
  *
  * Usage:
@@ -24,9 +25,11 @@
     'use strict';
 
     const TWSAbendWatcher = {
-        version: "1.5-standalone",
+        version: "2.0-standalone",
         seenEntries: new Map(), // key: "Job|State|SchedTime" -> count
         targetNames: ["Job", "State", "Sched Time"],
+        // States to watch for (case-insensitive matching)
+        watchStates: ["ABEND", "FAIL", "CANCEL", "CANCELLED"],
         isRunning: false,
         checkInterval: null,
 
@@ -98,6 +101,18 @@
         // Generate a unique key for an entry
         getEntryKey(entry) {
             return `${entry["Job"] || ""}|${entry["State"] || ""}|${entry["Sched Time"] || ""}`;
+        },
+
+        // Check if a state matches our watch list
+        isWatchedState(state) {
+            if (!state) return false;
+            const upperState = state.toUpperCase().trim();
+            return this.watchStates.some(ws => upperState.includes(ws));
+        },
+
+        // Filter rows to only include watched states
+        filterWatchedRows(rows) {
+            return rows.filter(row => this.isWatchedState(row["State"]));
         },
 
         // Speak text using Web Speech API
@@ -196,8 +211,9 @@
 
         // Main check function - checks for new entries then refreshes
         async performCheck() {
-            const currentRows = this.extractRows();
-            console.log(`[TWSAbendWatcher] [${new Date().toLocaleTimeString()}] TWS Abend Table (${currentRows.length} entries)`);
+            const allRows = this.extractRows();
+            const currentRows = this.filterWatchedRows(allRows);
+            console.log(`[TWSAbendWatcher] [${new Date().toLocaleTimeString()}] TWS Table (${currentRows.length} watched entries out of ${allRows.length} total)`);
             this.logTable(currentRows);
 
             const newEntries = this.checkForNewEntries(currentRows);
@@ -210,7 +226,8 @@
 
                 newEntries.forEach(entry => {
                     const jobName = entry["Job"] || "unknown job";
-                    this.speak(`There's a new TWS abend: ${jobName}`);
+                    const state = entry["State"] || "error";
+                    this.speak(`TWS job ${state}: ${jobName}`);
                 });
             } else {
                 console.log("[TWSAbendWatcher] ✓ No new entries");
@@ -225,14 +242,15 @@
 
         // Initialize - capture current state without announcing
         initialize() {
-            const currentRows = this.extractRows();
+            const allRows = this.extractRows();
+            const currentRows = this.filterWatchedRows(allRows);
 
             currentRows.forEach(entry => {
                 const key = this.getEntryKey(entry);
                 this.seenEntries.set(key, (this.seenEntries.get(key) || 0) + 1);
             });
 
-            console.log(`[TWSAbendWatcher] Initialized: ${currentRows.length} existing entries`);
+            console.log(`[TWSAbendWatcher] Initialized: ${currentRows.length} watched entries (watching for: ${this.watchStates.join(", ")})`);
             this.logTable(currentRows);
         },
 
