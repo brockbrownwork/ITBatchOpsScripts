@@ -109,7 +109,13 @@
                     entry[title] = row.cells[index]?.innerText.trim() || "N/A";
                 }
                 return entry;
-            }).filter(r => Object.values(r).some(v => v !== "N/A"));
+            }).filter(r => {
+                // Ignore entries where any key field is "N/A"
+                const job = r["Job"];
+                const state = r["State"];
+                const schedTime = r["Sched Time"];
+                return job && job !== "N/A" && state && state !== "N/A" && schedTime && schedTime !== "N/A";
+            });
         },
 
         // Generate a unique key for an entry
