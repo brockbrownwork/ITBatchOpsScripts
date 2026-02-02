@@ -30,8 +30,8 @@
 
         // Get the two elements we're watching
         getElements() {
-            const el1 = document.querySelectorAll('[id^="host_status_summary_"]')[1].querySelector('table > tbody:nth-child(2) > tr > td:nth-child(3) > div > a');
-            const el2 = document.querySelectorAll('[id^="host_status_summary_"]')[1].querySelector('table > tbody:nth-child(2) > tr > td:nth-child(4) > div > a');
+            const el1 = document.querySelector('.serviceunknown');
+            const el2 = document.querySelector('.servicecritical');
 
             return { el1, el2 };
         },
