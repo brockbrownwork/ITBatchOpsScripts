@@ -62,10 +62,12 @@ Outlook email notification watcher:
 Standalone script for monitoring TWS job table for error states:
 - Watches for jobs in ABEND, FAIL, CANCEL, or CANCELLED states
 - Uses recursive frame crawler to navigate nested `<html>` and `<frame>` elements
+- Fallback table selectors for varying page structures
 - Tracks seen entries by Job/State/Sched Time with occurrence counting
 - Text-to-speech alerts via Web Speech API when new problem jobs appear
 - Checks for new entries, then refreshes page for next cycle
 - Auto-starts on load after 2 second delay
+- Alerts if table not found for 5 consecutive checks
 - Commands: `TWSAbendWatcher.start(30)`, `.stop()`, `.checkNow()`, `.reset()`
 - Usage: Paste into browser console or include as `<script>` tag on TWS page
 

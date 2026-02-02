@@ -129,10 +129,6 @@ const TWSAbendWatcher = {
             return [];
         }
 
-        // Debug: log raw row count
-        const rawRowCount = tbody.rows.length;
-        console.log(`[TWSAbendWatcher] DEBUG: tbody.rows.length = ${rawRowCount}`);
-
         const rows = Array.from(tbody.rows).map(row => {
             let entry = {};
             for (const [title, index] of Object.entries(colMap)) {
@@ -140,26 +136,13 @@ const TWSAbendWatcher = {
                 entry[title] = cell?.innerText.trim() || "";
             }
             return entry;
-        });
-
-        // Debug: log before filtering
-        console.log(`[TWSAbendWatcher] DEBUG: rows before filter = ${rows.length}`);
-        if (rows.length > 0 && rows.length <= 3) {
-            console.log("[TWSAbendWatcher] DEBUG: first few rows:", rows.slice(0, 3));
-        }
-
-        const filteredRows = rows.filter(r => {
+        }).filter(r => {
             // Only filter out rows without a job name
             const job = r["Job"];
             return job && job.length > 0;
         });
 
-        // Debug: log after filtering
-        if (rows.length !== filteredRows.length) {
-            console.log(`[TWSAbendWatcher] DEBUG: filtered out ${rows.length - filteredRows.length} rows with empty fields`);
-        }
-
-        return filteredRows;
+        return rows;
     },
 
     // Generate a unique key for an entry
