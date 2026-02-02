@@ -249,17 +249,35 @@ const TWSTableDisplay = {
             let displayRows = rows;
             let displayCellClasses = cellClasses;
 
-            // Apply filter if provided (including special case for "Carry forward" which filters to EXEC state)
-            const effectiveFilterText = tableName === "Carry forward" ? "EXEC" : filterText;
-            const effectiveFilterColumn = tableName === "Carry forward" ? "State" : filterColumn;
+            // Apply filter if provided
+            // Special case for "Carry forward": include all rows from workstations that have at least one EXEC job
+            if (tableName === "Carry forward") {
+                // Find all workstations that have at least one EXEC job
+                const workstationsWithExec = new Set();
+                rows.forEach(row => {
+                    if ((row["State"] || "").toUpperCase() === "EXEC") {
+                        workstationsWithExec.add(row["Workstation"] || "");
+                    }
+                });
 
-            if (effectiveFilterText) {
-                const searchText = effectiveFilterText.toLowerCase();
+                // Filter to only include rows from those workstations
+                const filteredIndices = [];
+                displayRows = rows.filter((row, idx) => {
+                    const workstation = row["Workstation"] || "";
+                    const matches = workstationsWithExec.has(workstation);
+                    if (matches) filteredIndices.push(idx);
+                    return matches;
+                });
+                displayCellClasses = filteredIndices.map(idx => cellClasses[idx]);
+
+                console.log(`[TWSTableDisplay] Carry forward: Found ${workstationsWithExec.size} workstation(s) with EXEC jobs: ${Array.from(workstationsWithExec).join(", ")}`);
+            } else if (filterText) {
+                const searchText = filterText.toLowerCase();
                 const filteredIndices = [];
                 displayRows = rows.filter((row, idx) => {
                     let matches = false;
-                    if (effectiveFilterColumn) {
-                        const val = row[effectiveFilterColumn] || "";
+                    if (filterColumn) {
+                        const val = row[filterColumn] || "";
                         matches = val.toLowerCase().includes(searchText);
                     } else {
                         matches = Object.values(row).some(val =>
