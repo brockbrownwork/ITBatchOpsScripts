@@ -5,7 +5,7 @@
  * when either value increases from its previous state.
  *
  * Includes flap detection: alerts only trigger after the elevated count persists
- * for a configurable number of consecutive checks (default: 2). This prevents
+ * for a configurable number of consecutive checks (default: 5). This prevents
  * false alarms from transient spikes that resolve themselves.
  *
  * Usage:
@@ -18,7 +18,7 @@
  *   NagiosWatcher.checkNow()    - Run a single check now
  *   NagiosWatcher.reset()       - Clear last seen values and flap state
  *   NagiosWatcher.status()      - Show current values and flap state
- *   NagiosWatcher.setFlapThreshold(n) - Set consecutive checks required (default: 2)
+ *   NagiosWatcher.setFlapThreshold(n) - Set consecutive checks required (default: 5)
  */
 
 (function() {
@@ -35,7 +35,7 @@
             element1: { elevatedCount: 0, pendingValue: null },
             element2: { elevatedCount: 0, pendingValue: null }
         },
-        flapThreshold: 2, // Number of consecutive checks before alerting
+        flapThreshold: 5, // Number of consecutive checks before alerting
         isRunning: false,
         checkInterval: null,
 
@@ -271,7 +271,7 @@
     window.NagiosWatcher = NagiosWatcher;
 
     console.log(`[NagiosWatcher] === Nagios Watcher v${NagiosWatcher.version} Loaded ===`);
-    console.log("[NagiosWatcher] Flap detection enabled: alerts require 2 consecutive elevated checks");
+    console.log("[NagiosWatcher] Flap detection enabled: alerts require 5 consecutive elevated checks");
     console.log("[NagiosWatcher] Commands:");
     console.log("[NagiosWatcher]   NagiosWatcher.start(30)     - Start watching (check every 30 seconds)");
     console.log("[NagiosWatcher]   NagiosWatcher.stop()        - Stop watching");
