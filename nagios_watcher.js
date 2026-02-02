@@ -20,7 +20,7 @@
     'use strict';
 
     const NagiosWatcher = {
-        version: "1.0",
+        version: "1.1",
         lastValues: {
             element1: null,
             element2: null
@@ -28,10 +28,28 @@
         isRunning: false,
         checkInterval: null,
 
+        // Recursive frame crawler - drills through frames and iframes
+        findElementRecursive(doc, selector) {
+            let el = doc.querySelector(selector);
+            if (el) return el;
+
+            const frames = doc.querySelectorAll('frame, iframe');
+            for (let i = 0; i < frames.length; i++) {
+                try {
+                    const frameDoc = frames[i].contentDocument || frames[i].contentWindow.document;
+                    const found = this.findElementRecursive(frameDoc, selector);
+                    if (found) return found;
+                } catch (e) {
+                    // Cross-origin security block
+                }
+            }
+            return null;
+        },
+
         // Get the two elements we're watching
         getElements() {
-            const el1 = document.querySelector('.serviceunknown');
-            const el2 = document.querySelector('.servicecritical');
+            const el1 = this.findElementRecursive(document, '.serviceunknown');
+            const el2 = this.findElementRecursive(document, '.servicecritical');
 
             return { el1, el2 };
         },
