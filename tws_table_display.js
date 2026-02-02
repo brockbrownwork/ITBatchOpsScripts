@@ -256,11 +256,6 @@ const TWSTableDisplay = {
             if (effectiveFilterText) {
                 const searchText = effectiveFilterText.toLowerCase();
                 const filteredIndices = [];
-                console.log(`[TWSTableDisplay] Filtering ${rows.length} rows by "${effectiveFilterText}" in column "${effectiveFilterColumn}"`);
-                console.log(`[TWSTableDisplay] Available columns: ${columns.join(", ")}`);
-                if (rows.length > 0) {
-                    console.log(`[TWSTableDisplay] Sample row State values:`, rows.slice(0, 5).map(r => r["State"] || r["state"] || "(no State column)"));
-                }
                 displayRows = rows.filter((row, idx) => {
                     let matches = false;
                     if (effectiveFilterColumn) {
@@ -275,7 +270,6 @@ const TWSTableDisplay = {
                     return matches;
                 });
                 displayCellClasses = filteredIndices.map(idx => cellClasses[idx]);
-                console.log(`[TWSTableDisplay] Filter result: ${displayRows.length} matching rows`);
             }
 
             if (displayRows.length === 0) {
