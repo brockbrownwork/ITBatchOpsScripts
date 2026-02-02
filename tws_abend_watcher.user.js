@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         TWS Abend Watcher
 // @namespace    https://github.com/brockbrownwork/ITBatchOpsScripts
-// @version      1.2
+// @version      1.3
 // @description  Monitors TWS abend table for new entries and announces via TTS
 // @author       Brock Brown
 // @match        *://rhesprodtws01/*
 // @match        *://*.jewels.com/*
+// @grant        GM_log
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/brockbrownwork/ITBatchOpsScripts/main/tws_abend_watcher.user.js
 // @downloadURL  https://raw.githubusercontent.com/brockbrownwork/ITBatchOpsScripts/main/tws_abend_watcher.user.js
@@ -21,7 +22,7 @@
     'use strict';
 
     const TWSAbendWatcher = {
-        version: "1.2",
+        version: "1.3",
         seenEntries: new Map(), // key: "Job|State|SchedTime" -> count
         targetNames: ["Job", "State", "Sched Time"],
         isRunning: false,
