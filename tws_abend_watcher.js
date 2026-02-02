@@ -210,49 +210,6 @@
             console.log("Reset seen entries.");
         },
 
-        // Inject a test entry into the table (for testing purposes)
-        injectTestEntry(jobName = "TEST_JOB_001") {
-            const tbody = this.findTableBody();
-            if (!tbody) {
-                console.error("Could not find the table to inject test entry.");
-                return false;
-            }
-
-            const table = tbody.closest('table');
-            const colMap = this.buildColumnMap(table);
-
-            // Create a new row based on existing row structure
-            const existingRow = tbody.rows[0];
-            if (!existingRow) {
-                console.error("No existing rows to use as template.");
-                return false;
-            }
-
-            const newRow = existingRow.cloneNode(true);
-
-            // Set the Job column
-            if (colMap["Job"] !== undefined && newRow.cells[colMap["Job"]]) {
-                newRow.cells[colMap["Job"]].innerText = jobName;
-            }
-
-            // Set the State column
-            if (colMap["State"] !== undefined && newRow.cells[colMap["State"]]) {
-                newRow.cells[colMap["State"]].innerText = "ABEND";
-            }
-
-            // Set the Sched Time column
-            if (colMap["Sched Time"] !== undefined && newRow.cells[colMap["Sched Time"]]) {
-                newRow.cells[colMap["Sched Time"]].innerText = new Date().toLocaleTimeString();
-            }
-
-            // Add visual indicator for test row
-            newRow.style.backgroundColor = "#ffcccc";
-
-            tbody.insertBefore(newRow, tbody.firstChild);
-            console.log(`Injected test entry: ${jobName}`);
-            return true;
-        },
-
         // Run a single check manually
         async checkNow() {
             return await this.performCheck();
@@ -268,5 +225,4 @@
     console.log("  TWSAbendWatcher.stop()        - Stop watching");
     console.log("  TWSAbendWatcher.checkNow()    - Run a single check now");
     console.log("  TWSAbendWatcher.reset()       - Clear seen entries");
-    console.log("  TWSAbendWatcher.injectTestEntry('TEST')  - Inject a test row");
 })();

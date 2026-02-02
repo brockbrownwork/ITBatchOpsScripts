@@ -1,0 +1,108 @@
+# ITBatchOpsScripts
+
+IT Batch Operations Scripts - A collection of automation scripts for IT operations monitoring and workflow management at Signet Jewelers.
+
+## Project Structure
+
+```
+ITBatchOpsScripts/
+├── 00_run_all_numbered.bat    # Launcher for all numbered startup scripts
+├── 0_check_for_updates.bat    # Git pull for updates
+├── 1_caffeine.py              # Keeps system awake (F15 key every 10 min)
+├── 2_critical_job_reminders.py # Scheduled job alerts with TTS and GUI
+├── 3_Susejboot.bat            # Opens work apps (Outlook, Jira, RMJ, Teams, etc.)
+├── 4_watch_for_blue.py        # Outlook email notification watcher
+├── wikiwikialoha/             # Flask-SocketIO server for client coordination
+│   ├── server.py              # WebSocket server on port 5001
+│   ├── python_clients/        # Python SocketIO clients
+│   └── js_clients/            # JavaScript SocketIO clients
+├── images/                    # Template images for screen detection
+├── check_maestro*.py          # Maestro system monitoring
+├── ping_hp*.py                # Server ping utilities
+├── runmyjobs.js               # RunMyJobs automation
+├── opsgenie.js                # OpsGenie integration
+├── jira_alert_creator.js      # Jira alert automation
+├── tws_abend_watcher.js       # TWS abend table monitor with TTS alerts
+└── merge pdf.py               # PDF merging utility
+```
+
+## Key Scripts
+
+### Startup Scripts (numbered)
+
+Run `00_run_all_numbered.bat` to launch all startup scripts in separate windows:
+- **0**: Git pull for code updates
+- **1**: Caffeine - prevents system sleep
+- **2**: Critical job reminders - scheduled alerts for batch jobs
+- **3**: Susejboot - opens standard work applications
+- **4**: Watch for blue - monitors Outlook for new emails
+
+### 2_critical_job_reminders.py
+
+Scheduled reminder system using:
+- `schedule` library for time-based alerts
+- `tkinter` GUI popups with copy-to-clipboard
+- Sound alerts via `sounddevice` (plays Fsus4 chord)
+- Reads job schedules from `critical_jobs_schedule.csv`
+
+### 4_watch_for_blue.py
+
+Outlook email notification watcher:
+- Uses `mss` for screen capture
+- Exact pixel matching for inbox detection
+- Magic wand selection algorithm for unread message detection
+- Text-to-speech alerts via `pyttsx3`
+- Hotkey: `Ctrl+\`` to set monitoring region
+
+### tws_abend_watcher.js
+
+Browser console script for monitoring TWS abend table:
+- Uses recursive frame crawler to navigate nested `<html>` and `<frame>` elements
+- Tracks seen entries by Job/State/Sched Time with occurrence counting
+- Text-to-speech alerts via Web Speech API when new abends appear
+- Auto-refreshes page before each check
+- Commands: `TWSAbendWatcher.start(30)`, `.stop()`, `.checkNow()`, `.reset()`
+
+### wikiwikialoha
+
+Flask-SocketIO server for coordinating automation clients:
+- Runs on port 5001
+- Supports client identification and dynamic scaling
+- Fire-and-forget and request-response patterns
+- Test endpoints: `/test/fire-forget/<client>/<action>`, `/test/request-response/<client>/<action>`
+
+## Dependencies
+
+Install via: `pip install -r requirements.txt`
+
+Key packages:
+- `Flask`, `Flask-Cors` - Web server
+- `keyboard`, `pynput`, `PyAutoGUI` - Input automation
+- `mss`, `Pillow`, `numpy` - Screen capture and image processing
+- `pyttsx3` - Text-to-speech
+- `schedule` - Job scheduling
+- `sounddevice` - Audio playback
+- `pyperclip` - Clipboard operations
+
+## Development Notes
+
+- Windows-only (uses Windows-specific paths and tools)
+- Screen coordinates are specific to the user's monitor setup
+- Template images in `images/` folder must match exact pixels
+- Network drives use `jewels.local` domain
+- Connects to internal URLs: `rhesprodtws01`, `pwakslwnapp01.jewels.com`, etc.
+
+## Common Tasks
+
+**Adding a new job reminder:**
+Edit `2_critical_job_reminders.py` - use `schedule_job_alert(name, time, days)`
+
+**Updating template images:**
+Replace images in `images/` folder - must be exact pixel matches
+
+**Testing wikiwikialoha server:**
+```bash
+cd wikiwikialoha
+python server.py
+# Access http://localhost:5001
+```
