@@ -7,6 +7,7 @@
 
 (function() {
     const TWSAbendWatcher = {
+        version: "1.1.0",
         seenEntries: new Map(), // key: "Job|State|SchedTime" -> count
         targetNames: ["Job", "State", "Sched Time"],
         isRunning: false,
@@ -139,14 +140,9 @@
             return newEntries;
         },
 
-        // Main check function - refreshes and checks for new entries
+        // Main check function - checks for new entries then refreshes
         async performCheck() {
-            console.log(`[${new Date().toLocaleTimeString()}] Refreshing...`);
-            this.clickRefresh();
-
-            // Wait 1 second for refresh to complete
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
+            console.log(`[${new Date().toLocaleTimeString()}] Checking for new entries...`);
             const newEntries = this.checkForNewEntries();
 
             if (newEntries.length > 0) {
@@ -160,6 +156,10 @@
             } else {
                 console.log("No new entries.");
             }
+
+            // Refresh after checking so data is fresh for next check
+            console.log(`[${new Date().toLocaleTimeString()}] Refreshing...`);
+            this.clickRefresh();
 
             return newEntries;
         },
@@ -219,7 +219,7 @@
     // Expose to global scope
     window.TWSAbendWatcher = TWSAbendWatcher;
 
-    console.log("=== TWS Abend Watcher Loaded ===");
+    console.log(`=== TWS Abend Watcher v${TWSAbendWatcher.version} Loaded ===`);
     console.log("Commands:");
     console.log("  TWSAbendWatcher.start(30)     - Start watching (check every 30 seconds)");
     console.log("  TWSAbendWatcher.stop()        - Stop watching");
