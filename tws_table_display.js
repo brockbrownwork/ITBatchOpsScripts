@@ -13,11 +13,44 @@
  *   TWSTableDisplay.show("Job")      - Filter by column containing text
  *   TWSTableDisplay.columns()        - Show available column names
  *   TWSTableDisplay.refresh()        - Refresh the page and show table
+ *   TWSTableDisplay.downloadPDF()    - Download table as landscape PDF
  */
 
 
 const TWSTableDisplay = {
-        version: "1.0",
+        version: "1.1",
+
+        // Load jsPDF library dynamically
+        async loadJsPDF() {
+            if (window.jspdf) return window.jspdf;
+
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+                script.onload = () => {
+                    console.log("[TWSTableDisplay] jsPDF library loaded.");
+                    resolve(window.jspdf);
+                };
+                script.onerror = () => reject(new Error("Failed to load jsPDF library"));
+                document.head.appendChild(script);
+            });
+        },
+
+        // Load jsPDF-AutoTable plugin for table rendering
+        async loadAutoTable() {
+            if (window.jspdf && window.jspdf.jsPDF.API.autoTable) return;
+
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js';
+                script.onload = () => {
+                    console.log("[TWSTableDisplay] AutoTable plugin loaded.");
+                    resolve();
+                };
+                script.onerror = () => reject(new Error("Failed to load AutoTable plugin"));
+                document.head.appendChild(script);
+            });
+        },
 
         // Recursive frame crawler - drills through frames, iframes, and nested html tags
         findElementRecursive(doc, selector) {
@@ -167,6 +200,104 @@ const TWSTableDisplay = {
         // Get raw data for programmatic use
         getData() {
             return this.extractAllRows();
+        },
+
+        // Download table as landscape PDF
+        async downloadPDF(filterText = null, filterColumn = null) {
+            console.log("[TWSTableDisplay] Preparing PDF download...");
+
+            try {
+                await this.loadJsPDF();
+                await this.loadAutoTable();
+            } catch (e) {
+                console.error("[TWSTableDisplay] Failed to load PDF libraries:", e.message);
+                return;
+            }
+
+            const { rows, columns } = this.extractAllRows();
+
+            if (rows.length === 0) {
+                console.log("[TWSTableDisplay] No data to export.");
+                return;
+            }
+
+            let displayRows = rows;
+
+            // Apply filter if provided
+            if (filterText) {
+                const searchText = filterText.toLowerCase();
+                displayRows = rows.filter(row => {
+                    if (filterColumn) {
+                        const val = row[filterColumn] || "";
+                        return val.toLowerCase().includes(searchText);
+                    } else {
+                        return Object.values(row).some(val =>
+                            val.toLowerCase().includes(searchText)
+                        );
+                    }
+                });
+            }
+
+            if (displayRows.length === 0) {
+                console.log("[TWSTableDisplay] No matching rows to export.");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'landscape',
+                unit: 'mm',
+                format: 'letter'
+            });
+
+            // Title
+            const timestamp = new Date().toLocaleString();
+            doc.setFontSize(14);
+            doc.text("TWS Job Table", 14, 15);
+            doc.setFontSize(10);
+            doc.text(`Generated: ${timestamp}`, 14, 22);
+            if (filterText) {
+                doc.text(`Filter: "${filterText}"${filterColumn ? ` (${filterColumn})` : ""}`, 14, 28);
+            }
+
+            // Prepare table data
+            const headers = columns;
+            const tableData = displayRows.map(row => headers.map(col => row[col] || ""));
+
+            // Auto-table with styling
+            doc.autoTable({
+                head: [headers],
+                body: tableData,
+                startY: filterText ? 32 : 26,
+                styles: {
+                    fontSize: 7,
+                    cellPadding: 1.5,
+                    overflow: 'linebreak',
+                    lineWidth: 0.1
+                },
+                headStyles: {
+                    fillColor: [66, 66, 66],
+                    textColor: [255, 255, 255],
+                    fontStyle: 'bold',
+                    fontSize: 7
+                },
+                alternateRowStyles: {
+                    fillColor: [245, 245, 245]
+                },
+                margin: { top: 10, left: 10, right: 10, bottom: 10 },
+                tableWidth: 'auto',
+                columnStyles: {
+                    // Let AutoTable handle column widths automatically
+                }
+            });
+
+            // Generate filename with timestamp
+            const dateStr = new Date().toISOString().slice(0, 10);
+            const timeStr = new Date().toTimeString().slice(0, 5).replace(":", "");
+            const filename = `TWS_Table_${dateStr}_${timeStr}.pdf`;
+
+            doc.save(filename);
+            console.log(`[TWSTableDisplay] PDF downloaded: ${filename} (${displayRows.length} rows)`);
         }
     };
 
@@ -182,3 +313,5 @@ const TWSTableDisplay = {
     console.log("[TWSTableDisplay]   TWSTableDisplay.columns()           - Show available columns");
     console.log("[TWSTableDisplay]   TWSTableDisplay.refresh()           - Refresh page and show table");
     console.log("[TWSTableDisplay]   TWSTableDisplay.getData()           - Get raw data object");
+    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF()       - Download table as landscape PDF");
+    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF('text') - Download filtered table as PDF");
