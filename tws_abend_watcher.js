@@ -32,6 +32,8 @@
         watchStates: ["ABEND", "FAIL", "CANCEL", "CANCELLED"],
         isRunning: false,
         checkInterval: null,
+        consecutiveTableNotFound: 0, // Track consecutive failures to find table
+        tableNotFoundAlertThreshold: 5, // Alert user after this many consecutive failures
 
         // Recursive frame crawler - drills through frames, iframes, and nested html tags
         // This is necessary because the TWS page has nested <html> and <frame> shenanigans
@@ -82,9 +84,21 @@
         extractRows() {
             const tbody = this.findTableBody();
             if (!tbody) {
-                console.error("[TWSAbendWatcher] ERROR: TWS Table not found. Are you sure the frame is loaded?");
+                this.consecutiveTableNotFound++;
+                console.error(`[TWSAbendWatcher] ERROR: TWS Table not found (${this.consecutiveTableNotFound} consecutive failures). Are you sure the frame is loaded?`);
+
+                if (this.consecutiveTableNotFound >= this.tableNotFoundAlertThreshold) {
+                    const message = `Warning: TWS table not found ${this.consecutiveTableNotFound} times in a row. Please check the page.`;
+                    console.error(`[TWSAbendWatcher] ⚠ ${message}`);
+                    this.speak(message);
+                    // Reset counter after alerting so we don't spam
+                    this.consecutiveTableNotFound = 0;
+                }
                 return [];
             }
+
+            // Reset counter on successful table find
+            this.consecutiveTableNotFound = 0;
 
             const table = tbody.closest('table');
             const colMap = this.buildColumnMap(table);
@@ -267,7 +281,8 @@
         // Reset seen entries
         reset() {
             this.seenEntries.clear();
-            console.log("[TWSAbendWatcher] Reset seen entries.");
+            this.consecutiveTableNotFound = 0;
+            console.log("[TWSAbendWatcher] Reset seen entries and failure counter.");
         },
 
         // Run a single check manually
