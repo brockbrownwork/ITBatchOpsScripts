@@ -18,7 +18,14 @@
 
 
 const TWSTableDisplay = {
-        version: "1.1",
+        version: "1.2",
+
+        // Color mapping for cell classes
+        cellColors: {
+            good: [144, 238, 144],     // light green
+            error: [255, 182, 182],    // light red
+            warning: [255, 255, 150]   // light yellow
+        },
 
         // Load jsPDF library dynamically
         async loadJsPDF() {
@@ -93,27 +100,45 @@ const TWSTableDisplay = {
             return colMap;
         },
 
-        // Extract all rows from the table
-        extractAllRows() {
+        // Extract all rows from the table (with optional cell class info for PDF)
+        extractAllRows(includeCellClasses = false) {
             const tbody = this.findTableBody();
             if (!tbody) {
                 console.error("[TWSTableDisplay] ERROR: TWS Table not found. Is the frame loaded?");
-                return { rows: [], columns: [] };
+                return { rows: [], columns: [], cellClasses: [] };
             }
 
             const table = tbody.closest('table');
             const colMap = this.buildColumnMap(table);
             const columns = Object.keys(colMap);
 
-            const rows = Array.from(tbody.rows).map(row => {
+            const rows = [];
+            const cellClasses = [];
+
+            Array.from(tbody.rows).forEach(row => {
                 let entry = {};
+                let rowClasses = {};
                 for (const [title, index] of Object.entries(colMap)) {
-                    entry[title] = row.cells[index]?.innerText.trim() || "";
+                    const cell = row.cells[index];
+                    entry[title] = cell?.innerText.trim() || "";
+                    if (includeCellClasses && cell) {
+                        // Check for status classes
+                        if (cell.classList.contains('good')) {
+                            rowClasses[title] = 'good';
+                        } else if (cell.classList.contains('error')) {
+                            rowClasses[title] = 'error';
+                        } else if (cell.classList.contains('warning')) {
+                            rowClasses[title] = 'warning';
+                        }
+                    }
                 }
-                return entry;
+                rows.push(entry);
+                if (includeCellClasses) {
+                    cellClasses.push(rowClasses);
+                }
             });
 
-            return { rows, columns };
+            return { rows, columns, cellClasses };
         },
 
         // Show available columns
@@ -214,7 +239,7 @@ const TWSTableDisplay = {
                 return;
             }
 
-            const { rows, columns } = this.extractAllRows();
+            const { rows, columns, cellClasses } = this.extractAllRows(true);
 
             if (rows.length === 0) {
                 console.log("[TWSTableDisplay] No data to export.");
@@ -222,20 +247,26 @@ const TWSTableDisplay = {
             }
 
             let displayRows = rows;
+            let displayCellClasses = cellClasses;
 
             // Apply filter if provided
             if (filterText) {
                 const searchText = filterText.toLowerCase();
-                displayRows = rows.filter(row => {
+                const filteredIndices = [];
+                displayRows = rows.filter((row, idx) => {
+                    let matches = false;
                     if (filterColumn) {
                         const val = row[filterColumn] || "";
-                        return val.toLowerCase().includes(searchText);
+                        matches = val.toLowerCase().includes(searchText);
                     } else {
-                        return Object.values(row).some(val =>
+                        matches = Object.values(row).some(val =>
                             val.toLowerCase().includes(searchText)
                         );
                     }
+                    if (matches) filteredIndices.push(idx);
+                    return matches;
                 });
+                displayCellClasses = filteredIndices.map(idx => cellClasses[idx]);
             }
 
             if (displayRows.length === 0) {
@@ -264,7 +295,12 @@ const TWSTableDisplay = {
             const headers = columns;
             const tableData = displayRows.map(row => headers.map(col => row[col] || ""));
 
+            // Build column index lookup
+            const colIndexMap = {};
+            headers.forEach((h, i) => colIndexMap[h] = i);
+
             // Auto-table with styling
+            const self = this;
             doc.autoTable({
                 head: [headers],
                 body: tableData,
@@ -286,8 +322,15 @@ const TWSTableDisplay = {
                 },
                 margin: { top: 10, left: 10, right: 10, bottom: 10 },
                 tableWidth: 'auto',
-                columnStyles: {
-                    // Let AutoTable handle column widths automatically
+                didParseCell: function(data) {
+                    if (data.section === 'body') {
+                        const rowIdx = data.row.index;
+                        const colName = headers[data.column.index];
+                        const cellClass = displayCellClasses[rowIdx]?.[colName];
+                        if (cellClass && self.cellColors[cellClass]) {
+                            data.cell.styles.fillColor = self.cellColors[cellClass];
+                        }
+                    }
                 }
             });
 
