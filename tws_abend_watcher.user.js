@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TWS Abend Watcher
 // @namespace    https://github.com/brockbrownwork/ITBatchOpsScripts
-// @version      1.1
+// @version      1.2
 // @description  Monitors TWS abend table for new entries and announces via TTS
 // @author       Brock Brown
 // @match        *://rhesprodtws01/*
@@ -21,7 +21,7 @@
     'use strict';
 
     const TWSAbendWatcher = {
-        version: "1.1",
+        version: "1.2",
         seenEntries: new Map(), // key: "Job|State|SchedTime" -> count
         targetNames: ["Job", "State", "Sched Time"],
         isRunning: false,
@@ -122,9 +122,11 @@
             return false;
         },
 
-        // Check for new entries
-        checkForNewEntries() {
-            const currentRows = this.extractRows();
+        // Check for new entries (accepts rows to avoid double extraction)
+        checkForNewEntries(currentRows) {
+            if (!currentRows) {
+                currentRows = this.extractRows();
+            }
             const currentCounts = new Map();
 
             // Count occurrences of each entry
@@ -154,13 +156,51 @@
             return newEntries;
         },
 
+        // Log the current table in a nicely formatted way
+        logTable(rows) {
+            if (rows.length === 0) {
+                console.log("  (table is empty)");
+                return;
+            }
+
+            // Calculate column widths
+            const cols = this.targetNames;
+            const widths = {};
+            cols.forEach(col => {
+                widths[col] = col.length;
+                rows.forEach(row => {
+                    const val = row[col] || "";
+                    widths[col] = Math.max(widths[col], val.length);
+                });
+            });
+
+            // Build header
+            const header = cols.map(col => col.padEnd(widths[col])).join(" │ ");
+            const separator = cols.map(col => "─".repeat(widths[col])).join("─┼─");
+
+            console.log(`  ┌─${cols.map(col => "─".repeat(widths[col])).join("─┬─")}─┐`);
+            console.log(`  │ ${header} │`);
+            console.log(`  ├─${separator}─┤`);
+
+            // Build rows
+            rows.forEach(row => {
+                const line = cols.map(col => (row[col] || "").padEnd(widths[col])).join(" │ ");
+                console.log(`  │ ${line} │`);
+            });
+
+            console.log(`  └─${cols.map(col => "─".repeat(widths[col])).join("─┴─")}─┘`);
+        },
+
         // Main check function - checks for new entries then refreshes
         async performCheck() {
-            console.log(`[${new Date().toLocaleTimeString()}] Checking for new entries...`);
-            const newEntries = this.checkForNewEntries();
+            const currentRows = this.extractRows();
+            console.log(`%c[${new Date().toLocaleTimeString()}] TWS Abend Table (${currentRows.length} entries)`, "color: #6cf; font-weight: bold;");
+            this.logTable(currentRows);
+
+            const newEntries = this.checkForNewEntries(currentRows);
 
             if (newEntries.length > 0) {
-                console.log(`%c Found ${newEntries.length} new entry(ies): `, "background: #222; color: #bada55; font-size: 14px;");
+                console.log(`%c ⚠ Found ${newEntries.length} NEW entry(ies)! `, "background: #ff0; color: #000; font-size: 14px; font-weight: bold;");
                 console.table(newEntries);
 
                 newEntries.forEach(entry => {
@@ -168,11 +208,11 @@
                     this.speak(`There's a new TWS abend: ${jobName}`);
                 });
             } else {
-                console.log("No new entries.");
+                console.log("%c ✓ No new entries", "color: #8f8;");
             }
 
             // Refresh after checking so data is fresh for next check
-            console.log(`[${new Date().toLocaleTimeString()}] Refreshing...`);
+            console.log(`%c[${new Date().toLocaleTimeString()}] Refreshing...`, "color: #888;");
             this.clickRefresh();
 
             return newEntries;
