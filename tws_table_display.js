@@ -228,7 +228,7 @@ const TWSTableDisplay = {
         },
 
         // Download table as landscape PDF
-        async downloadPDF(filterText = null, filterColumn = null) {
+        async downloadPDF(filterText = null, filterColumn = null, tableName = "TWS Table") {
             console.log("[TWSTableDisplay] Preparing PDF download...");
 
             try {
@@ -249,8 +249,20 @@ const TWSTableDisplay = {
             let displayRows = rows;
             let displayCellClasses = cellClasses;
 
+            // Special case: "Carry forward" table only shows EXEC status rows
+            if (tableName === "Carry forward") {
+                const filteredIndices = [];
+                displayRows = rows.filter((row, idx) => {
+                    const state = row["State"] || "";
+                    const matches = state === "EXEC";
+                    if (matches) filteredIndices.push(idx);
+                    return matches;
+                });
+                displayCellClasses = filteredIndices.map(idx => cellClasses[idx]);
+                console.log(`[TWSTableDisplay] Carry forward filter: showing ${displayRows.length} EXEC rows`);
+            }
             // Apply filter if provided
-            if (filterText) {
+            else if (filterText) {
                 const searchText = filterText.toLowerCase();
                 const filteredIndices = [];
                 displayRows = rows.filter((row, idx) => {
@@ -284,7 +296,7 @@ const TWSTableDisplay = {
             // Title
             const timestamp = new Date().toLocaleString();
             doc.setFontSize(14);
-            doc.text("TWS Job Table", 14, 15);
+            doc.text(tableName, 14, 15);
             doc.setFontSize(10);
             doc.text(`Generated: ${timestamp}`, 14, 22);
             if (filterText) {
@@ -356,5 +368,6 @@ const TWSTableDisplay = {
     console.log("[TWSTableDisplay]   TWSTableDisplay.columns()           - Show available columns");
     console.log("[TWSTableDisplay]   TWSTableDisplay.refresh()           - Refresh page and show table");
     console.log("[TWSTableDisplay]   TWSTableDisplay.getData()           - Get raw data object");
-    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF()       - Download table as landscape PDF");
-    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF('text') - Download filtered table as PDF");
+    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF()                      - Download table as landscape PDF");
+    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF('text')               - Download filtered table as PDF");
+    console.log("[TWSTableDisplay]   TWSTableDisplay.downloadPDF(null, null, 'Title')  - Download with custom title");
