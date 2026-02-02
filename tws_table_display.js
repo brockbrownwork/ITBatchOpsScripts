@@ -302,6 +302,9 @@ const TWSTableDisplay = {
                 format: 'letter'
             });
 
+            // Capitalize first letter of tableName for display
+            tableName = tableName.charAt(0).toUpperCase() + tableName.slice(1);
+
             // Title
             const timestamp = new Date().toLocaleString();
             doc.setFontSize(14);
@@ -369,8 +372,6 @@ const TWSTableDisplay = {
             let filename;
             if (filenameMap[tableNameLower]) {
                 filename = filenameMap[tableNameLower];
-                // Capitalize first letter of tableName for display
-                tableName = tableName.charAt(0).toUpperCase() + tableName.slice(1);
             } else {
                 const dateStr = new Date().toISOString().slice(0, 10);
                 const timeStr = new Date().toTimeString().slice(0, 5).replace(":", "");
