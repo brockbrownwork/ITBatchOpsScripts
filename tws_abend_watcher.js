@@ -1,5 +1,9 @@
 // TWS Abend Watcher - Monitors for new table entries and announces via TTS
 // Usage: Run in browser console on the TWS page
+//
+// NOTE: This script uses a recursive frame crawler to find elements because the TWS page
+// has nested <html> and <frame> elements that prevent normal document.querySelector from working.
+// The findElementRecursive() function drills through frames, iframes, and nested html tags.
 
 (function() {
     const TWSAbendWatcher = {
@@ -8,29 +12,43 @@
         isRunning: false,
         checkInterval: null,
 
-        // Find the target tbody in frames
-        findTableBody() {
-            for (let i = 0; i < window.frames.length; i++) {
+        // Recursive frame crawler - drills through frames, iframes, and nested html tags
+        // This is necessary because the TWS page has nested <html> and <frame> shenanigans
+        // that prevent normal document.querySelector from finding elements
+        findElementRecursive(doc, selector) {
+            let el = doc.querySelector(selector);
+            if (el) return el;
+
+            const frames = doc.querySelectorAll('frame, iframe');
+            for (let i = 0; i < frames.length; i++) {
                 try {
-                    const found = window.frames[i].document.querySelector("#sortable > tbody");
-                    if (found) return { tbody: found, frameDoc: window.frames[i].document };
-                } catch (e) {}
+                    // Access the document inside the frame
+                    const frameDoc = frames[i].contentDocument || frames[i].contentWindow.document;
+                    const found = this.findElementRecursive(frameDoc, selector);
+                    if (found) return found;
+                } catch (e) {
+                    // Cross-origin security block - common in complex environments
+                }
             }
             return null;
         },
 
-        // Build column index mapping from headers
+        // Find the target tbody using recursive crawler
+        findTableBody() {
+            const tbody = this.findElementRecursive(document, "#sortable > tbody");
+            if (!tbody) return null;
+            return tbody;
+        },
+
+        // Build column index mapping from headers using innerText to bypass hidden junk
         buildColumnMap(table) {
-            const headerElements = Array.from(table.querySelectorAll('th'));
+            const headers = Array.from(table.querySelectorAll('th'));
             const colMap = {};
 
-            headerElements.forEach((th, index) => {
-                const text = th.textContent.trim().toLowerCase();
-                const titleAttr = th.getAttribute('title')?.toLowerCase() || "";
-
+            headers.forEach((th, index) => {
+                const text = th.innerText.replace(/\s+/g, ' ').trim().toLowerCase();
                 this.targetNames.forEach(target => {
-                    const targetLower = target.toLowerCase();
-                    if (text === targetLower || titleAttr === targetLower || text.includes(targetLower)) {
+                    if (text.includes(target.toLowerCase())) {
                         colMap[target] = index;
                     }
                 });
@@ -41,25 +59,22 @@
 
         // Extract all current rows from the table
         extractRows() {
-            const result = this.findTableBody();
-            if (!result) {
-                console.error("Could not find the table.");
+            const tbody = this.findTableBody();
+            if (!tbody) {
+                console.error("TWS Table not found. Are you sure the frame is loaded?");
                 return [];
             }
 
-            const { tbody } = result;
             const table = tbody.closest('table');
             const colMap = this.buildColumnMap(table);
 
             return Array.from(tbody.rows).map(row => {
-                const cells = row.cells;
                 let entry = {};
-
                 for (const [title, index] of Object.entries(colMap)) {
-                    entry[title] = cells[index]?.innerText.trim() || "N/A";
+                    entry[title] = row.cells[index]?.innerText.trim() || "N/A";
                 }
                 return entry;
-            });
+            }).filter(r => Object.values(r).some(v => v !== "N/A"));
         },
 
         // Generate a unique key for an entry
@@ -81,33 +96,13 @@
             }
         },
 
-        // Click the refresh button
+        // Click the refresh button using recursive finder
         clickRefresh() {
-            const result = this.findTableBody();
-            if (!result) {
-                // Try main document as fallback
-                const btn = document.querySelector("body > form > input[type=button]:nth-child(21)");
-                if (btn) {
-                    btn.click();
-                    return true;
-                }
-                return false;
-            }
-
-            // Try to find refresh button in the frame
-            const btn = result.frameDoc.querySelector("body > form > input[type=button]:nth-child(21)");
+            const btn = this.findElementRecursive(document, "body > form > input[type=button]:nth-child(21)");
             if (btn) {
                 btn.click();
                 return true;
             }
-
-            // Fallback to main document
-            const mainBtn = document.querySelector("body > form > input[type=button]:nth-child(21)");
-            if (mainBtn) {
-                mainBtn.click();
-                return true;
-            }
-
             console.warn("Refresh button not found.");
             return false;
         },
@@ -155,7 +150,7 @@
             const newEntries = this.checkForNewEntries();
 
             if (newEntries.length > 0) {
-                console.log(`Found ${newEntries.length} new entry(ies):`);
+                console.log(`%c Found ${newEntries.length} new entry(ies): `, "background: #222; color: #bada55; font-size: 14px;");
                 console.table(newEntries);
 
                 newEntries.forEach(entry => {
@@ -178,7 +173,7 @@
                 this.seenEntries.set(key, (this.seenEntries.get(key) || 0) + 1);
             });
 
-            console.log(`Initialized with ${currentRows.length} existing entries.`);
+            console.log(`%c TWS Abend Watcher Initialized: ${currentRows.length} existing entries `, "background: #222; color: #bada55; font-size: 14px;");
             console.table(currentRows);
         },
 
@@ -217,13 +212,12 @@
 
         // Inject a test entry into the table (for testing purposes)
         injectTestEntry(jobName = "TEST_JOB_001") {
-            const result = this.findTableBody();
-            if (!result) {
+            const tbody = this.findTableBody();
+            if (!tbody) {
                 console.error("Could not find the table to inject test entry.");
                 return false;
             }
 
-            const { tbody } = result;
             const table = tbody.closest('table');
             const colMap = this.buildColumnMap(table);
 
