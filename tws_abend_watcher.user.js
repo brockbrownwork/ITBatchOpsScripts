@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TWS Abend Watcher
 // @namespace    https://github.com/brockbrownwork/ITBatchOpsScripts
-// @version      1.4
+// @version      1.5
 // @description  Monitors TWS abend table for new entries and announces via TTS
 // @author       Brock Brown
 // @match        *://rhesprodtws01/*
@@ -22,7 +22,7 @@
     'use strict';
 
     const TWSAbendWatcher = {
-        version: "1.4",
+        version: "1.5",
         seenEntries: new Map(), // key: "Job|State|SchedTime" -> count
         targetNames: ["Job", "State", "Sched Time"],
         isRunning: false,
@@ -285,4 +285,12 @@
     GM_log("  TWSAbendWatcher.stop()        - Stop watching");
     GM_log("  TWSAbendWatcher.checkNow()    - Run a single check now");
     GM_log("  TWSAbendWatcher.reset()       - Clear seen entries");
+
+    // Test alert and TTS on load
+    alert(`TWS Abend Watcher v${TWSAbendWatcher.version} loaded!`);
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance("TWS Abend Watcher loaded");
+        utterance.rate = 1.0;
+        window.speechSynthesis.speak(utterance);
+    }
 })();
