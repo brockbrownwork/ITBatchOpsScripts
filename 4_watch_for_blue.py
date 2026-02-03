@@ -537,7 +537,7 @@ print("Press Ctrl+` once to set the top-left corner, then again to set the botto
 
 old_count = None
 email_refresh_count = 0
-refresh_warning_minutes_interval = 1 # increase to make the refresh warning less annoying
+refresh_warning_minutes_interval = 5 # increase to make the refresh warning less annoying
 
 # Main loop:
 while True:
