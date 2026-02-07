@@ -25,6 +25,7 @@ ITBatchOpsScripts/
 ├── tws_abend_watcher.js       # Standalone TWS job error watcher (ABEND/FAIL/CANCEL)
 ├── tws_table_display.js       # TWS table viewer with filtering
 ├── nagios_watcher.js          # Nagios host status watcher with TTS alerts
+├── solarwinds_alert_detector.js # Solarwinds dashboard alert watcher with TTS alerts
 ├── chord.py                   # Audio utility for playing chords (used by reminders)
 └── merge pdf.py               # PDF merging utility
 ```
@@ -92,6 +93,19 @@ Nagios host status watcher for monitoring service states:
 - Auto-starts on load after 2 second delay
 - Commands: `NagiosWatcher.start(30)`, `.stop()`, `.checkNow()`, `.reset()`, `.status()`, `.setFlapThreshold(n)`
 - Usage: Paste into browser console or include as `<script>` tag on Nagios page
+
+### solarwinds_alert_detector.js
+
+Solarwinds dashboard alert watcher for monitoring two count elements:
+- Polls two specific span elements on the Solarwinds dashboard for count increases
+- Parses counts from parenthesized text via `.slice(1, -1)`
+- Text-to-speech alerts via Web Speech API: "What's up, Solarwinds Alert Detected"
+- TTS announcement on script start
+- **Flap detection**: Alerts only trigger after elevated counts persist for multiple consecutive checks (default: 5), preventing false alarms from transient spikes
+- Default poll interval: 60 seconds
+- Auto-starts on load after 2 second delay
+- Commands: `SolarwindsAlertDetector.start(60)`, `.stop()`, `.checkNow()`, `.reset()`, `.status()`, `.setFlapThreshold(n)`
+- Usage: Paste into browser console or include as `<script>` tag on Solarwinds page
 
 ### wikiwikialoha
 
