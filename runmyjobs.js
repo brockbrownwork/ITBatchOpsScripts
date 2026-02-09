@@ -124,6 +124,9 @@ async function copyMatchingJobsAboveSelected() {
                     if (jobName.split("_").pop().startsWith("ABAP")) {
                         alert("ABAP job found, make sure that goes into DevOps chat. :)")
                     }
+                    if (jobName.includes("ZFI")) {
+                        alert("ZFI job found, make sure that goes into DevOps chat. :)")
+                    }
                 }
             }
         }
