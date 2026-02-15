@@ -375,6 +375,17 @@ async function copySingleSelectedJob() {
             await navigator.clipboard.writeText(jobName);
             console.log(`✅ Copied single job: ${jobName}`);
             showToast(`📋 Copied: ${jobName}`);
+
+            // 6. Job name alerts
+            if (jobName.split("_").pop().startsWith("ABAP")) {
+                alert("ABAP job found, make sure that goes into DevOps chat. :)")
+            }
+            if (jobName.includes("ZFI_")) {
+                alert("ZFI job found, make sure that goes into DevOps chat. :)")
+            }
+            if (jobName.endsWith("_CONT")) {
+                alert("Warning: this probably contains a controller job, make sure to check to see if it has a controller page.")
+            }
         }
 
     } catch (error) {
