@@ -27,6 +27,8 @@ const TWSAbendWatcher = {
     targetNames: ["Job", "State", "Sched Time"],
     // States to watch for (case-insensitive matching)
     watchStates: ["ABEND", "FAIL", "CANCEL", "CANCELLED"],
+    // Jobs that fail regularly - TTS will note this when they appear
+    frequentFailers: ["JSISADS_MKT_DAILY"],
     isRunning: false,
     checkInterval: null,
     consecutiveTableNotFound: 0, // Track consecutive failures to find table
@@ -258,6 +260,21 @@ const TWSAbendWatcher = {
                 const jobName = entry["Job"] || "unknown job";
                 const state = entry["State"] || "error";
                 this.speak(`TWS job ${state}: ${jobName}`);
+
+                // Note if this job fails regularly
+                if (this.frequentFailers.includes(jobName)) {
+                    this.speak("This one fails regularly.");
+                }
+
+                // Special instructions for specific jobs
+                if (jobName === "JSISADS_MKT_DAILY") {
+                    this.speak("Special instructions for this job, see console.");
+                    console.warn("[TWSAbendWatcher] ========================================");
+                    console.warn("[TWSAbendWatcher] JSISADS_MKT_DAILY:");
+                    console.warn("[TWSAbendWatcher]   cancel \tJMKT015");
+                    console.warn("[TWSAbendWatcher]   cancel \tJSIS215");
+                    console.warn("[TWSAbendWatcher] ========================================");
+                }
             });
         } else {
             console.log("[TWSAbendWatcher] ✓ No new entries");

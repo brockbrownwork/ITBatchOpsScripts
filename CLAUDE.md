@@ -69,6 +69,8 @@ Standalone script for monitoring TWS job table for error states:
 - Checks for new entries, then refreshes page for next cycle
 - Auto-starts on load after 2 second delay
 - Alerts if table not found for 5 consecutive checks
+- **Frequent failers list**: Jobs in `frequentFailers` array get a "This one fails regularly" TTS note
+- **Special instructions**: Per-job console instructions (e.g., JSISADS_MKT_DAILY prints cancel steps for JMKT015 and JSIS215)
 - Commands: `TWSAbendWatcher.start(30)`, `.stop()`, `.checkNow()`, `.reset()`
 - Usage: Paste into browser console or include as `<script>` tag on TWS page
 
