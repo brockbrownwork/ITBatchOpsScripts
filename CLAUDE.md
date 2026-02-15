@@ -58,6 +58,19 @@ Outlook email notification watcher:
 - Text-to-speech alerts via `pyttsx3`
 - Hotkey: `Ctrl+\`` to set monitoring region
 
+### runmyjobs.js
+
+RunMyJobs automation script for job management and monitoring:
+- **Copy Jobs**: Finds selected row's folder, collects all job definitions above it in the same folder, copies unique job names to clipboard
+- **Job name alerts**: Warns on ABAP jobs (DevOps chat), ZFI_ jobs (DevOps chat), and `_CONT` suffix jobs (controller job warning to check for controller page)
+- **Run monitor**: Polls for new "Run End" times and announces via TTS when new completions appear
+- Hijacks Ctrl+C (when no text selected) and Ctrl+Shift+C for quick job copying
+- Shift+Alt+C copies only the single selected job's definition
+- Paste trimming: auto-trims whitespace on paste
+- UI: Adds a floating "Copy Jobs" button
+- Commands: `startRunMonitor()`, `toggleDebugMode()`, `clickRefreshButton()`
+- Usage: Paste into browser console or include as `<script>` tag on RunMyJobs page
+
 ### tws_abend_watcher.js
 
 Standalone script for monitoring TWS job table for error states:
