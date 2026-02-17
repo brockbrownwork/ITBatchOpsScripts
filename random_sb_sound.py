@@ -72,7 +72,7 @@ def play_random_clip(audio_path=AUDIO_FILE, csv_path=CSV_FILE):
 
     pygame.mixer.init()
     pygame.mixer.music.load(audio_path)
-    pygame.mixer.music.set_volume(0.85)
+    pygame.mixer.music.set_volume(0.75)
     pygame.mixer.music.play(start=start)
     time.sleep(duration)
     pygame.mixer.music.stop()
