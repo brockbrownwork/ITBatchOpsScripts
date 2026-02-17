@@ -465,11 +465,8 @@ def email_alert(refresh_inbox_needed = False):
     message = "You've got mail!"
     if refresh_inbox_needed:
         message = "Inbox refresh may be needed."
-    # Play a random clip three times
-    for _ in range(3):
-        print(message)
-        play_random_clip()
-        time.sleep(1) # A short pause between repetitions
+    print(message)
+    play_random_clip()
 
 # This script:
 # 1. Allows you to press Ctrl+~ to record the mouse position as the top-left corner of a box.
