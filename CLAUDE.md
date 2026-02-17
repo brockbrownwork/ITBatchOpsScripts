@@ -26,6 +26,9 @@ ITBatchOpsScripts/
 ├── tws_table_display.js       # TWS table viewer with filtering
 ├── nagios_watcher.js          # Nagios host status watcher with TTS alerts
 ├── solarwinds_alert_detector.js # Solarwinds dashboard alert watcher with TTS alerts
+├── detect_scenes.py           # Video scene change detector (jump-bisect + CuPy GPU)
+├── random_sb_sound.py         # Random sound player from Strong Bad email songs
+├── scene_timestamps.csv       # Detected scene change timestamps
 ├── chord.py                   # Audio utility for playing chords (used by reminders)
 └── merge pdf.py               # PDF merging utility
 ```
@@ -122,6 +125,26 @@ Solarwinds dashboard alert watcher for monitoring two count elements:
 - Commands: `SolarwindsAlertDetector.start(60)`, `.stop()`, `.checkNow()`, `.reset()`, `.status()`, `.setFlapThreshold(n)`
 - Usage: Paste into browser console or include as `<script>` tag on Solarwinds page
 
+### detect_scenes.py
+
+Video scene change detector for slideshow-style videos:
+- Uses jump-and-bisect strategy: jumps ~2s at a time, binary searches for exact frame boundaries
+- GPU-accelerated frame comparison via CuPy (percentage of pixels changed above noise floor)
+- Outputs timestamps to `scene_timestamps.csv`
+- Configurable: `--threshold` (% pixels changed), `--noise-floor` (per-pixel ignore), `--min-clip` (minimum clip length), `--skip` (skip first N seconds)
+- `--debug` flag prints details when changes are found
+- Usage: `python detect_scenes.py --video "strong bad email songs.mov"`
+
+### random_sb_sound.py
+
+Plays a random sound segment from Strong Bad email songs:
+- Reads `scene_timestamps.csv` for segment boundaries
+- Extracts segment directly from WAV in memory (no intermediate files)
+- Plays via Pygame mixer
+- `--list` flag shows all segments with timestamps and durations
+- Importable: `from random_sb_sound import play_random_clip`
+- Usage: `python random_sb_sound.py`
+
 ### wikiwikialoha
 
 Flask-SocketIO server for coordinating automation clients:
@@ -142,6 +165,9 @@ Key packages:
 - `schedule` - Job scheduling
 - `sounddevice` - Audio playback
 - `pyperclip` - Clipboard operations
+- `pygame` - Audio playback (random sound player)
+- `cupy` - GPU-accelerated numpy (scene detection)
+- `scenedetect`, `opencv-python` - Video processing
 
 ## Development Notes
 

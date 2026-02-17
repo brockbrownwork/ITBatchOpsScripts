@@ -1,7 +1,8 @@
 """
 Play a random Strong Bad email sound segment using Pygame.
 Reads scene_timestamps.csv to know the segment boundaries, then plays
-a random segment directly from the original WAV file (no splitting needed).
+a random segment directly from the original audio file (no splitting needed).
+Supports both WAV and MP3 via pydub.
 
 Usage:
     python random_sb_sound.py              # play one random segment
@@ -17,12 +18,12 @@ import csv
 import io
 import random
 import time
-import wave
 
 import pygame
+from pydub import AudioSegment
 
 
-AUDIO_FILE = "strong bad email songs.wav"
+AUDIO_FILE = "strong bad email songs.mp3"
 CSV_FILE = "scene_timestamps.csv"
 
 
@@ -35,9 +36,9 @@ def load_segments(csv_path=CSV_FILE, audio_path=AUDIO_FILE):
             timestamps.append(float(row["timestamp_seconds"]))
     timestamps.sort()
 
-    # Get total duration from WAV header
-    with wave.open(audio_path, "rb") as w:
-        total_seconds = w.getnframes() / w.getframerate()
+    # Get total duration from audio file
+    audio = AudioSegment.from_file(audio_path)
+    total_seconds = len(audio) / 1000.0
 
     segments = []
     for i in range(len(timestamps)):
@@ -49,30 +50,18 @@ def load_segments(csv_path=CSV_FILE, audio_path=AUDIO_FILE):
 
 
 def extract_segment(audio_path, start_sec, end_sec):
-    """Extract a segment from a WAV file and return it as a bytes buffer."""
-    with wave.open(audio_path, "rb") as w:
-        framerate = w.getframerate()
-        sampwidth = w.getsampwidth()
-        nchannels = w.getnchannels()
-
-        start_frame = int(start_sec * framerate)
-        end_frame = int(end_sec * framerate)
-
-        w.setpos(start_frame)
-        frames = w.readframes(end_frame - start_frame)
+    """Extract a segment from an audio file and return it as a WAV bytes buffer."""
+    audio = AudioSegment.from_file(audio_path)
+    segment = audio[int(start_sec * 1000):int(end_sec * 1000)]
 
     buf = io.BytesIO()
-    with wave.open(buf, "wb") as out:
-        out.setnchannels(nchannels)
-        out.setsampwidth(sampwidth)
-        out.setframerate(framerate)
-        out.writeframes(frames)
+    segment.export(buf, format="wav")
     buf.seek(0)
     return buf
 
 
 def play_random_clip(audio_path=AUDIO_FILE, csv_path=CSV_FILE):
-    """Play a random segment from the WAV file. Returns (index, start, end)."""
+    """Play a random segment from the audio file. Returns (index, start, end)."""
     segments = load_segments(csv_path, audio_path)
     idx = random.randrange(len(segments))
     start, end = segments[idx]
@@ -92,7 +81,7 @@ def play_random_clip(audio_path=AUDIO_FILE, csv_path=CSV_FILE):
 
 def main():
     parser = argparse.ArgumentParser(description="Play a random Strong Bad email sound segment")
-    parser.add_argument("--audio", default=AUDIO_FILE, help="WAV audio file")
+    parser.add_argument("--audio", default=AUDIO_FILE, help="Audio file (WAV or MP3)")
     parser.add_argument("--csv", default=CSV_FILE, help="CSV file with timestamps")
     parser.add_argument("--list", action="store_true", help="List all segments without playing")
     args = parser.parse_args()
@@ -112,5 +101,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
