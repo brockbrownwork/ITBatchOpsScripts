@@ -15,11 +15,8 @@ Can also be imported:
 
 import argparse
 import csv
-import io
 import random
-import struct
 import time
-import wave
 
 import pygame
 
@@ -27,24 +24,23 @@ import pygame
 AUDIO_FILE = "strong bad email songs.mp3"
 CSV_FILE = "scene_timestamps.csv"
 
-# Cache the loaded sound to avoid re-reading the file every call
-_sound_cache = {}
+# Cache total duration to avoid reloading
+_duration_cache = {}
 
 
-def _load_sound(audio_path):
-    """Load audio file via pygame and cache raw sample data + mixer settings."""
-    if audio_path in _sound_cache:
-        return _sound_cache[audio_path]
+def _get_duration(audio_path):
+    """Get total duration of audio file via pygame.mixer.Sound."""
+    if audio_path in _duration_cache:
+        return _duration_cache[audio_path]
 
     pygame.mixer.init()
     sound = pygame.mixer.Sound(audio_path)
-    raw = sound.get_raw()
-    freq, bits, channels = pygame.mixer.get_init()
     total_seconds = sound.get_length()
+    del sound
     pygame.mixer.quit()
 
-    _sound_cache[audio_path] = (raw, freq, bits, channels, total_seconds)
-    return raw, freq, bits, channels, total_seconds
+    _duration_cache[audio_path] = total_seconds
+    return total_seconds
 
 
 def load_segments(csv_path=CSV_FILE, audio_path=AUDIO_FILE):
@@ -56,7 +52,7 @@ def load_segments(csv_path=CSV_FILE, audio_path=AUDIO_FILE):
             timestamps.append(float(row["timestamp_seconds"]))
     timestamps.sort()
 
-    _, _, _, _, total_seconds = _load_sound(audio_path)
+    total_seconds = _get_duration(audio_path)
 
     segments = []
     for i in range(len(timestamps)):
@@ -67,48 +63,18 @@ def load_segments(csv_path=CSV_FILE, audio_path=AUDIO_FILE):
     return segments
 
 
-def extract_segment(audio_path, start_sec, end_sec):
-    """Extract a segment from cached raw audio and return it as a WAV bytes buffer."""
-    raw, freq, bits, channels, _ = _load_sound(audio_path)
-
-    sample_width = abs(bits) // 8
-    bytes_per_second = freq * channels * sample_width
-
-    start_byte = int(start_sec * bytes_per_second)
-    end_byte = int(end_sec * bytes_per_second)
-
-    # Align to frame boundary
-    frame_size = channels * sample_width
-    start_byte = (start_byte // frame_size) * frame_size
-    end_byte = (end_byte // frame_size) * frame_size
-
-    segment_raw = raw[start_byte:end_byte]
-
-    buf = io.BytesIO()
-    with wave.open(buf, "wb") as wf:
-        wf.setnchannels(channels)
-        wf.setsampwidth(sample_width)
-        wf.setframerate(freq)
-        wf.writeframes(segment_raw)
-    buf.seek(0)
-    return buf
-
-
 def play_random_clip(audio_path=AUDIO_FILE, csv_path=CSV_FILE):
     """Play a random segment from the audio file. Returns (index, start, end)."""
     segments = load_segments(csv_path, audio_path)
     idx = random.randrange(len(segments))
     start, end = segments[idx]
-
-    buf = extract_segment(audio_path, start, end)
+    duration = end - start
 
     pygame.mixer.init()
-    sound = pygame.mixer.Sound(buf)
-    sound.play()
-
-    while pygame.mixer.get_busy():
-        time.sleep(0.1)
-
+    pygame.mixer.music.load(audio_path)
+    pygame.mixer.music.play(start=start)
+    time.sleep(duration)
+    pygame.mixer.music.stop()
     pygame.mixer.quit()
     return idx + 1, start, end
 
