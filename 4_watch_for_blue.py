@@ -8,6 +8,7 @@ import mss
 from time import sleep
 from datetime import datetime
 import pyttsx3
+from random_sb_sound import play_random_clip
 
 engine = pyttsx3.init()
 
@@ -460,16 +461,14 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
     return False
 
 def email_alert(refresh_inbox_needed = False):
-    """Uses text-to-speech to announce the alert message three times."""
+    """Plays random Strong Bad clips to announce the alert."""
     message = "You've got mail!"
     if refresh_inbox_needed:
         message = "Inbox refresh may be needed."
-    # Say the message three times
+    # Play a random clip three times
     for _ in range(3):
-        engine.say(message)
         print(message)
-        engine.runAndWait()
-        engine.stop()
+        play_random_clip()
         time.sleep(1) # A short pause between repetitions
 
 # This script:
