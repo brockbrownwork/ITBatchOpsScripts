@@ -7,7 +7,6 @@ Pillow
 PyAutoGUI
 PyPDF2
 pyperclip
-pydub
 pygame
 pynput
 pyttsx3==2.71
