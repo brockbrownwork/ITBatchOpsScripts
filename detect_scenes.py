@@ -1,11 +1,13 @@
 """
 Detect frame changes in 'strong bad email songs.mov' and write timestamps to CSV.
-Skips the first 5 seconds. Compares consecutive frames by mean absolute pixel
-difference — when it exceeds the threshold, that's a new picture.
+Skips the first 5 seconds. Compares consecutive frames by counting what percentage
+of pixels changed by more than a noise floor — compression artifacts affect a few
+pixels slightly, but a new picture changes most of the frame.
 
 Usage:
     python detect_scenes.py
-    python detect_scenes.py --threshold 20   # adjust sensitivity (default 15)
+    python detect_scenes.py --threshold 30   # % of pixels that must change (default 40)
+    python detect_scenes.py --debug          # print every non-zero % to find threshold
     python detect_scenes.py --video "other_file.mov"
 
 Outputs: scene_timestamps.csv
@@ -15,17 +17,18 @@ import argparse
 import csv
 
 import cv2
-import cupy as cp
+import numpy as np
 from tqdm import tqdm
 
 
-def detect_scenes(video_path, threshold=3.0, skip_seconds=5.0):
+def detect_scenes(video_path, threshold=0.5, noise_floor=3, skip_seconds=5.0, debug=False):
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     timestamps = []
-    prev_gpu = None
+    prev_frame = None
+    max_pct = 0.0
 
     progress = tqdm(range(total_frames), unit="frames", desc="Scanning")
     progress.set_postfix(found=0)
@@ -35,22 +38,33 @@ def detect_scenes(video_path, threshold=3.0, skip_seconds=5.0):
         if not ret:
             break
 
-        # Upload frame to GPU
-        gpu_frame = cp.asarray(frame)
+        if prev_frame is not None:
+            # Per-pixel max channel difference
+            diff = cv2.absdiff(frame, prev_frame)
+            max_channel_diff = np.max(diff, axis=2)
 
-        if prev_gpu is not None:
-            # Absolute diff and mean on GPU
-            diff = float(cp.mean(cp.abs(gpu_frame.astype(cp.float32) - prev_gpu.astype(cp.float32))))
-            if diff > threshold:
+            # What % of pixels changed by more than the noise floor?
+            pct_changed = (max_channel_diff > noise_floor).sum() / max_channel_diff.size * 100
+
+            if pct_changed > max_pct:
+                max_pct = pct_changed
+
+            if debug and pct_changed > 0.1:
+                timestamp = round(frame_num / fps, 3)
+                mins, secs = divmod(timestamp, 60)
+                tqdm.write(f"  {pct_changed:6.2f}% changed at {int(mins)}:{secs:06.3f}")
+
+            if pct_changed > threshold:
                 timestamp = round(frame_num / fps, 3)
                 if timestamp >= skip_seconds:
                     timestamps.append(timestamp)
                     mins, secs = divmod(timestamp, 60)
                     progress.set_postfix(found=len(timestamps), latest=f"{int(mins)}:{secs:06.3f}")
 
-        prev_gpu = gpu_frame
+        prev_frame = frame.copy()
 
     cap.release()
+    print(f"Max % pixels changed seen: {max_pct:.2f}%")
     return timestamps
 
 
@@ -66,17 +80,23 @@ def write_csv(timestamps, output_path="scene_timestamps.csv"):
 def main():
     parser = argparse.ArgumentParser(description="Detect frame changes and output CSV timestamps")
     parser.add_argument("--video", default="strong bad email songs.mov", help="Video file path")
-    parser.add_argument("--threshold", type=float, default=0.35, help="Mean pixel diff threshold (default 15, lower = more sensitive)")
+    parser.add_argument("--threshold", type=float, default=0.5,
+                        help="Percent of pixels that must change to count as new scene (default 0.5)")
+    parser.add_argument("--noise-floor", type=int, default=3,
+                        help="Per-pixel difference below this is ignored as compression noise (default 3)")
+    parser.add_argument("--debug", action="store_true",
+                        help="Print every frame with >1%% changed pixels to help find the right threshold")
     parser.add_argument("--output", default="scene_timestamps.csv", help="Output CSV file path")
     parser.add_argument("--skip", type=float, default=5.0, help="Skip first N seconds (default 5)")
     args = parser.parse_args()
 
     print(f"Detecting frame changes in: {args.video}")
-    print(f"Threshold: {args.threshold}, Skipping first {args.skip}s")
+    print(f"Threshold: {args.threshold}% of pixels, noise floor: {args.noise_floor}, skipping first {args.skip}s")
 
-    timestamps = detect_scenes(args.video, threshold=args.threshold, skip_seconds=args.skip)
+    timestamps = detect_scenes(args.video, threshold=args.threshold, noise_floor=args.noise_floor,
+                               skip_seconds=args.skip, debug=args.debug)
 
-    print(f"Found {len(timestamps)} frame changes after {args.skip}s:")
+    print(f"\nFound {len(timestamps)} frame changes after {args.skip}s:")
     for ts in timestamps:
         mins, secs = divmod(ts, 60)
         print(f"  {int(mins)}:{secs:06.3f}")
