@@ -59,6 +59,8 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const sleepers = ['RHRDSPRODTWS_JRDS_REPAIR_EST_OUTBOUND_ESI1'];
+
 function checkJobNameAlerts(jobName) {
     if (jobName.split("_").pop().startsWith("ABAP")) {
         alert("ABAP job found, make sure that goes into DevOps chat. :)")
@@ -68,6 +70,9 @@ function checkJobNameAlerts(jobName) {
     }
     if (jobName.endsWith("_CONT")) {
         alert("Warning: this probably contains a controller job, make sure to check to see if it has a controller page.")
+    }
+    if (sleepers.includes(jobName)) {
+        alert("This job is a sleeper.");
     }
 }
 
