@@ -13,6 +13,10 @@ REM Open RMJ
 start microsoft-edge:"https://portal.runmyjobs.cloud/dashboard"
 ping localhost -n 3 >nul
 
+REM Temperatures of the servers
+start microsoft-edge:"https://dashboard.sensorpush.com/"
+ping localhost -n 3 >nul
+
 REM Open RHES Production TWS
 start microsoft-edge:"http://rhesprodtws01/"
 ping localhost -n 3 >nul
