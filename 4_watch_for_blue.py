@@ -439,10 +439,10 @@ def attempt_to_find_inbox(region_top_left, region_bottom_right):
     hover_at_position(hover_x + 1, hover_y)
     time.sleep(0.1)
 
-    # IV. Scroll up 30, then scroll down 14
+    # IV. Scroll up 30, then scroll down 13
     scroll_mouse(30, direction='up')
     time.sleep(0.5)
-    scroll_mouse(14, direction='down')
+    scroll_mouse(13, direction='down')
     time.sleep(0.5)
 
     # V. Check if inbox.png or inbox_highlighted.png exists
