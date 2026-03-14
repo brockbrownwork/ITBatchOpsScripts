@@ -104,12 +104,12 @@ const TWSAbendWatcher = {
             this.consecutiveTableNotFound++;
             console.error(`[TWSAbendWatcher] ERROR: TWS Table not found (${this.consecutiveTableNotFound} consecutive failures). Are you sure the frame is loaded?`);
 
-            if (this.consecutiveTableNotFound >= this.tableNotFoundAlertThreshold) {
+            if (this.consecutiveTableNotFound == this.tableNotFoundAlertThreshold) {
                 const message = `Warning: TWS table not found ${this.consecutiveTableNotFound} times in a row. Please check the page.`;
                 console.error(`[TWSAbendWatcher] ⚠ ${message}`);
                 this.speak(message);
                 // Reset counter after alerting so we don't spam
-                this.consecutiveTableNotFound = 0;
+                
             }
             return [];
         }
