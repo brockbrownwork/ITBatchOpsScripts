@@ -28,7 +28,7 @@ const TWSAbendWatcher = {
     // States to watch for (case-insensitive matching)
     watchStates: ["ABEND", "FAIL", "CANCEL", "CANCELLED"],
     // Jobs that fail regularly - TTS will note this when they appear
-    frequentFailers: ["JSISADS_MKT_DAILY"],
+    frequentFailers: ["JSISADS_MKT_DAILY", "JRDS_DAILY_SPM_ETL"],
     isRunning: false,
     checkInterval: null,
     consecutiveTableNotFound: 0, // Track consecutive failures to find table
