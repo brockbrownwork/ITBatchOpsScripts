@@ -17,10 +17,6 @@ REM Temperatures of the servers
 start microsoft-edge:"https://dashboard.sensorpush.com/"
 ping localhost -n 3 >nul
 
-REM Open RHES Production TWS
-start microsoft-edge:"http://rhesprodtws01/"
-ping localhost -n 3 >nul
-
 REM Open Workday
 start microsoft-edge:"https://www.myworkday.com/signetjewelers/d/home.htmld"
 ping localhost -n 3 >nul
