@@ -145,8 +145,8 @@ process_jobs(jobs)
 # =======================
 
 # Define the days for Final pass prompt
-FINAL_PASS_WEEKDAYS = ['sunday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
-FINAL_PASS_SUNDAY = ['monday'] # actually monday...
+FINAL_PASS_WEEKDAYS = ['sunday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'monday']
+FINAL_PASS_SUNDAY = [] # actually monday...
 CREDIT_REBOOT_DAY = ['sunday']
 
 # Define the alert times
@@ -157,9 +157,6 @@ continue_credit_reboot_time = datetime.strptime("02:00", "%H:%M").time()
 
 # Schedule "Final pass prompt" for Monday to Saturday at 3:30 AM
 schedule_job_alert("Final pass prompt", final_pass_time_weekdays, days=FINAL_PASS_WEEKDAYS)
-
-# Schedule "Final pass prompt" for Sunday at 1:30 AM
-schedule_job_alert("Final pass prompt", final_pass_time_sunday, days=FINAL_PASS_SUNDAY)
 
 # 2am, continue credit reboot
 schedule_job_alert("Continue credit reboot and reprod (raise fences on stuff we need to do reboots on)", continue_credit_reboot_time, days=CREDIT_REBOOT_DAY)
