@@ -59,7 +59,7 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const sleepers = ['RHRDSPRODTWS_JRDS_REPAIR_EST_OUTBOUND_ESI1'];
+const sleepers = ['RHRDSPRODTWS_JRDS_REPAIR_EST_OUTBOUND_ESI1', 'RHRDSPRODTWS_JRDS_REPAIR_OUTBOUND_PROCESS1'];
 
 function checkJobNameAlerts(jobName) {
     if (jobName.split("_").pop().startsWith("ABAP")) {
