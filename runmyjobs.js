@@ -191,41 +191,65 @@ let lastKnownLatestRunTime = null;
 let runMonitorInterval = null;
 
 function getColumnIndex(headerName) {
-    let index = -1;
     const headers = getTableHeaders();
-    index = headers.indexOf(headerName);
+    const norm = s => s.replace(/\s+/g, ' ').trim().toLowerCase();
+    const target = norm(headerName);
+    let index = headers.findIndex(h => norm(h) === target);
+    if (index === -1) {
+        index = headers.findIndex(h => norm(h).includes(target));
+    }
     return index;
 }
 
+/**
+ * General time extractor. Tolerates:
+ * - exotic whitespace (NBSP U+00A0, narrow NBSP U+202F) that Intl/UI frameworks
+ *   insert before AM/PM
+ * - any meridiem style: "a.m.", "AM", "am", "p. m.", or none (24-hour)
+ * - optional seconds
+ * - an optional explicit date or a "Today" label
+ * Rejects anything not from today: "Yesterday", other relative-day words,
+ * or an explicit date that isn't today's.
+ */
 function parseRunTime(timeString) {
-    const trimmedString = timeString.trim();
-    const timeRegex = /^(\d{1,2}):(\d{2}):(\d{2}) (a\.m\.)$/i;
-    const match = trimmedString.match(timeRegex);
+    if (!timeString) return null;
 
-    if (!match) {
+    const normalized = timeString.replace(/[\s\u00a0\u2000-\u200a\u202f\u205f]+/g, ' ').trim();
+
+    const timeMatch = normalized.match(/(\d{1,2}):(\d{2})(?::(\d{2}))?(?: ?([ap])\.? ?m\.?)?/i);
+    if (!timeMatch) return null;
+
+    let hours = parseInt(timeMatch[1], 10);
+    const minutes = parseInt(timeMatch[2], 10);
+    const seconds = timeMatch[3] ? parseInt(timeMatch[3], 10) : 0;
+    const ampm = timeMatch[4] ? timeMatch[4].toLowerCase() : null;
+
+    if (ampm === 'p' && hours !== 12) hours += 12;
+    if (ampm === 'a' && hours === 12) hours = 0;
+    if (hours > 23 || minutes > 59 || seconds > 59) return null;
+
+    let base = new Date();
+    const dateMatch = normalized.match(/\d{1,4}[\/.-]\d{1,2}[\/.-]\d{1,4}/);
+    if (dateMatch) {
+        const parsedDate = new Date(dateMatch[0]);
+        if (!isNaN(parsedDate)) base = parsedDate;
+    }
+
+    // Only today's runs count. Any wordy leftovers besides the time and date
+    // ("Yesterday", "2 days ago", ...) mean it's not from today — except "today".
+    let leftover = normalized.replace(timeMatch[0], ' ');
+    if (dateMatch) leftover = leftover.replace(dateMatch[0], ' ');
+    leftover = leftover.replace(/[^a-z]+/gi, ' ').trim().toLowerCase();
+    if (leftover && leftover !== 'today') return null;
+
+    const now = new Date();
+    if (base.getFullYear() !== now.getFullYear() ||
+        base.getMonth() !== now.getMonth() ||
+        base.getDate() !== now.getDate()) {
         return null;
     }
 
-    try {
-        let [, hours, minutes, seconds, ampm] = match;
-        hours = parseInt(hours, 10);
-        minutes = parseInt(minutes, 10);
-        seconds = parseInt(seconds, 10);
-        ampm = ampm.toLowerCase();
-
-        if (ampm.startsWith('p') && hours !== 12) {
-            hours += 12;
-        }
-        if (ampm.startsWith('a') && hours === 12) {
-            hours = 0;
-        }
-
-        const today = new Date();
-        return new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, minutes, seconds);
-    } catch (e) {
-        console.error(`Error parsing time: "${trimmedString}"`, e);
-        return null;
-    }
+    return new Date(base.getFullYear(), base.getMonth(), base.getDate(), hours, minutes, seconds);
 }
 
 function getRandomString(list) {
@@ -255,6 +279,7 @@ async function checkLatestRunTime() {
 
     const allRows = Array.from(tableContainer.querySelectorAll('tbody > tr'));
     let currentScanLatestTime = null;
+    const unparsedSamples = [];
 
     for (const row of allRows) {
         const cells = row.querySelectorAll('td');
@@ -266,8 +291,15 @@ async function checkLatestRunTime() {
                 if (!currentScanLatestTime || parsedTime > currentScanLatestTime) {
                     currentScanLatestTime = parsedTime;
                 }
+            } else if (cellText.trim() && unparsedSamples.length < 3) {
+                unparsedSamples.push(cellText);
             }
         }
+    }
+
+    if (!currentScanLatestTime && unparsedSamples.length > 0) {
+        console.warn("⚠️ Run End cells had text but nothing parsed as a time. Raw samples (hidden chars visible):",
+            unparsedSamples.map(s => JSON.stringify(s)));
     }
 
     if (currentScanLatestTime) {
@@ -286,7 +318,7 @@ async function checkLatestRunTime() {
             console.log(`No new run times. Latest is still ${lastKnownLatestRunTime.toLocaleTimeString()}`);
         }
     } else {
-        console.log("No run times in 'HH:MM:SS a.m.' format found in this scan.");
+        console.log("No parseable run times found in this scan.");
     }
 }
 
