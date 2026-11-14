@@ -305,7 +305,8 @@ async function checkLatestRunTime() {
     if (currentScanLatestTime) {
         if (!lastKnownLatestRunTime || currentScanLatestTime > lastKnownLatestRunTime) {
             console.log(`✅ New latest run time found: ${currentScanLatestTime.toLocaleTimeString()}`);
-            let greetings = ["Hark", "Alert", "Hello", "Heads up", "Whoa man", "Hey dude", "uh, like"];
+            let greetings = ["Alert", "Hello", "Heads up", "Whoa man", "uh"
+            ];
             let greeting = getRandomString(greetings);
             try {
                 const utterance = new SpeechSynthesisUtterance(`${greeting}, Check Run My Jobs`);
